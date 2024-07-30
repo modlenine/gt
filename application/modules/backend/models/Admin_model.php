@@ -22,8 +22,7 @@ class Admin_model extends CI_Model {
             array('db' => 'm_formno', 'dt' => 0,
                 'formatter' => function($d , $row){
                     $output ='
-                    <a href="#" class="select_formno"
-                        data_formno="'.$d.'"
+                    <a href="'.base_url('backend/admin/request_viewfull_page/').$d.'" class="select_formno"
                     ><b>'.$d.'</b></a>
                     ';
                     return $output;
