@@ -36,6 +36,7 @@
 .mtext{
 	color:rgb(38, 37, 37) !important;
 	font-size:14px;
+	white-space:normal !important;
 }
 .wdfI1{
 	color:#208bef !important;
@@ -150,6 +151,18 @@
 
 .bg_cardlist{
 	background-color: #dfdfdf;
+}
+
+.reListAttr{
+	transition: transform 0.3s;
+}
+.reListAttr:hover{
+	cursor: pointer;
+	transform:scale(1.01);
+}
+
+#tbl_requestList{
+	width: 1200px !important;
 }
 
 @media (min-width:1024px) and (max-width:1439px){

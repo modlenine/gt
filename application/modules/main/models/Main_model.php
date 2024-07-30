@@ -63,9 +63,14 @@ class Main_model extends CI_Model {
             );
 
             $this->db->insert("main" , $arSaveData);
-            $message = "บริษัทได้รับรายการของท่านเรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \nรายการเลขที่ $formno \nต้นทางจาก : $origin \nปลายทาง : $destination \nค่าใช้จ่ายทั้งสิ้น : $totalprice";
+
+            $message = "\n🚩 บริษัทได้รับรายการของท่านเรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \n✅ รายการเลขที่ $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination \n💸 ค่าใช้จ่ายทั้งสิ้น : $totalprice";
             $token = $this->session->accesstoken;
             $response = sendLineNotify($message, $token);
+
+            $messageAdmin = "\n✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination";
+            $tokenAdmin = getAdmintoken()->t_token;
+            $responseAdmin = sendLineNotify($messageAdmin, $tokenAdmin);
 
             $output = array(
                 "msg" => "บันทึกข้อมูลสำเร็จ",
@@ -100,7 +105,8 @@ class Main_model extends CI_Model {
             member.mem_line_accesstoken AS mem_line_accesstoken,
             member.mem_fname AS mem_fname,
             member.mem_lname AS mem_lname,
-            member.mem_tel AS mem_tel
+            member.mem_tel AS mem_tel,
+            DATE_FORMAT(m_datetimecreate , '%d/%m/%Y %H:%i:%s') AS m_datetimecreate
             FROM
             member
             JOIN main

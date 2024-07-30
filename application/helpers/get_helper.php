@@ -73,6 +73,25 @@ function getFormNo()
     return $formno;
 }
 
+function getAdmintoken()
+{
+    $sql = get()->db->query("SELECT t_token FROM token_master WHERE t_autoid =1");
+    return $sql->row();
+}
+
+function getDb()
+{
+    $sql = get()->db->query("SELECT
+    db_host,
+    db_name,
+    db_username,
+    db_password
+    FROM db
+    ");
+
+    return $sql->row();
+}
+
 
 
 

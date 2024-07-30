@@ -244,7 +244,7 @@ $(document).ready(function(){
                         type: 'success',
                         showConfirmButton: true,
                     }).then(function(){
-                        location.href = url;
+                        location.href = url+'main/requestList';
                     });
                 }
             });

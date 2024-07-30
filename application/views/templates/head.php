@@ -199,7 +199,7 @@
 						<a class="dropdown-item" href="profile.html"><i class="dw dw-settings2"></i> Setting</a>
 						<a class="dropdown-item" href="faq.html"><i class="dw dw-help"></i> Help</a> -->
 						<!-- <a class="dropdown-item" href="#"><i class="dw dw-help"></i><?=$_SESSION['accesstoken']?></a> -->
-						<a class="dropdown-item" id="logoutBtn" href="#"><i class="dw dw-logout"></i> Log Out <?=$this->session->userId?></a>
+						<a class="dropdown-item" id="logoutBtn" href="#"><i class="dw dw-logout"></i> Log Out <?=$checkpage = $this->uri->segment(1);?></a>
 					</div>
 				</div>
 			</div>

@@ -17,19 +17,8 @@
                         </div>
                     </div>
 
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <div class="card card-box bg_cardlist">
-								<div class="card-body">
-									<h5 class="card-title">Special title treatment</h5>
-									<p class="card-text">
-										With supporting text below as a natural lead-in to
-										additional content.
-									</p>
-									<a href="#" class="btn btn-primary">Go somewhere</a>
-								</div>
-							</div>
-                        </div>
+                    <div class="row mt-3 show_request_list">
+                       <!-- load request list -->
                     </div>
                 </div>
             </section>
@@ -58,8 +47,26 @@
                         let result = res.data.result;
                         let output = ``;
                         for(let key in result){
-
+                            output += `
+                            <div class="col-md-12 form-group reListAttr"
+                                data_formno="${result[key].m_formno}"
+                                data_userId="${result[key].m_cusid}"
+                            >
+                                <div class="card card-box bg_cardlist">
+                                    <div class="card-body">
+                                        <h5 class="card-title">รายการเลขที่ : ${result[key].m_formno}</h5>
+                                        <p class="card-text">
+                                            <b>วันที่เรียกรถ : </b>${result[key].m_datetimecreate}<br>
+                                            <b>ต้นทาง : </b>${result[key].m_origininput}<br>
+                                            <b>ปลายทาง : </b>${result[key].m_destinationinput}<br>
+                                            <b>สถานะ : </b>${result[key].m_status}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
                         }
+                        $('.show_request_list').html(output);
                     }
                 });
             }

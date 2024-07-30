@@ -11,29 +11,10 @@
             <div class="row">
                 <div class="col-md-12 form-group">
                     <div class="card-box height-100-p pd-20">
-                        <h3>test</h3>
-                        <div class="row form-group">
-                            <table id="tbl_requestList" class="table table-striped table-bordered" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <!-- <th class="td1">Ulid</th> -->
-                                        <th>เลขที่เอกสาร</th>
-                                        <th class="td2">บริษัท</th>
-                                        <th class="td2">เลขที่ PR</th>
-                                        <th class="td2">เลขที่ PO</th>
-                                        <th class="thItemid">รหัสสินค้า</th>
-                                        <th class="td2">จำนวนเงิน</th>
-                                        <th class="td2">แผนกที่ร้องขอ</th>
-                                        <th class="td3">ผู้ร้องขอ</th>
-                                        <th class="td4">วันที่ขอซื้อ</th>
-                                        <th class="td5">รหัสผู้ขาย</th>
-                                        <th class="td7">ชื่อผู้ขาย</th>
-                                        <th class="td7">วันที่ส่งของ</th>
-                                        <th class="td7">สถานะ</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <h3 class="text-center">ยินดีต้อนรับทุกท่าน</h3>
+                        <h1 class="text-center">GT Transport Program</h1><br>
+                        <h5 class="text-center">โปรแกรม เรียกใช้บริการรถรับจ้าง สะดวก รวดเร็ว ติดตามรถได้ตลอดเวลา</h5>
+                        
                     </div>
                 </div>
             </div>

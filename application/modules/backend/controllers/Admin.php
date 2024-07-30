@@ -8,6 +8,7 @@ class Admin extends MX_Controller {
     {
         parent::__construct();
         date_default_timezone_set("Asia/Bangkok");
+        $this->load->model("admin_model" , "admin");
     }
     
 
@@ -16,6 +17,41 @@ class Admin extends MX_Controller {
         $this->load->view("templates/admin/head");
         $this->load->view("index");
         $this->load->view("templates/admin/footer");
+    }
+
+    public function request_list_page($param)
+    {
+        $data = array(
+            'param' => $param
+        );
+        $this->load->view("templates/admin/head");
+        $this->load->view("request_list" , $data);
+        $this->load->view("templates/admin/footer");
+    }
+
+    public function request_list_table($status)
+    {
+        if(!empty($status)){
+            if($status == "data"){
+                $this->admin->request_list_checkdata();
+            }else if($status == "checkpayment"){
+                $this->admin->request_list_checkpayment();
+            }else if($status == "paymented"){
+                $this->admin->request_list_checkpaymented();
+            }else if($status == "publish_to_driver"){
+                $this->admin->request_list_publishtodriver();
+            }
+        }
+    }
+
+    public function request_viewfull_page($formno)
+    {
+        if(!empty($formno)){
+            $data = array();
+            $this->load->view("templates/admin/head");
+            $this->load->view("request_viewfull" , $data);
+            $this->load->view("templates/admin/footer");
+        }
     }
 
 }

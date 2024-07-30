@@ -25,11 +25,21 @@ class Onload
             echo "</script>";
             die();
         }else{
-            if ($this->ci->session->userdata("userId") == "") {
-                if ($controller != "login") {
-                    $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
-                    header("refresh:0; url=" . base_url('login'));
-                    exit();
+            if($checkpage != "backend" && $checkpage != "adminlogin"){
+                if ($this->ci->session->userdata("userId") == "") {
+                    if ($controller != "login") {
+                        $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
+                        header("refresh:0; url=" . base_url('login'));
+                        exit();
+                    }
+                }
+            }else if($checkpage == "backend"){
+                if ($this->ci->session->userdata("am_username") == "") {
+                    if ($controller != "adminlogin") {
+                        $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
+                        header("refresh:0; url=" . base_url('adminlogin'));
+                        exit();
+                    }
                 }
             }
         }
