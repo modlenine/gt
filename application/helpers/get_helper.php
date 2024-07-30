@@ -92,6 +92,32 @@ function getDb()
     return $sql->row();
 }
 
+function get_urlcallback($cb_name)
+{
+    $condition = "";
+    if($cb_name == "เข้าสู่ระบบ"){
+        if($_SERVER['HTTP_HOST'] == "localhost"){
+            $condition = "WHERE cb_autoid = '2'";
+        }else{
+            $condition = "WHERE cb_autoid = '1'";
+        }
+    }else if($cb_name == "การแจ้งเตือนผ่านไลน์"){
+        if($_SERVER['HTTP_HOST'] == "localhost"){
+            $condition = "WHERE cb_autoid = '3'";
+        }else{
+            $condition = "WHERE cb_autoid = '4'";
+        }
+    }
+
+    $sql = get()->db->query("SELECT
+    cb_url_callback
+    FROM callback_url $condition
+    ");
+
+    return $sql->row();
+
+}
+
 
 
 

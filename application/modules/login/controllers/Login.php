@@ -80,7 +80,8 @@ class Login extends MX_Controller {
     public function loginpage()
     {
         $clientId = 'U43e5cb93d915d611ca6d1cc07fbf5161';
-        $redirectUri = 'http://localhost/gt/login/line_callback';
+        // $redirectUri = 'http://localhost/gt/login/line_callback';
+        $redirectUri = get_urlcallback("เข้าสู่ระบบ")->cb_url_callback;
         $state = bin2hex(random_bytes(16));
 
         $lineLoginUrl = "https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=$clientId&redirect_uri=$redirectUri&scope=notify&state=$state";
@@ -94,7 +95,7 @@ class Login extends MX_Controller {
 
             $clientId = '2005934893'; // ใส่ Channel ID ที่ได้จาก LINE Developers Console
             $clientSecret = '971ec1ca05a49acb61dab03a1eea6645'; // ใส่ Channel Secret ที่ได้จาก LINE Developers Console
-            $redirectUri = 'http://localhost/gt/login/line_callback'; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
+            $redirectUri = get_urlcallback("เข้าสู่ระบบ")->cb_url_callback;
 
             $tokenUrl = 'https://api.line.me/oauth2/v2.1/token';
             $headers = [
@@ -153,7 +154,7 @@ class Login extends MX_Controller {
                 }else if($rsCheckuser == "Wait Allow Notify"){
                     $this->load->view("allowlinenotify");
                 }else if($rsCheckuser == "User Activated"){
-                    header("Location: http://localhost/gt/");
+                    header("Location:".base_url());
                     exit(); 
                 }
             }
@@ -173,7 +174,7 @@ class Login extends MX_Controller {
 
             $clientId = '46DuKmoJLVUuFMcWQerb1U'; // ใส่ Client ID ที่ได้จาก LINE Developers Console
             $clientSecret = 'OwGlA0mDHOoJtFzwPokHL5V4DZ2ZQEeKTa6NJxkj0x0'; // ใส่ Client Secret ที่ได้จาก LINE Developers Console
-            $redirectUri = 'http://localhost/gt/login/linenotify_callback'; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
+            $redirectUri = get_urlcallback("การแจ้งเตือนผ่านไลน์")->cb_url_callback; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
 
             $tokenUrl = 'https://notify-bot.line.me/oauth/token';
             $headers = [
@@ -211,7 +212,7 @@ class Login extends MX_Controller {
                 $this->db->update("member" , $arsavedata);
                 $_SESSION['accesstoken'] = $accessToken;
 
-                header("Location: http://localhost/gt/");
+                header("Location:".base_url());
                 exit(); 
             }
         }

@@ -59,7 +59,7 @@
 					<?php
 						$clientId = '46DuKmoJLVUuFMcWQerb1U'; // ใส่ Client ID ที่ได้จาก LINE Developers Console
 						$clientSecret = 'OwGlA0mDHOoJtFzwPokHL5V4DZ2ZQEeKTa6NJxkj0x0'; // ใส่ Client Secret ที่ได้จาก LINE Developers Console
-						$redirectUri = 'http://localhost/gt/login/linenotify_callback'; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
+						$redirectUri = get_urlcallback("การแจ้งเตือนผ่านไลน์")->cb_url_callback;  // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
 						
 						$authorizeUrl = "https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=$clientId&redirect_uri=$redirectUri&scope=notify&state=YOUR_STATE";
 					?>

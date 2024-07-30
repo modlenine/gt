@@ -162,7 +162,7 @@
 }
 
 #tbl_requestList{
-	width: 1200px !important;
+	width: 100% !important;
 }
 
 @media (min-width:1024px) and (max-width:1439px){
