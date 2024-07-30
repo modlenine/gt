@@ -79,8 +79,9 @@ class Login extends MX_Controller {
 
     public function loginpage()
     {
-        $clientId = 'U43e5cb93d915d611ca6d1cc07fbf5161';
+        // $clientId = 'U43e5cb93d915d611ca6d1cc07fbf5161';
         // $redirectUri = 'http://localhost/gt/login/line_callback';
+        $clientId = get_urlcallback("เข้าสู่ระบบ")->cb_client_id;
         $redirectUri = get_urlcallback("เข้าสู่ระบบ")->cb_url_callback;
         $state = bin2hex(random_bytes(16));
 
@@ -93,8 +94,8 @@ class Login extends MX_Controller {
         if (isset($_GET['code'])) {
             $code = $_GET['code'];
 
-            $clientId = '2005934893'; // ใส่ Channel ID ที่ได้จาก LINE Developers Console
-            $clientSecret = '971ec1ca05a49acb61dab03a1eea6645'; // ใส่ Channel Secret ที่ได้จาก LINE Developers Console
+            $clientId = get_urlcallback("เข้าสู่ระบบ")->cb_channel_id; // ใส่ Channel ID ที่ได้จาก LINE Developers Console
+            $clientSecret = get_urlcallback("เข้าสู่ระบบ")->cb_channel_secret;// ใส่ Channel Secret ที่ได้จาก LINE Developers Console
             $redirectUri = get_urlcallback("เข้าสู่ระบบ")->cb_url_callback;
 
             $tokenUrl = 'https://api.line.me/oauth2/v2.1/token';
@@ -172,8 +173,8 @@ class Login extends MX_Controller {
         if (isset($_GET['code'])) {
             $code = $_GET['code'];
 
-            $clientId = '46DuKmoJLVUuFMcWQerb1U'; // ใส่ Client ID ที่ได้จาก LINE Developers Console
-            $clientSecret = 'OwGlA0mDHOoJtFzwPokHL5V4DZ2ZQEeKTa6NJxkj0x0'; // ใส่ Client Secret ที่ได้จาก LINE Developers Console
+            $clientId = get_urlcallback("การแจ้งเตือนผ่านไลน์")->cb_client_id; // ใส่ Client ID ที่ได้จาก LINE Developers Console
+            $clientSecret = get_urlcallback("การแจ้งเตือนผ่านไลน์")->cb_client_secret; // ใส่ Client Secret ที่ได้จาก LINE Developers Console
             $redirectUri = get_urlcallback("การแจ้งเตือนผ่านไลน์")->cb_url_callback; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
 
             $tokenUrl = 'https://notify-bot.line.me/oauth/token';

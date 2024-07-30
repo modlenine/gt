@@ -98,7 +98,7 @@
 								// $redirectUri = 'http://localhost/gt/login/line_callback';
 								// $state = bin2hex(random_bytes(16));
 
-								$clientId = '2005934893'; // ใส่ Channel ID ที่ได้จาก LINE Developers Console
+								$clientId = get_urlcallback("เข้าสู่ระบบ")->cb_channel_id; // ใส่ Channel ID ที่ได้จาก LINE Developers Console
 								$redirectUri = get_urlcallback("เข้าสู่ระบบ")->cb_url_callback; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
 								$state = bin2hex(random_bytes(16)); // สร้าง string สุ่มเพื่อใช้เป็น state
 								

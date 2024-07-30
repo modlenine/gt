@@ -110,7 +110,11 @@ function get_urlcallback($cb_name)
     }
 
     $sql = get()->db->query("SELECT
-    cb_url_callback
+    cb_url_callback,
+    cb_client_id,
+    cb_client_secret,
+    cb_channel_id,
+    cb_channel_secret
     FROM callback_url $condition
     ");
 
