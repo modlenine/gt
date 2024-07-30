@@ -25,7 +25,7 @@ class Onload
             echo "</script>";
             die();
         }else{
-            if ($this->ci->session->userdata("cusid") == "") {
+            if ($this->ci->session->userdata("userId") == "") {
                 if ($controller != "login") {
                     $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
                     header("refresh:0; url=" . base_url('login'));

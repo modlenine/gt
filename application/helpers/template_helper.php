@@ -39,6 +39,28 @@ function getModal($modal)
 }
 
 
+function sendLineNotify($message, $token) {
+    $url = 'https://notify-api.line.me/api/notify';
+    $data = [
+        'message' => $message
+    ];
+    $headers = [
+        'Content-Type: multipart/form-data',
+        'Authorization: Bearer ' . $token
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return $response;
+}
+
 
 
 ?>

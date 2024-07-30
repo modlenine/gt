@@ -462,6 +462,10 @@ class Normal_model extends CI_Model {
             $query_status = "AND wdf_status = '$con_status' ";
         }
 
+        echo json_encode(
+            SSP::complex($_GET, $sql_details, $table, $primaryKey, $columns, null, "wdf_deptcode IN ('1014' , '1015' , '1006') AND $sql_searchBydate $query_company $query_user $query_dept $query_status")
+        );
+
 
         if($deptcode == "1003" || $ecode == "M1809"){
             echo json_encode(

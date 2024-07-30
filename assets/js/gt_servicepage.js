@@ -216,12 +216,13 @@ $(document).ready(function(){
                 showConfirmButton: true,
             });
         }else{
+            $('#btn-saverequest').prop('disabled' , true);
             const formdata = new FormData();
             formdata.append('origininput' , $('#originInput').val());
             formdata.append('destinationinput' , $('#destinationInput').val());
             formdata.append('cartype' , $('#input-sum-cartype').val());
             formdata.append('distance' , $('#input-sum-distance').val());
-            formdata.append('sumpricecardistance' , $('#sumpriceCarDistance').val());
+            formdata.append('sumpricecardistance' , $('#input-sum-sumpriceCarDistance').val());
             formdata.append('persontyped1' , $('#input-person-typeD1').val());
             formdata.append('persontyped2' , $('#input-person-typeD2').val());
             formdata.append('persontypee1' , $('#input-person-typeE1').val());
@@ -236,6 +237,16 @@ $(document).ready(function(){
                 }
             }).then(res=>{
                 console.log(res.data);
+                $('#btn-saverequest').prop('disabled' , false);
+                if(res.data.status == "Insert Data Success"){
+                    swal({
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        type: 'success',
+                        showConfirmButton: true,
+                    }).then(function(){
+                        location.href = url;
+                    });
+                }
             });
         }
     });

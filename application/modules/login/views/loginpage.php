@@ -62,8 +62,7 @@
 								<?php echo $this->session->flashdata('msg');?>
 							</div>
 							<form id="frm_login" name="frm_login" action="<?=base_url('login/checklogin')?>" method="post">
-								
-								<div class="input-group custom">
+								<!-- <div class="input-group custom">
 									<input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Username">
 									<div class="input-group-append custom">
 										<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
@@ -88,17 +87,35 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="input-group mb-0">
-											<!--
-												use code for form submit
-												<input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
-											-->
 											<button class="btn btn-primary btn-lg btn-block">เข้าสู่ระบบ</button>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</form>
+
+							<?php
+								// $clientId = '46DuKmoJLVUuFMcWQerb1U';
+								// $redirectUri = 'http://localhost/gt/login/line_callback';
+								// $state = bin2hex(random_bytes(16));
+
+								$clientId = '2005934893'; // ใส่ Channel ID ที่ได้จาก LINE Developers Console
+								$redirectUri = 'http://localhost/gt/login/line_callback'; // ใส่ Callback URL ที่คุณตั้งค่าใน LINE Developers Console
+								$state = bin2hex(random_bytes(16)); // สร้าง string สุ่มเพื่อใช้เป็น state
+								
+								// $lineLoginUrl = "https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=$clientId&redirect_uri=$redirectUri&scope=notify&state=$state";
+
+								$lineLoginUrl = "https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=$clientId&redirect_uri=$redirectUri&state=$state&scope=profile%20openid";
+							?>
+
+							<div class="row form-group mt-3">
+								<div class="col-md-12 form-group">
+									<a href="<?=$lineLoginUrl?>" class="btn btn-success btn-block">เข้าสู่ระบบด้วย Line <?=$this->session->userId?></a>
+								</div>
+							</div>
+							
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

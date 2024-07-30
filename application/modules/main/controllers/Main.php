@@ -37,6 +37,18 @@ class Main extends MX_Controller {
         $this->main->saveSendtoApprove();
     }
 
+    public function requestList()
+    {
+        $this->load->view("templates/head");
+        $this->load->view("request_list");
+        $this->load->view("templates/footer");
+    }
+
+    public function get_requestList()
+    {
+        $this->main->get_requestList();
+    }
+
 
 }/* End of file Main.php */
 ?>

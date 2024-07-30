@@ -148,6 +148,10 @@
 	width:100% !important;
 }
 
+.bg_cardlist{
+	background-color: #dfdfdf;
+}
+
 @media (min-width:1024px) and (max-width:1439px){
 	
 }

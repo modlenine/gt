@@ -25,44 +25,80 @@ class Login_model extends CI_Model
 
 
     //Start checklogin method
-    public function checklogin()
+    public function checklogin($userId)
     {
 
-        if ($_POST['username'] != "" && $_POST['password'] != "") {
+        if (!empty($userId)) {
 
-            $user = mysqli_real_escape_string($this->escape_string(), $_POST['username']);
-            $pass = mysqli_real_escape_string($this->escape_string(), $_POST['password']);
-            // If System go on Please add md5 to element name password 'md5'
+            $checkuser = $this->db->query("SELECT
+            mem_line_userId,
+            mem_line_displayName,
+            mem_line_pictureUrl,
+            mem_line_accesstoken,
+            mem_fname,
+            mem_lname,
+            mem_tel,
+            mem_status
+            FROM member WHERE mem_line_userId = '$userId'
+            ");
+            
 
-            $checkuser = $this->db->query(sprintf("SELECT * FROM member WHERE mem_username = '%s' and mem_password = '%s'  ", $user, $pass));
-            $checkdata = $checkuser->num_rows();
+            if($checkuser->num_rows() > 0){
 
-
-            if ($checkdata == 0) {
-                echo $this->session->set_flashdata('msg', '<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง</div>');
-                redirect('login');
-                die();
-            } else {
-
-                $_SESSION['username'] = $checkuser->row()->mem_username;
-                $_SESSION['fname'] = $checkuser->row()->mem_fname;
-                $_SESSION['lname'] = $checkuser->row()->mem_lname;
-                $_SESSION['lineid'] = $checkuser->row()->mem_lineid;
+                $_SESSION['userId'] = $checkuser->row()->mem_line_userId;
+                $_SESSION['displayName'] = $checkuser->row()->mem_line_displayName;
+                $_SESSION['pictureUrl'] = $checkuser->row()->mem_line_pictureUrl;
+                $_SESSION['fullname'] = $checkuser->row()->mem_fname." ".$checkuser->row()->mem_lname;
                 $_SESSION['tel'] = $checkuser->row()->mem_tel;
-                $_SESSION['email'] = $checkuser->row()->mem_email;
-                $_SESSION['cusid'] = $checkuser->row()->mem_autoid;
-
+                $_SESSION['accesstoken'] = $checkuser->row()->mem_line_accesstoken;
                 // insert login log
                 session_write_close();
 
-                $uri = isset($_SESSION['RedirectKe']) ? $_SESSION['RedirectKe'] : '/gt';
-                header('location:' . $uri);
-                // header("refresh:0; url=" . base_url());
-
+                return $checkuser->row()->mem_status;
+            }else{
+                return "Not Have Data";
             }
 
         }
     } //End checklogin
+
+    public function saveSignup()
+    {
+        if(!empty($this->input->post('mem_line_userId')) && !empty($this->input->post("mem_fname")) && !empty($this->input->post("mem_lname")) && !empty($this->input->post("mem_tel"))){
+            $arsave = array(
+                "mem_line_userId" => $this->input->post("mem_line_userId"),
+                "mem_line_displayName" => $this->input->post("mem_line_displayName"),
+                "mem_line_pictureUrl" => $this->input->post("mem_line_pictureUrl"),
+                "mem_fname" => $this->input->post("mem_fname"),
+                "mem_lname" => $this->input->post("mem_lname"),
+                "mem_tel" => $this->input->post("mem_tel"),
+                "mem_datetime" => date("Y-m-d H:i:s"),
+                "mem_status" => "Wait Allow Notify"
+            );
+
+            $this->db->insert("member" , $arsave);
+
+            $_SESSION['userId'] = $this->input->post("mem_line_userId");
+            $_SESSION['displayName'] = $this->input->post("mem_line_displayName");
+            $_SESSION['pictureUrl'] = $this->input->post("mem_line_pictureUrl");
+            $_SESSION['fullname'] = $this->input->post("mem_fname")." ".$this->input->post("mem_lname");
+            $_SESSION['tel'] = $this->input->post("mem_tel");
+
+            $output = array(
+                "msg" => "บันทึกข้อมูลสำเร็จ",
+                "status" => "Insert Data Success",
+                "mem_line_userId" => $this->input->post("mem_line_userId")
+            );
+        }else{
+            $output = array(
+                "msg" => "บันทึกข้อมูลไม่สำเร็จ",
+                "status" => "Insert Data Not Success",
+
+            );
+        }
+
+        echo json_encode($output);
+    }
 
 
 

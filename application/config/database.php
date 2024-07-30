@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 if($_SERVER['HTTP_HOST'] == "localhost"){
-	$mysqlServer = "localhost";
+	$mysqlServer = "31.220.110.101";
 }else{
 	$mysqlServer = "localhost";
 }
@@ -13,9 +13,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => $mysqlServer,
-	'username' => 'ant',
-	'password' => 'Ant1234',
-	'database' => 'gt',
+	'username' => 'u438260853_gtprogram',
+	'password' => 'Idkfa*999',
+	'database' => 'u438260853_gtprogram',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

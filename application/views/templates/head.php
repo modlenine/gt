@@ -128,10 +128,12 @@
 </head>
 <?php
 	// Get Modal Zone
-	if($this->session->cusid == ""){
+	if($this->session->userId == ""){
 		$fnamedata = "Gust";
+		$pictureUrl = "";
 	}else{
-		$fnamedata = $this->session->fname." ".$this->session->lname;
+		$fnamedata = $this->session->fullname;
+		$pictureUrl = $this->session->pictureUrl;
 	}
 ?>
 
@@ -188,7 +190,7 @@
 				<div class="dropdown">
 					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
 						<span class="user-icon">
-							<img src="#" alt="">
+							<img src="<?=$pictureUrl?>" alt="">
 						</span>
 						<span class="user-name"><?=$fnamedata ?></span>
 					</a>
@@ -196,7 +198,8 @@
 						<!-- <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
 						<a class="dropdown-item" href="profile.html"><i class="dw dw-settings2"></i> Setting</a>
 						<a class="dropdown-item" href="faq.html"><i class="dw dw-help"></i> Help</a> -->
-						<a class="dropdown-item" id="logoutBtn" href="#"><i class="dw dw-logout"></i> Log Out</a>
+						<!-- <a class="dropdown-item" href="#"><i class="dw dw-help"></i><?=$_SESSION['accesstoken']?></a> -->
+						<a class="dropdown-item" id="logoutBtn" href="#"><i class="dw dw-logout"></i> Log Out <?=$this->session->userId?></a>
 					</div>
 				</div>
 			</div>
@@ -228,15 +231,15 @@
 			
 					<li>
 						<a href="<?=base_url('main/gt_service')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">เรียกรถรับจ้างทั่วไป</span>
+							<span class="micon dw dw-flag1 wdfI1"></span><span class="mtext">เรียกรถรับจ้างทั่วไป</span>
 						</a>
 					</li>
-
 					<li>
-						<a href="<?=base_url('advance.html')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">เรียกรถขนส่ง(สำหรับบริษัท)</span>
+						<a href="<?=base_url('main/requestList')?>" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-car wdfI1"></span><span class="mtext">รายการเรียกรถ</span>
 						</a>
 					</li>
+	
 
 					<li>
 						<div class="dropdown-divider"></div>
@@ -248,9 +251,6 @@
 						<a href="<?=base_url('advance_report.html')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-profits-1 wdfI1"></span><span class="mtext">ประวัติการเรียกรถ</span>
 						</a>
-					</li>
-					<li>
-						<div class="dropdown-divider"></div>
 					</li>
 					
 				</ul>
