@@ -221,7 +221,7 @@
     let directionsRenderer;
     let originMarker;
     let destinationMarker;
-    let distance;
+    let distance = 0;
     let distanceRate = 0;
 
     function initMap() {
@@ -329,6 +329,11 @@
         destination: destinationInput,
         travelMode: 'DRIVING'
       };
+
+      // ปิดการแสดงหมุดต้นทางและปลายทาง
+      directionsRenderer.setOptions({
+        suppressMarkers: true
+      });
 
       directionsService.route(request, function(result, status) {
         if (status === 'OK') {

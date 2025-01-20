@@ -127,10 +127,17 @@ $(document).ready(function(){
     });
 
     $('#btn-calculate').click(function(){
+        // check ว่าลูกค้าเลือกต้นทางหรือ ปลายทางแล้วหรือไม่
         let sumPersonPrice = 0;
-        if(distance == ""){
+        if(namecarType == ""){
             swal({
-                title: 'กรุณาเลือกต้นทางและปลายทางก่อนค่ะ',
+                title: 'กรุณาเลือกประเภทของรถ',
+                type: 'warning',
+                showConfirmButton: true,
+            });
+        }else if(distance == ""){
+            swal({
+                title: 'กรุณาเลือกต้นทางและปลายทางจากนั้นกดคำนวณเส้นทาง',
                 type: 'warning',
                 showConfirmButton: true,
             });
@@ -160,7 +167,16 @@ $(document).ready(function(){
 
     $('#input-accept').change(function(){
         if($('input[name="input-accept"]:checked').length > 0){
-            $('#btn-saverequest').prop('disabled' , false);
+            if($('#input-sum-sumpriceBeforeVat').val() == ""){
+                swal({
+                    title: 'กรุณากดปุ่มคำนวณค่าใช้จ่าย',
+                    type: 'warning',
+                    showConfirmButton: true,
+                });
+                $('input[name="input-accept"]').prop('checked' , false);
+            }else{
+                $('#btn-saverequest').prop('disabled' , false);
+            }
         }else{
             $('#btn-saverequest').prop('disabled' , true);
         }

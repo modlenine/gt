@@ -47,7 +47,12 @@ class Admin extends MX_Controller {
     public function request_viewfull_page($formno)
     {
         if(!empty($formno)){
-            $data = array();
+            $queryViewfull = $this->admin->get_viewfulldata_topage($formno);
+            $data = array(
+                "title" => "หน้ารายการรอ แอดมิน ตรวจสอบข้อมูล",
+                "formno" => $formno ,
+                "dataviewfull" => $queryViewfull->row()
+            );
             $this->load->view("templates/admin/head");
             $this->load->view("request_viewfull" , $data);
             $this->load->view("templates/admin/footer");

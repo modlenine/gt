@@ -58,7 +58,12 @@ class Admin_model extends CI_Model {
                     return $d;
                 }
             ),
-            array('db' => 'm_status', 'dt' => 7 ,
+            array('db' => 'm_totalprice', 'dt' => 7 ,
+                'formatter' => function($d , $row){
+                    return number_format($d , 2);
+                }
+            ),
+            array('db' => 'm_status', 'dt' => 8 ,
                 'formatter' => function($d , $row){
                     return $d;
                 }
@@ -82,6 +87,47 @@ class Admin_model extends CI_Model {
         echo json_encode(
             SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
         );
+    }
+
+    public function get_viewfulldata_topage($formno)
+    {
+        if(!empty($formno)){
+            $sql = $this->db->query("SELECT
+            main.m_autoid,
+            main.m_formno,
+            main.m_cusid,
+            main.m_origininput,
+            main.m_destinationinput,
+            main.m_cartype,
+            main.m_distance,
+            main.m_sumpricecardistance,
+            main.m_personsumprice,
+            main.m_totalprice,
+            main.m_persontyped1,
+            main.m_persontyped2,
+            main.m_persontypee1,
+            main.m_persontypee2,
+            main.m_datetimecreate,
+            main.m_status,
+            member.mem_fname,
+            member.mem_lname,
+            member.mem_email,
+            member.mem_tel,
+            member.mem_line_pictureUrl
+            FROM
+            main
+            INNER JOIN member ON member.mem_line_userId = main.m_cusid
+            WHERE main.m_formno = ?
+            " , array($formno));
+
+            if($sql->num_rows() > 0){
+                return $sql;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 
     public function request_list_checkpayment()

@@ -11,7 +11,47 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card-box height-100-p pd-20">
-                        test
+                        <h5 class="text-center">รายการรอตรวจสอบข้อมูล</h3>
+                        <hr>
+                        <div class="row form-group">
+                            <div class="col-md-4 form-group">
+                                <p><b>เอกสารเลขที่ : </b><?=$dataviewfull->m_formno?></p>
+                                <p><b>ชื่อลูกค้า : </b><?=$dataviewfull->mem_fname." ".$dataviewfull->mem_lname?></p>
+                                <p><b>หมายเลขโทรศัพท์ : </b><?=$dataviewfull->mem_tel?></p>
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <p><b>ประเภทรถที่เลือก : </b><?=$dataviewfull->m_cartype?></p>
+                                <p><b>ต้นทาง : </b><?=$dataviewfull->m_origininput?></p>
+                                <p><b>ปลายทาง : </b><?=$dataviewfull->m_destinationinput?></p>
+                                <p><b>ระยะทางทั้งสิ้น : </b><?=$dataviewfull->m_distance?> กิโลเมตร</p>
+                                <p><b>รวมเป็นเงินทั้งสิ้น : </b><?=number_format($dataviewfull->m_totalprice , 2)?> บาท</p>
+                                <p><b>ยอดเรียกเก็บจากลูกค้า 16% ของยอดรวม : </b></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5 class="text-center">ยอดเรียกเก็บจากลูกค้า</h5>
+                        <div class="row form-group">
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>เงินมัดจำ (เปอร์เซ็น) จากยอดเต็ม</b></label>
+                                <select name="" id="" class="form-control">
+                                    <option value="15">15%</option>
+                                    <option value="16" selected>16%</option>
+                                    <option value="17">17%</option>
+                                    <option value="18">18%</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>จำนวนเงิน (บาท)</b></label>
+                                <input type="text" name="" id="" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div id="map"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -19,3 +59,45 @@
     </div>
 </body>
 </html>
+<script src="<?=base_url('assets/js/gt_servicepage.js?v='.filemtime('./assets/js/request_viewfull.js'))?>"></script>
+<script>
+      // ฟังก์ชันเริ่มต้น
+      function initMap() {
+        // สร้างแผนที่
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 7,
+          center: { lat: 13.736717, lng: 100.523186 }, // ตั้งค่าเริ่มต้น (กรุงเทพฯ)
+        });
+
+        // สร้างบริการ Directions
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+        });
+
+        // ชื่อสถานที่ต้นทางและปลายทาง
+        const origin = "<?php echo $dataviewfull->m_origininput ?>"; // ต้นทาง
+        const destination = "<?php echo $dataviewfull->m_destinationinput ?>"; // ปลายทาง
+
+        // สร้างคำขอเส้นทาง
+        const request = {
+          origin: origin,
+          destination: destination,
+          travelMode: "DRIVING", // ประเภทการเดินทาง เช่น DRIVING, WALKING, BICYCLING, TRANSIT
+        };
+
+        // คำนวณเส้นทาง
+        directionsService.route(request, (result, status) => {
+          if (status === "OK") {
+            directionsRenderer.setDirections(result); // แสดงเส้นทางบนแผนที่
+          } else {
+            console.error("เกิดข้อผิดพลาดในการคำนวณเส้นทาง:", status);
+          }
+        });
+      }
+
+      // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
+    //   window.onload = initMap;
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3A9Mc08SyCJjtWFLFijSITvvx0UmdmFU&libraries=places&callback=initMap"></script>

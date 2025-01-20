@@ -25,6 +25,7 @@
                                     <th class="">ต้นทาง</th>
                                     <th class="">ปลายทาง</th>
                                     <th class="">ประเภทรถ</th>
+                                    <th class="">ยอดเรียกเก็บ</th>
                                     <th class="">สถานะ</th>
                                 </tr>
                             </thead>
