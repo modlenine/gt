@@ -216,6 +216,7 @@
 </body>
 <script src="<?=base_url('assets/js/gt_servicepage.js?v='.filemtime('./assets/js/gt_servicepage.js'))?>"></script>
 <script>
+    const getapikey = "<?php echo get_googlemap_apikey(); ?>";
     let map;
     let directionsService;
     let directionsRenderer;

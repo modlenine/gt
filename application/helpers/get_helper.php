@@ -122,6 +122,16 @@ function get_urlcallback($cb_name)
 
 }
 
+function get_googlemap_apikey()
+{
+    $sql = get()->db->query("SELECT
+    apikey
+    FROM apikey
+    ");
+
+    return $sql->row()->apikey;
+}
+
 
 
 

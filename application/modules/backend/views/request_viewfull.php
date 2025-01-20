@@ -61,6 +61,7 @@
 </html>
 <script src="<?=base_url('assets/js/gt_servicepage.js?v='.filemtime('./assets/js/request_viewfull.js'))?>"></script>
 <script>
+    const getapikey = "<?php echo get_googlemap_apikey(); ?>";
       // ฟังก์ชันเริ่มต้น
       function initMap() {
         // สร้างแผนที่
@@ -100,4 +101,4 @@
     //   window.onload = initMap;
     </script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3A9Mc08SyCJjtWFLFijSITvvx0UmdmFU&libraries=places&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=get_googlemap_apikey()?>&libraries=places&callback=initMap"></script>
