@@ -214,6 +214,74 @@ class Admin_model extends CI_Model {
     {
 
     }
+
+    public function saveApproveDoc()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("depositpercen")) && !empty($this->input->post("deposit"))){
+            $formno = $this->input->post("formno");
+            $depositpercen = $this->input->post("depositpercen");
+            $deposit = $this->input->post("deposit");
+            $memo = $this->input->post("memo");
+            $m_am1_approve = $this->input->post("m_am1_approve");
+
+            if($m_am1_approve == "อนุมัติ"){
+                $m_status = "Approved";
+            }else{
+                $m_status = "Not Approved";
+            }
+
+            $arraySave = array(
+                "m_deposit_percen" => $depositpercen ,
+                "m_deposit" => $deposit,
+                "m_am1_memo" => $memo,
+                "m_status" => $m_status,
+                "m_am1_approve" => $m_am1_approve,
+                "m_am1_user" => $this->session->am_fname." ".$this->session->am_lname,
+                "m_am1_datetime" => date("Y-m-d H:i:s")
+            );
+            $this->db->where("m_formno" , $formno);
+            $this->db->update("main" , $arraySave);
+
+            $output = array(
+                "msg" => "บันทึกการอนุมัติรายการสำเร็จ",
+                "status" => "Update Data Success",
+            );
+        }else{
+            $output = array(
+                "msg" => "บันทึกรายการไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function getDataApproved()
+    {
+        if(!empty($this->input->post("formno"))){
+            $formno = $this->input->post("formno");
+            $sql = $this->db->query("SELECT
+            m_deposit_percen,
+            m_deposit,
+            m_am1_approve,
+            m_am1_memo,
+            m_am1_user,
+            m_am1_datetime
+            FROM main WHERE m_formno = '$formno'
+            ");
+
+            $output = array(
+                "msg" => "ดึงข้อมูลการ Approve สำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row()
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูลการ Approve ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
     
     
 

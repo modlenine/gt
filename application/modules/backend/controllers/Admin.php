@@ -59,6 +59,16 @@ class Admin extends MX_Controller {
         }
     }
 
+    public function saveApproveDoc()
+    {
+        $this->admin->saveApproveDoc();
+    }
+
+    public function getDataApproved()
+    {
+        $this->admin->getDataApproved();
+    }
+
 }
 
 /* End of file Controllername.php */
