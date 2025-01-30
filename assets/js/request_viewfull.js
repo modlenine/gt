@@ -84,4 +84,5 @@ function calcPriceDeposit(depositePercen , totalprice)
     }else{
         $('#ip-viewfull-deposit').val(0);
     }
+    console.log(parseFloat(totalprice));
 }

@@ -153,6 +153,10 @@
 	background-color: #dfdfdf;
 }
 
+.bg_cardlistApprove{
+	background-color: #f7c739;
+}
+
 .reListAttr{
 	transition: transform 0.3s;
 }

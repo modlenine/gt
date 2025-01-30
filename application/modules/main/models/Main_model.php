@@ -128,6 +128,55 @@ class Main_model extends CI_Model {
         }
         echo json_encode($output);
     }
+
+    public function get_viewfulldata_topage($formno , $userid)
+    {
+        if(!empty($formno) && !empty($userid)){
+            $sql = $this->db->query("SELECT
+            main.m_autoid,
+            main.m_formno,
+            main.m_cusid,
+            main.m_origininput,
+            main.m_destinationinput,
+            main.m_cartype,
+            main.m_distance,
+            main.m_sumpricecardistance,
+            main.m_personsumprice,
+            main.m_totalprice,
+            main.m_deposit,
+            main.m_am1_memo,
+            main.m_persontyped1,
+            main.m_persontyped2,
+            main.m_persontypee1,
+            main.m_persontypee2,
+            main.m_datetimecreate,
+            main.m_status,
+            member.mem_fname,
+            member.mem_lname,
+            member.mem_email,
+            member.mem_tel,
+            member.mem_line_pictureUrl
+            FROM
+            main
+            INNER JOIN member ON member.mem_line_userId = main.m_cusid
+            WHERE main.m_formno = ? AND main.m_cusid = ?
+            " , array($formno , $userid));
+
+            if($sql->num_rows() > 0){
+                return $sql;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
+    }
+
+    public function uploadFile_confirmPay()
+    {
+        //test
+        uploadImage_new();
+    }
     
 
 }

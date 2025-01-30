@@ -49,6 +49,26 @@ class Main extends MX_Controller {
         $this->main->get_requestList();
     }
 
+    public function request_viewfull_page($formno , $userid)
+    {
+        if(!empty($formno)){
+            $queryViewfull = $this->main->get_viewfulldata_topage($formno , $userid);
+            $data = array(
+                "title" => "หน้ารายการรอโอนเงินมัดจำ",
+                "formno" => $formno ,
+                "dataviewfull" => $queryViewfull->row()
+            );
+            $this->load->view("templates/head");
+            $this->load->view("request_viewfull" , $data);
+            $this->load->view("templates/footer");
+        }
+    }
+
+    public function uploadFile_confirmPay()
+    {
+        $this->main->uploadFile_confirmPay();
+    }
+
 
 }/* End of file Main.php */
 ?>

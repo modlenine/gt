@@ -28,6 +28,7 @@
 </body>
 
 <script>
+
     $(document).ready(function(){
         let userId = "<?php echo $this->session->userId; ?>";
         get_requestList();
@@ -47,12 +48,16 @@
                         let result = res.data.result;
                         let output = ``;
                         for(let key in result){
+                            let bdcardColour = 'bg_cardlist';
+                            if(result[key].m_status == "Approved"){
+                                bdcardColour = 'bg_cardlistApprove';
+                            }
                             output += `
                             <div class="col-md-12 form-group reListAttr"
                                 data_formno="${result[key].m_formno}"
                                 data_userId="${result[key].m_cusid}"
                             >
-                                <div class="card card-box bg_cardlist">
+                                <div class="card card-box ${bdcardColour}">
                                     <div class="card-body">
                                         <h5 class="card-title">รายการเลขที่ : ${result[key].m_formno}</h5>
                                         <p class="card-text">
@@ -71,6 +76,13 @@
                 });
             }
         }
+
+        $(document).on('click' , '.reListAttr' , function(){
+            const data_formno = $(this).attr('data_formno');
+            const data_userId = $(this).attr('data_userId');
+
+            location.href = url+'main/request_viewfull_page/'+data_formno+'/'+data_userId;
+        });
     });
 </script>
 </html>

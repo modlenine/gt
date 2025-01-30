@@ -48,6 +48,8 @@
 	<!-- Process step -->
 	<link rel="stylesheet" href="<?=base_url()?>assets/process_step/style.css" type="text/css" />
 
+	<script src="<?=base_url()?>assets/dropzone-mobile/dist/dropzone.js"></script>
+	<link href="<?=base_url()?>assets/dropzone-mobile/dist/dropzone.css" rel="stylesheet" type="text/css" />
 
 
 	<style>

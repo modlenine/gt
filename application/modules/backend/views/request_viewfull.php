@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>หน้าแสดงรายละเอียดของรายการ</title>
 </head>
+<?php
+$personTypes = [];
+
+if ($dataviewfull->m_persontyped1 != 0) {
+    $personTypes[] = "คนขับยกของ(Type1) " . $dataviewfull->m_persontyped1 . " คน";
+}
+
+if ($dataviewfull->m_persontyped2 != 0) {
+    $personTypes[] = "คนขับยกของ(Type2) " . $dataviewfull->m_persontyped2 . " คน";
+}
+
+if ($dataviewfull->m_persontypee1 != 0) {
+    $personTypes[] = "พนักงานยกของ(Type1) " . $dataviewfull->m_persontypee1 . " คน";
+}
+
+if ($dataviewfull->m_persontypee2 != 0) {
+    $personTypes[] = "พนักงานยกของ(Type2) " . $dataviewfull->m_persontypee2 . " คน";
+}
+
+if (!empty($personTypes)) {
+    $sumPersonType = implode(", ", $personTypes);
+} else {
+    $sumPersonType = "ไม่มีข้อมูล";
+}
+
+?>
 <body>
     <div class="main-container">
         <div class="pd-ltr-20">
@@ -13,18 +39,39 @@
                     <div class="card-box height-100-p pd-20">
                         <h5 class="text-center">รายการรอตรวจสอบข้อมูล</h3>
                         <hr>
+
                         <div class="row form-group">
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-6">
                                 <p><b>เอกสารเลขที่ : </b><?=$dataviewfull->m_formno?></p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>ชื่อลูกค้า : </b><?=$dataviewfull->mem_fname." ".$dataviewfull->mem_lname?></p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>หมายเลขโทรศัพท์ : </b><?=$dataviewfull->mem_tel?></p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>Status : </b><?=$dataviewfull->m_status?></p>
                             </div>
-                            <div class="col-md-8 form-group">
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-6">
                                 <p><b>ประเภทรถที่เลือก : </b><?=$dataviewfull->m_cartype?></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><b>ประเภทคนยกของที่เลือก : </b><?=$sumPersonType?></p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>ต้นทาง : </b><?=$dataviewfull->m_origininput?></p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>ปลายทาง : </b><?=$dataviewfull->m_destinationinput?></p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>ระยะทางทั้งสิ้น : </b><?=$dataviewfull->m_distance?> กิโลเมตร</p>
+                            </div>
+                            <div class="col-md-6">
                                 <p><b>รวมเป็นเงินทั้งสิ้น : </b><?=number_format($dataviewfull->m_totalprice , 2)?> บาท</p>
                             </div>
                         </div>
@@ -81,7 +128,7 @@
 <script>
     let formno = "<?php echo $dataviewfull->m_formno ?>";
     let formstatus = "<?php echo $dataviewfull->m_status ?>";
-    let totalprice = "<?php echo number_format($dataviewfull->m_totalprice , 2) ?>";
+    let totalprice = "<?php echo $dataviewfull->m_totalprice?>";
     const getapikey = "<?php echo get_googlemap_apikey(); ?>";
       // ฟังก์ชันเริ่มต้น
       function initMap() {
