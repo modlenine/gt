@@ -279,7 +279,6 @@ class Main_model extends CI_Model {
 
             //update main data
             $arUpdateMainData = array(
-                "m_userconfirm_datetimepay" => $this->session->fullname,
                 "m_userconfirm_money" => $confirmNumPay,
                 "m_userconfirm_datetime" => date("Y-m-d H:i:s"),
                 "m_status" => "Payment Confirmed"

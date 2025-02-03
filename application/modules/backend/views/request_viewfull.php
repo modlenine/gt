@@ -75,6 +75,11 @@ if (!empty($personTypes)) {
                                 <p><b>รวมเป็นเงินทั้งสิ้น : </b><?=number_format($dataviewfull->m_totalprice , 2)?> บาท</p>
                             </div>
                         </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div id="map"></div>
+                            </div>
+                        </div>
                         <hr>
                         <h5 class="text-center">ยอดเรียกเก็บจากลูกค้า</h5>
                         <hr>
@@ -110,13 +115,61 @@ if (!empty($personTypes)) {
                                 <button class="btn btn-primary" id="btn-approveDoc" name="btn-approveDoc" style="display:none;">ยืนยัน</button>
                             </div>
                         </div>
-                        <hr>
-
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <div id="map"></div>
+                        <div id="approSecUser" class="row form-group" style="display:none;">
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>ผู้อนุมัติ</b></label>
+                                <input type="text" name="ip-viewfull-appro-name" id="ip-viewfull-appro-name" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>วันที่อนุมัติ</b></label>
+                                <input type="text" name="ip-viewfull-appro-datetime" id="ip-viewfull-appro-datetime" class="form-control" readonly>
                             </div>
                         </div>
+                        <hr>
+                        <!-- ตรวจสอบการโอนเงิน -->
+                         <!-- check confirm payment -->
+                        <section id="sec_confirmPay_backend" style="display:none;">
+                            <h5 class="text-center">ตรวจสอบการโอนเงิน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>จำนวนเงินที่โอน</b></label>
+                                    <input type="number" name="ip-viewfull-numberPay" id="ip-viewfull-numberPay" class="form-control">
+                                </div>
+                            </div>
+                            <div id="show_file_confirmPay_backend" class="row form-group"></div>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea name="ip-viewfull-memoPay" id="ip-viewfull-memoPay" class="form-control"></textarea>
+                                </div>
+                                <div class="btnapproveSec col-md-12 form-group d-flex justify-content-center">
+                                    <div class="custom-control custom-radio mb-5 ml-3">
+                                        <input type="radio" id="ip-viewfull-approPay-yes" name="ip-viewfull-approPay" value="อนุมัติ" class="custom-control-input" required> 
+                                        <label for="ip-viewfull-approPay-yes" class="custom-control-label">อนุมัติ</label>
+                                    </div> 
+                                    <div class="custom-control custom-radio mb-5 ml-3">
+                                        <input type="radio" id="ip-viewfull-approPay-no" name="ip-viewfull-approPay" value="ไม่อนุมัติ" class="custom-control-input" required> 
+                                        <label for="ip-viewfull-approPay-no" class="custom-control-label">ไม่อนุมัติ</label>
+                                    </div>
+                                </div>
+                                <div id="sec-approvePay-backend" class="col-md-12 form-group d-flex justify-content-center">
+                                    <button class="btn btn-primary" id="btn-approvePay-backend" name="btn-approvePay-backend" style="display:none;">ยืนยัน</button>
+                                </div>
+                            </div>
+                            
+                        <div id="approSecUser2" class="row form-group" style="display:none;">
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>ผู้อนุมัติ</b></label>
+                                <input type="text" name="ip-viewfull-appro2-name" id="ip-viewfull-appro2-name" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>วันที่อนุมัติ</b></label>
+                                <input type="text" name="ip-viewfull-appro2-datetime" id="ip-viewfull-appro2-datetime" class="form-control" readonly>
+                            </div>
+                        </div>
+                        </section>
+
                     </div>
                 </div>
             </div>

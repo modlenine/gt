@@ -234,7 +234,7 @@
 
 					<li>
 						<a href="<?=base_url('backend/admin/request_list_page/paymented')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการมัดจำแล้ว</span>
+							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการตรวจสอบแล้ว [รอรับงาน]</span>
 						</a>
 					</li>
 

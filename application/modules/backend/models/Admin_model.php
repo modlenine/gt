@@ -142,8 +142,7 @@ class Admin_model extends CI_Model {
             array('db' => 'm_formno', 'dt' => 0,
                 'formatter' => function($d , $row){
                     $output ='
-                    <a href="#" class="select_formno"
-                        data_formno="'.$d.'"
+                    <a href="'.base_url('backend/admin/request_viewfull_page/').$d.'" class="select_formno"
                     ><b>'.$d.'</b></a>
                     ';
                     return $output;
@@ -179,7 +178,12 @@ class Admin_model extends CI_Model {
                     return $d;
                 }
             ),
-            array('db' => 'm_status', 'dt' => 7 ,
+            array('db' => 'm_totalprice', 'dt' => 7 ,
+                'formatter' => function($d , $row){
+                    return number_format($d , 2);
+                }
+            ),
+            array('db' => 'm_status', 'dt' => 8 ,
                 'formatter' => function($d , $row){
                     return $d;
                 }
@@ -207,7 +211,81 @@ class Admin_model extends CI_Model {
 
     public function request_list_checkpaymented()
     {
+        // DB table to use
+        $table = 'request_list_waitDriverAccept';
 
+        // Table's primary key
+        $primaryKey = 'm_autoid';
+
+        $columns = array(
+            array('db' => 'm_formno', 'dt' => 0,
+                'formatter' => function($d , $row){
+                    $output ='
+                    <a href="'.base_url('backend/admin/request_viewfull_page/').$d.'" class="select_formno"
+                    ><b>'.$d.'</b></a>
+                    ';
+                    return $output;
+                }
+            ),
+            array('db' => 'm_datetimecreate', 'dt' => 1 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'mem_fullname', 'dt' => 2 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'mem_tel', 'dt' => 3 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_origininput', 'dt' => 4 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_destinationinput', 'dt' => 5 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_cartype', 'dt' => 6 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_totalprice', 'dt' => 7 ,
+                'formatter' => function($d , $row){
+                    return number_format($d , 2);
+                }
+            ),
+            array('db' => 'm_status', 'dt' => 8 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => getDb()->db_username,
+            'pass' => getDb()->db_password,
+            'db'   => getDb()->db_name,
+            'host' => getDb()->db_host
+        );
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        * If you just want to use the basic configuration for DataTables with PHP
+        * server-side, there is no need to edit below this line.
+        */
+        require('server-side/scripts/ssp.class.php');
+
+        echo json_encode(
+            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
+        );
     }
 
     public function request_list_publishtodriver()
@@ -265,7 +343,7 @@ class Admin_model extends CI_Model {
             m_am1_approve,
             m_am1_memo,
             m_am1_user,
-            m_am1_datetime
+            DATE_FORMAT(m_am1_datetime , '%d-%m-%Y %H:%i:%s')AS m_am1_datetime
             FROM main WHERE m_formno = '$formno'
             ");
 
@@ -277,6 +355,96 @@ class Admin_model extends CI_Model {
         }else{
             $output = array(
                 "msg" => "ดึงข้อมูลการ Approve ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function getDataConfirmPay()
+    {
+        if(!empty($this->input->post("formno"))){
+            $formno = $this->input->post("formno");
+
+            $sql = $this->db->query("SELECT
+            main.m_userconfirm_money
+            FROM
+            main
+            WHERE main.m_formno = ?
+            " , array($formno));
+
+            $sqlFile = $this->db->query("SELECT
+            f_path,
+            f_name
+            FROM files WHERE f_formno = ?
+            " , array($formno));
+
+            $output = array(
+                "msg" => "ดึงข้อมูล User confirm pay สำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row(),
+                "resultFile" => $sqlFile->result()
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล User confirm pay ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function saveConfirmPayChecked()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("m_am2_approve"))){
+            $formno = $this->input->post("formno");
+            $m_am2_approve = $this->input->post("m_am2_approve");
+            $m_am2_memo = $this->input->post("m_am2_memo");
+
+            $arsave_ConfirmPayChecked = array(
+                "m_am2_approve" => $m_am2_approve,
+                "m_am2_memo" => $m_am2_memo,
+                "m_am2_user" => $this->session->am_fname." ".$this->session->am_lname,
+                "m_am2_datetime" => date("Y-m-d H:i:s"),
+                "m_status" => "Payment Checked"
+            );
+
+            $this->db->where("m_formno" , $formno);
+            $this->db->update("main" , $arsave_ConfirmPayChecked);
+
+            $output = array(
+                "msg" => "อัพเดตข้อมูลการอนุมัติรายการสำเร็จ",
+                "status" => "Update Data Success",
+            );
+        }else{
+            $output = array(
+                "msg" => "อัพเดตข้อมูลการอนุมัติรายการไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function getDataConfirmPayChecked()
+    {
+        if(!empty($this->input->post("formno"))){
+            $formno = $this->input->post("formno");
+            $sql = $this->db->query("SELECT
+            m_am2_approve,
+            m_am2_memo,
+            m_am2_user,
+            DATE_FORMAT(m_am2_datetime , '%d-%m-%Y %H:%i:%s')AS m_am2_datetime
+            FROM main WHERE m_formno = ?
+            ",array($formno));
+
+            $output = array(
+                "msg" => "ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงินสำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row()
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงิน ไม่สำเร็จ",
                 "status" => "Select Data Not Success",
             );
         }

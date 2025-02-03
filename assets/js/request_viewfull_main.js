@@ -8,6 +8,13 @@ $(document).ready(function(){
     }else if(formstatus == "Payment Confirmed"){
         $('.sec_waitConfirm').css('display' , 'none');
         getDataConfirmPay(formno);
+        let statusText = `ยืนยันการโอนเงินสำเร็จ เจ้าหน้าที่กำลังตรวจสอบข้อมูล`;
+        $('#statusForUserText').html(statusText);
+    }else if(formstatus == "Payment Checked"){
+        $('.sec_waitConfirm').css('display' , 'none');
+        getDataConfirmPay(formno);
+        let statusText = `เจ้าหน้าที่ตรวจสอบข้อมูลเรียบร้อยแล้ว กำลังติดต่อคนขับรถเพื่อรับงานของท่าน`;
+        $('#statusForUserText').html(statusText);
     }
 
     $('#btn_confirmPay').on("click" , function (){
@@ -53,6 +60,16 @@ function saveConfirmPay(formno , userid)
         axios.post(url+'main/saveConfirmPay' , formdata).then(res=>{
             console.log(res.data);
             $('#btn_confirmPay').prop('disabled' , false);
+            if(res.data.status == "Update Data Success"){
+                swal({
+                    title: 'ส่งข้อมูลยืนยันการโอนเงินสำเร็จ',
+                    type: 'success',
+                    showConfirmButton: false,
+                    timer:1500
+                }).then(()=>{
+                    location.reload();
+                });
+            }
         });
     }
 }
@@ -98,8 +115,6 @@ function getDataConfirmPay(formno)
                     console.log(ext);
                 }
                 $('#show_file_confirmPay').html(imageHtml);
-                let statusText = `ยืนยันการโอนเงินสำเร็จ เจ้าหน้าที่กำลังตรวจสอบข้อมูล`;
-                $('#statusForUserText').html(statusText);
             }
         });
     }

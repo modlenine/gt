@@ -69,6 +69,21 @@ class Admin extends MX_Controller {
         $this->admin->getDataApproved();
     }
 
+    public function getDataConfirmPay()
+    {
+        $this->admin->getDataConfirmPay();
+    }
+
+    public function saveConfirmPayChecked()
+    {
+        $this->admin->saveConfirmPayChecked();
+    }
+
+    public function getDataConfirmPayChecked()
+    {
+        $this->admin->getDataConfirmPayChecked();
+    }
+
 }
 
 /* End of file Controllername.php */
