@@ -204,7 +204,7 @@
 			<a href="<?=base_url()?>">
 				<!-- <img src="<?=base_url('assets/')?>vendors/images/wdflogo.svg" alt="" class="dark-logo">
 				<img src="<?=base_url('assets/')?>vendors/images/wdflogo.svg" alt="" class="light-logo"> -->
-				<span style="font-size:28px;color:#ef476f;"><b>GT Backend Page</b></span>
+				<span style="font-size:28px;color:#ef476f;"><b>GT Driver Page</b></span>
 			</a>
 			<div class="close-sidebar" data-toggle="left-sidebar-close">
 				<i class="ion-close-round"></i>
@@ -222,27 +222,27 @@
 			
 					<li>
 						<a href="<?=base_url('backend/admin/request_list_page/data')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการรอรับงาน</span>
+							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการรอตรวจสอบ [ข้อมูล]</span>
 						</a>
 					</li>
 
-					<li>
+					<!-- <li>
 						<a href="<?=base_url('backend/admin/request_list_page/checkpayment')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการรอตรวจสอบ [ยอดโอน]</span>
 						</a>
-					</li>
+					</li> -->
 
-					<li>
+					<!-- <li>
 						<a href="<?=base_url('backend/admin/request_list_page/paymented')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการตรวจสอบแล้ว [รอรับงาน]</span>
 						</a>
-					</li>
+					</li> -->
 
-					<li>
+					<!-- <li>
 						<a href="<?=base_url('backend/admin/request_list_page/publish_to_driver')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการปล่อยงานแล้ว</span>
 						</a>
-					</li>
+					</li> -->
 
 					<li>
 						<div class="dropdown-divider"></div>
