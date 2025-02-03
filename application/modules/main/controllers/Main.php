@@ -69,6 +69,26 @@ class Main extends MX_Controller {
         $this->main->uploadFile_confirmPay();
     }
 
+    public function remove_confirmPay()
+    {
+        $this->main->remove_confirmPay();
+    }
+
+    public function removeTempFile_byuser()
+    {
+        $this->main->removeTempFile_byuser();
+    }
+
+    public function saveConfirmPay()
+    {
+        $this->main->saveConfirmPay();
+    }
+
+    public function getDataConfirmPay()
+    {
+        $this->main->getDataConfirmPay();
+    }
+
 
 }/* End of file Main.php */
 ?>

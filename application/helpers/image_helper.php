@@ -230,6 +230,31 @@ function uploadImage_new()
     }
 }
 
+function del_fileupload()
+{
+    $data = json_decode(file_get_contents("php://input" , true));
+    if (!empty($data->fileName)) {
+        $targetDir = "uploads/fileuploads_temp/";
+        $filePath = $targetDir . basename($data->fileName);
+
+        imagefn()->db->where("f_name" , $data->fileName);
+        imagefn()->db->delete("files_temp");
+    
+        // ตรวจสอบว่าไฟล์มีอยู่จริงและทำการลบไฟล์
+        if (file_exists($filePath)) {
+            if (unlink($filePath)) {
+                echo json_encode(["status" => "success", "message" => "ไฟล์ถูกลบสำเร็จ!"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "เกิดข้อผิดพลาดในการลบไฟล์!"]);
+            }
+        } else {
+            echo json_encode(["status" => "error", "message" => "ไม่พบไฟล์!"]);
+        }
+    } else {
+        echo json_encode(["status" => "error", "message" => "ไม่มีชื่อไฟล์ที่ต้องการลบ!"]);
+    }
+}
+
 
 
 

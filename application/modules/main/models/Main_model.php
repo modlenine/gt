@@ -177,6 +177,173 @@ class Main_model extends CI_Model {
         //test
         uploadImage_new();
     }
+
+    public function remove_confirmPay()
+    {
+        del_fileupload();
+    }
+
+    public function removeTempFile_byuser()
+    {
+        if(!empty($this->input->post("userid"))){
+            $userid = $this->input->post("userid");
+
+            $this->db->trans_start();
+            //Get Data File name
+            $sql = $this->db->query("SELECT
+            f_path,
+            f_name
+            FROM files_temp
+            WHERE f_cusid = ?
+            ",array($userid));
+
+            //unlink file
+            foreach($sql->result() as $rs){
+                $file_dir = $rs->f_path;
+                $file_name = $rs->f_name;
+                $filePath = $file_dir.$file_name;
+                if(file_exists($filePath)){
+                    unlink($filePath);
+                }
+            }
+
+            //Delete file database
+            $this->db->where('f_cusid' , $userid);
+            $this->db->delete('files_temp');
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE){
+                $output = array(
+                    "msg" => "ลบ filetemp ไม่สำเร็จ",
+                    "status" => "Found Status Change",
+                );
+            }else{
+                $output = array(
+                    "msg" => "ลบ filetemp สำเร็จ",
+                    "status" => "Update Data Success",
+                );
+            }
+        }else{
+            $output = array(
+                "msg" => "ลบ filetemp ไม่สำเร็จ",
+                "status" => "Update Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function saveConfirmPay()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("userid")) && !empty($this->input->post("confirmNumPay"))){
+
+            $this->db->trans_start();
+
+            $formno = $this->input->post("formno");
+            $userid = $this->input->post("userid");
+            $confirmNumPay = $this->input->post("confirmNumPay");
+
+            //copy file
+            $sql_getdatafile = $this->db->query("SELECT
+            f_formno,
+            f_cusid,
+            f_path,
+            f_type,
+            f_name,
+            f_datetime
+            FROM files_temp WHERE f_formno = ? AND f_cusid = ?
+            " , array($formno , $userid));
+
+            foreach($sql_getdatafile->result() as $rs){
+                $arsaveFileData = array(
+                    "f_formno" => $rs->f_formno,
+                    "f_cusid" => $rs->f_cusid,
+                    "f_path" => "uploads/fileuploads/",
+                    "f_type" => $rs->f_type,
+                    "f_name" => $rs->f_name,
+                    "f_datetime" => $rs->f_datetime
+                );
+                $this->db->insert("files" , $arsaveFileData);
+
+                $sourceFile = $rs->f_path . $rs->f_name;
+                $destinationFile = "uploads/fileuploads/" . $rs->f_name;
+
+                if (file_exists($sourceFile)) {
+                    rename($sourceFile, $destinationFile);
+                }
+            }
+
+            //Delete file_temp data 
+            $this->db->where("f_formno" , $formno);
+            $this->db->where("f_cusid" , $userid);
+            $this->db->delete("files_temp");
+
+            //update main data
+            $arUpdateMainData = array(
+                "m_userconfirm_datetimepay" => $this->session->fullname,
+                "m_userconfirm_money" => $confirmNumPay,
+                "m_userconfirm_datetime" => date("Y-m-d H:i:s"),
+                "m_status" => "Payment Confirmed"
+            );
+
+            $this->db->where("m_formno" , $formno);
+            $this->db->update("main" , $arUpdateMainData);
+
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE){
+                $output = array(
+                    "msg" => "ทำรายการไม่สำเร็จ พบปัญหาการบันทึกข้อมูล",
+                    "status" => "System Failed"
+                );
+            }else{
+                $output = array(
+                    "msg" => "อัพเดตข้อมูลการยืนยันการโอนเงินสำเร็จ",
+                    "status" => "Update Data Success"
+                );
+                //ส่ง Emial หรือการแจ้งเตือนไปยัง Admin เพื่อให้ตรวจสอบข้อมูล
+            }
+        }else{
+            $output = array(
+                "msg" => "อัพเดตข้อมูลการยืนยันการโอนเงินไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
+
+    public function getDataConfirmPay()
+    {
+        if(!empty($this->input->post("formno"))){
+            $formno = $this->input->post("formno");
+
+            $sql = $this->db->query("SELECT
+            main.m_userconfirm_money
+            FROM
+            main
+            WHERE main.m_formno = ?
+            " , array($formno));
+
+            $sqlFile = $this->db->query("SELECT
+            f_path,
+            f_name
+            FROM files WHERE f_formno = ?
+            " , array($formno));
+
+            $output = array(
+                "msg" => "ดึงข้อมูล User confirm pay สำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row(),
+                "resultFile" => $sqlFile->result()
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล User confirm pay ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
     
 
 }

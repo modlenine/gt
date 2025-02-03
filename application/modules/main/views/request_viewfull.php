@@ -113,13 +113,36 @@ if (!empty($personTypes)) {
                             </div>
                         </div>
                         <div class="row form-group">
+                            <div class="col-md-12 form-group text-center">
+                                <label for=""><b>จำนวนเงินที่โอน</b></label>
+                                <input type="number" name="ip-confirmNumPay" id="ip-confirmNumPay" class="form-control">
+                            </div>
+                        </div>
+                        <div id="show_file_confirmPay" class="row form-group"></div>
+                        <div class="row form-group sec_waitConfirm" style="display:none;">
                             <div class="col-md-12">
                                 <div id="fd_files1" class="dropzone"></div>
                             </div>
                         </div>
-                        <div style="height:200px;"></div>
+                        <div class="row form-group sec_waitConfirm" style="display:none;">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <button type="button" id="btn_confirmPay" name="btn_confirmPay" class="btn btn-success btn-block">ยืนยัน</button>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                         
+                        <!-- <div style="height:100px;"></div> -->
                     </div>
 
+                </div>
+            </div>
+
+            <div class="row form-group mt-2">
+                <div class="col-md-12">
+                    <div class="card-box height-100-p pd-20">
+                        <h4 class="text-center" id="statusForUserText"></h4>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,7 +207,7 @@ if (!empty($personTypes)) {
                 if(file.serverFileName){
                     //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
                     console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
-                    fetch(baseurl+"main/del_fileupload" , {
+                    fetch(url+"main/remove_confirmPay" , {
                         method:"POST",
                         headers:{
                             "Content-Type":"application/json"
