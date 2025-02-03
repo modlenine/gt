@@ -36,39 +36,37 @@ $(document).ready(function(){
     });
 
     $('#btn-approveDoc').click(function(){
-        $('#btn-approveDoc').prop('disabled' , true);
-        swal({
-            title: 'ยืนยันการอนุมัติรายการใช่หรือไม่',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            confirmButtonText: 'ยืนยัน',
-            cancelButtonText:'ยกเลิก'
-        }).then((result)=> {
-            $('#btn-approveDoc').prop('disabled' , false);
-            if(result.value == true){
-                const formdata = new FormData();
-                formdata.append('formno' , formno);
-                formdata.append('depositpercen' , $('#ip-viewfull-depositpercen').val());
-                formdata.append('deposit' , $('#ip-viewfull-deposit').val());
-                formdata.append('memo' , $('#ip-viewfull-memo').val());
-                formdata.append('m_am1_approve' , $("input:radio[name='ip-viewfull-appro']:checked").val());
+        //check input null
+        if($('input[name="ip-viewfull-appro"]:checked').length === 0){
+            swal({
+                title: 'กรุณาเลือกการอนุมัติ',
+                type: 'error',
+                showConfirmButton: true,
+                // timer:1500
+            });
+        }else{
+            $('#btn-approveDoc').prop('disabled' , true);
+            const formdata = new FormData();
+            formdata.append('formno' , formno);
+            formdata.append('depositpercen' , $('#ip-viewfull-depositpercen').val());
+            formdata.append('deposit' , $('#ip-viewfull-deposit').val());
+            formdata.append('memo' , $('#ip-viewfull-memo').val());
+            formdata.append('m_am1_approve' , $("input:radio[name='ip-viewfull-appro']:checked").val());
 
-                axios.post(url+'backend/admin/saveApproveDoc' , formdata).then(res=>{
-                    console.log(res.data);
-                    if(res.data.status == "Update Data Success"){
-                        swal({
-                            title: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success',
-                            showConfirmButton: true,
-                        }).then(function(){
-                            location.href = url+'backend/admin/request_list_page/data';
-                        });
-                    }
-                });
-            }
-        });
+            axios.post(url+'backend/admin/saveApproveDoc' , formdata).then(res=>{
+                console.log(res.data);
+                $('#btn-approveDoc').prop('disabled' , false);
+                if(res.data.status == "Update Data Success"){
+                    swal({
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        type: 'success',
+                        showConfirmButton: true,
+                    }).then(function(){
+                        location.href = url+'backend/admin/request_list_page/data';
+                    });
+                }
+            });
+        }
     });
 
     $('#btn-approvePay-backend').click(()=>{
