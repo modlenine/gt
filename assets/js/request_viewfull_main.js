@@ -3,8 +3,13 @@ $(document).ready(function(){
     deleteTempfileFrist(userid);
 
     //check form status frist
-    if(formstatus == "Approved"){
+    if(formstatus == "Open"){
+        //code
+        let statusText = `รายการอยู่ระหว่างตรวจสอบจากเจ้าหน้าที่`;
+        $('#statusForUserText').html(statusText);
+    }else if(formstatus == "Approved"){
         $('.sec_waitConfirm').css('display' , '');
+        $('#reqPaySec').css('display' , '');
     }else if(formstatus == "Payment Confirmed"){
         $('.sec_waitConfirm').css('display' , 'none');
         getDataConfirmPay(formno);

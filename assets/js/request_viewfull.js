@@ -5,6 +5,7 @@ $(document).ready(function(){
         //code
         $('#btn-approveDoc').css('display' , '');
     }else if(formstatus == "Approved"){
+        $('#reqPaySec').css('display' , '');
         $('#btn-approveDoc').css('display' , 'none');
         getDataApproved(formno);
     }else if(formstatus == "Payment Confirmed"){

@@ -82,6 +82,7 @@ if (!empty($personTypes)) {
                             </div>
                         </div>
                         <hr>
+                    <section id="reqPaySec" style="display:none;">
                         <h5 class="text-center">ยอดเรียกเก็บจากลูกค้า (เงินมัดจำ)</h5>
                         <hr>
                         <div class="row form-group">
@@ -131,7 +132,7 @@ if (!empty($personTypes)) {
                             </div>
                             <div class="col-md-4"></div>
                         </div>
-                         
+                    </section>
                         <!-- <div style="height:100px;"></div> -->
                     </div>
 
