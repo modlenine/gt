@@ -114,15 +114,15 @@
                 </div>
                 
                     <div>
-                        <label for="originInput">สถานที่ต้นทาง:</label>
-                        <input type="text" id="originInput" placeholder="ป้อนสถานที่ต้นทาง">
+                        <label for="originInput"><b>สถานที่ต้นทาง : </b></label>
+                        <input class="form-control form-group" type="text" id="originInput" placeholder="ป้อนสถานที่ต้นทาง">
                     </div>
                     <div>
-                        <label for="destinationInput">สถานที่ปลายทาง:</label>
-                        <input type="text" id="destinationInput" placeholder="ป้อนสถานที่ปลายทาง">
+                        <label for="destinationInput"><b>สถานที่ปลายทาง : </b></label>
+                        <input class="form-control form-group" type="text" id="destinationInput" placeholder="ป้อนสถานที่ปลายทาง">
                     </div>
-                    <button onclick="calculateRoute()">คำนวณเส้นทาง</button>
-                    <button onclick="resetMap()">Reset</button>
+                    <button class="btn btn-primary" onclick="calculateRoute()">คำนวณเส้นทาง</button>
+                    <button class="btn btn-warning" onclick="resetMap()">Reset</button>
                     <p id="distance"></p>
                     <div id="map"></div>
                 
@@ -136,7 +136,7 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12 form-group">
-                        <button type="button" id="btn-calculate" class="btn btn-primary">คำนวณ</button>
+                        <button type="button" id="btn-calculate" class="btn btn-primary">คำนวณค่าบริการ</button>
                         <button type="button" id="btn-reset" class="btn btn-warning">ล้างค่า</button>
                     </div>
                 </div>
