@@ -17,6 +17,7 @@ class Onload
         $controller = $this->ci->router->class;
         $method = $this->ci->router->method;
         $checkpage = $this->ci->uri->segment(1);
+        $checkpage2 = $this->ci->uri->segment(2);
 
         $browserUser = $this->ci->agent->browser();
         if($browserUser == "Internet Explorer"){
@@ -25,7 +26,7 @@ class Onload
             echo "</script>";
             die();
         }else{
-            if($checkpage != "backend" && $checkpage != "adminlogin"){
+            if($checkpage != "backend" && $checkpage != "adminlogin" && $checkpage != "driverslogin"){
                 if ($this->ci->session->userdata("userId") == "") {
                     if ($controller != "login") {
                         $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
@@ -33,11 +34,19 @@ class Onload
                         exit();
                     }
                 }
-            }else if($checkpage == "backend"){
+            }else if($checkpage == "backend" && $checkpage2 == "admin"){
                 if ($this->ci->session->userdata("am_username") == "") {
                     if ($controller != "adminlogin") {
                         $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
                         header("refresh:0; url=" . base_url('adminlogin'));
+                        exit();
+                    }
+                }
+            }else if($checkpage == "backend" && $checkpage2 == "drivers"){
+                if ($this->ci->session->userdata("dv_username") == "") {
+                    if ($controller != "driverslogin") {
+                        $_SESSION['RedirectKe'] = $_SERVER['REQUEST_URI'];
+                        header("refresh:0; url=" . base_url('driverslogin'));
                         exit();
                     }
                 }

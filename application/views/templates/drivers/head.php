@@ -128,10 +128,10 @@
 </head>
 <?php
 	// Get Modal Zone
-	if($this->session->am_username == ""){
+	if($this->session->dv_username == ""){
 		$fnamedata = "Gust";
 	}else{
-		$fnamedata = $this->session->am_fname." ".$this->session->am_lname;
+		$fnamedata = $this->session->dv_fname." ".$this->session->dv_lname;
 	}
 ?>
 
@@ -285,7 +285,7 @@
 				cancelButtonText:'ยกเลิก'
 			}).then((result)=> {
 				if(result.value == true){
-					location.href = url+'login/logout';
+					location.href = url+'backend/drivers';
 				}
 			});
 		}

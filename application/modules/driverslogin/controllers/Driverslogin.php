@@ -17,9 +17,9 @@ class Driverslogin extends MX_Controller {
         $this->load->view("driversloginpage");
     }
 
-    public function backend_checklogin()
+    public function drivers_checklogin()
     {
-        $this->adminlogin->backend_checklogin();
+        $this->driverslogin->drivers_checklogin();
     }
 
 }

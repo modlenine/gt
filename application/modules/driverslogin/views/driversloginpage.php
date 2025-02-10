@@ -60,16 +60,17 @@
 							<div class="login-title">
 								<h2 class="text-center mb-2">ล็อกอินเข้าสู่ระบบ คนขับรถ</h2>
 								<?php echo $this->session->flashdata('msg');?>
+								<?=$this->session->dv_username?>
 							</div>
-							<form id="frm_driverslogin" name="frm_driverslogin" action="<?=base_url('adminlogin/backend_checklogin')?>" method="post" autocomplete="off">
+							<form id="frm_driverslogin" name="frm_driverslogin" action="<?=base_url('driverslogin/drivers_checklogin')?>" method="post" autocomplete="off">
 								<div class="input-group custom">
-									<input type="text" id="admin-username" name="admin-username" class="form-control form-control-lg" placeholder="Username">
+									<input type="text" id="drivers-username" name="drivers-username" class="form-control form-control-lg" placeholder="Username">
 									<div class="input-group-append custom">
 										<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
 									</div>
 								</div>
 								<div class="input-group custom">
-									<input type="password" id="admin-password" name="admin-password" class="form-control form-control-lg" placeholder="**********">
+									<input type="password" id="drivers-password" name="drivers-password" class="form-control form-control-lg" placeholder="**********">
 									<div class="input-group-append custom">
 										<span class="input-group-text"><i class="dw dw-padlock1"></i></span>
 									</div>
