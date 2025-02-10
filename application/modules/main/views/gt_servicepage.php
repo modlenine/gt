@@ -225,9 +225,11 @@
     let distance = 0;
     let distanceRate = 0;
 
+    //อัพเดตให้สามารถดึงตำแหน่งที่ตั้งปัจจุบันได้
     function initMap() {
       let initialLocation = { lat: 13.7563, lng: 100.5018 };
 
+      // สร้างแผนที่โดยใช้ตำแหน่งเริ่มต้น
       map = new google.maps.Map(document.getElementById('map'), {
         center: initialLocation,
         zoom: 10
@@ -237,6 +239,44 @@
       directionsRenderer = new google.maps.DirectionsRenderer();
       directionsRenderer.setMap(map);
 
+      // ดึงตำแหน่งที่ตั้งปัจจุบันของผู้ใช้
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          let currentLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          // กำหนดค่าให้กับ input ของ origin
+          document.getElementById('originInput').value = currentLocation.lat + ', ' + currentLocation.lng;
+          
+          // สร้าง marker สำหรับจุดต้นทางจากตำแหน่งปัจจุบัน
+          if (originMarker) {
+            originMarker.setMap(null);
+          }
+          originMarker = new google.maps.Marker({
+            position: currentLocation,
+            map: map,
+            title: 'จุดต้นทาง (ตำแหน่งปัจจุบัน)',
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            draggable: true
+          });
+          
+          // ปรับการแสดงผลของแผนที่ให้อยู่ที่ตำแหน่งปัจจุบัน
+          map.setCenter(currentLocation);
+
+          // อัปเดตค่าใน input เมื่อผู้ใช้ลาก marker
+          originMarker.addListener('dragend', function() {
+            document.getElementById('originInput').value = originMarker.getPosition().lat() + ', ' + originMarker.getPosition().lng();
+          });
+        }, function() {
+          console.error('ไม่สามารถดึงตำแหน่งปัจจุบันได้');
+        });
+      } else {
+        console.error("เบราว์เซอร์นี้ไม่รองรับ Geolocation");
+      }
+
+      // ฟังก์ชันสำหรับการคลิกบนแผนที่ (ใช้สำหรับกำหนด destination ถ้ายังไม่ได้ตั้ง)
       map.addListener('click', function(event) {
         let clickedLocation = event.latLng;
         if (!document.getElementById('originInput').value) {
@@ -272,6 +312,7 @@
         }
       });
 
+      // กำหนด autocomplete สำหรับ input จุดต้นทาง
       let originAutocomplete = new google.maps.places.Autocomplete(document.getElementById('originInput'));
       originAutocomplete.bindTo('bounds', map);
       originAutocomplete.addListener('place_changed', function() {
@@ -296,6 +337,7 @@
         });
       });
 
+      // กำหนด autocomplete สำหรับ input จุดปลายทาง
       let destinationAutocomplete = new google.maps.places.Autocomplete(document.getElementById('destinationInput'));
       destinationAutocomplete.bindTo('bounds', map);
       destinationAutocomplete.addListener('place_changed', function() {
@@ -320,6 +362,104 @@
         });
       });
     }
+    //อัพเดตให้สามารถดึงตำแหน่งที่ตั้งปัจจุบันได้
+
+    // function initMap() {
+    //   let initialLocation = { lat: 13.7563, lng: 100.5018 };
+
+    //   map = new google.maps.Map(document.getElementById('map'), {
+    //     center: initialLocation,
+    //     zoom: 10
+    //   });
+
+    //   directionsService = new google.maps.DirectionsService();
+    //   directionsRenderer = new google.maps.DirectionsRenderer();
+    //   directionsRenderer.setMap(map);
+
+    //   map.addListener('click', function(event) {
+    //     let clickedLocation = event.latLng;
+    //     if (!document.getElementById('originInput').value) {
+    //       document.getElementById('originInput').value = clickedLocation.lat() + ', ' + clickedLocation.lng();
+    //       if (originMarker) {
+    //         originMarker.setMap(null);
+    //       }
+    //       originMarker = new google.maps.Marker({
+    //         position: clickedLocation,
+    //         map: map,
+    //         title: 'จุดต้นทาง',
+    //         icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+    //         draggable: true
+    //       });
+    //       originMarker.addListener('dragend', function() {
+    //         document.getElementById('originInput').value = originMarker.getPosition().lat() + ', ' + originMarker.getPosition().lng();
+    //       });
+    //     } else if (!document.getElementById('destinationInput').value) {
+    //       document.getElementById('destinationInput').value = clickedLocation.lat() + ', ' + clickedLocation.lng();
+    //       if (destinationMarker) {
+    //         destinationMarker.setMap(null);
+    //       }
+    //       destinationMarker = new google.maps.Marker({
+    //         position: clickedLocation,
+    //         map: map,
+    //         title: 'จุดปลายทาง',
+    //         icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+    //         draggable: true
+    //       });
+    //       destinationMarker.addListener('dragend', function() {
+    //         document.getElementById('destinationInput').value = destinationMarker.getPosition().lat() + ', ' + destinationMarker.getPosition().lng();
+    //       });
+    //     }
+    //   });
+
+    //   let originAutocomplete = new google.maps.places.Autocomplete(document.getElementById('originInput'));
+    //   originAutocomplete.bindTo('bounds', map);
+    //   originAutocomplete.addListener('place_changed', function() {
+    //     let place = originAutocomplete.getPlace();
+    //     if (!place.geometry) {
+    //       window.alert("ไม่พบข้อมูลสถานที่: '" + place.name + "'");
+    //       return;
+    //     }
+    //     if (originMarker) {
+    //       originMarker.setMap(null);
+    //     }
+    //     originMarker = new google.maps.Marker({
+    //       map: map,
+    //       position: place.geometry.location,
+    //       title: 'จุดต้นทาง',
+    //       icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+    //       draggable: true
+    //     });
+    //     map.setCenter(place.geometry.location);
+    //     originMarker.addListener('dragend', function() {
+    //       document.getElementById('originInput').value = originMarker.getPosition().lat() + ', ' + originMarker.getPosition().lng();
+    //     });
+    //   });
+
+    //   let destinationAutocomplete = new google.maps.places.Autocomplete(document.getElementById('destinationInput'));
+    //   destinationAutocomplete.bindTo('bounds', map);
+    //   destinationAutocomplete.addListener('place_changed', function() {
+    //     let place = destinationAutocomplete.getPlace();
+    //     if (!place.geometry) {
+    //       window.alert("ไม่พบข้อมูลสถานที่: '" + place.name + "'");
+    //       return;
+    //     }
+    //     if (destinationMarker) {
+    //       destinationMarker.setMap(null);
+    //     }
+    //     destinationMarker = new google.maps.Marker({
+    //       map: map,
+    //       position: place.geometry.location,
+    //       title: 'จุดปลายทาง',
+    //       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+    //       draggable: true
+    //     });
+    //     map.setCenter(place.geometry.location);
+    //     destinationMarker.addListener('dragend', function() {
+    //       document.getElementById('destinationInput').value = destinationMarker.getPosition().lat() + ', ' + destinationMarker.getPosition().lng();
+    //     });
+        
+    //   });
+    // }
 
     function calculateRoute() {
       let originInput = document.getElementById('originInput').value;
