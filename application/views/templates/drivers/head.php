@@ -222,21 +222,21 @@
 			
 					<li>
 						<a href="<?=base_url('backend/admin/request_list_page/data')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการรอตรวจสอบ [ข้อมูล]</span>
+							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการงาน [รอรับงาน]</span>
 						</a>
 					</li>
 
-					<!-- <li>
+					<li>
 						<a href="<?=base_url('backend/admin/request_list_page/checkpayment')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการรอตรวจสอบ [ยอดโอน]</span>
+							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">งานของฉัน [กำลังทำ]</span>
 						</a>
-					</li> -->
+					</li>
 
-					<!-- <li>
+					<li>
 						<a href="<?=base_url('backend/admin/request_list_page/paymented')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการตรวจสอบแล้ว [รอรับงาน]</span>
+							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">งานของฉัน [เสร็จสิ้นแล้ว]</span>
 						</a>
-					</li> -->
+					</li>
 
 					<!-- <li>
 						<a href="<?=base_url('backend/admin/request_list_page/publish_to_driver')?>" class="dropdown-toggle no-arrow">
