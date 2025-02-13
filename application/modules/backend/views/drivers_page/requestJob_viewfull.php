@@ -101,32 +101,12 @@ if (!empty($personTypes)) {
                                 <label for=""><b>หมายเหตุ</b></label>
                                 <textarea name="ip-viewfullJob-memo" id="ip-viewfullJob-memo" class="form-control"></textarea>
                             </div>
-                            <div class="btnapproveSec col-md-12 form-group d-flex justify-content-center">
-                                <div class="custom-control custom-radio mb-5 ml-3">
-                                    <input type="radio" id="ip-viewfullJob-appro-yes" name="ip-viewfullJob-appro" value="อนุมัติ" class="custom-control-input" required> 
-                                    <label for="ip-viewfull-appro-yes" class="custom-control-label">อนุมัติ</label>
-                                </div> 
-                                <div class="custom-control custom-radio mb-5 ml-3">
-                                    <input type="radio" id="ip-viewfullJob-appro-no" name="ip-viewfullJob-appro" value="ไม่อนุมัติ" class="custom-control-input" required> 
-                                    <label for="ip-viewfull-appro-no" class="custom-control-label">ไม่อนุมัติ</label>
-                                </div>
-                            </div>
        
-                        </div>
-                        <div id="approSecUser" class="row form-group" style="display:none;">
-                            <div class="col-md-6 form-group">
-                                <label for=""><b>ผู้อนุมัติ</b></label>
-                                <input type="text" name="ip-viewfullJob-appro-name" id="ip-viewfullJob-appro-name" class="form-control" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for=""><b>วันที่อนุมัติ</b></label>
-                                <input type="text" name="ip-viewfullJob-appro-datetime" id="ip-viewfullJob-appro-datetime" class="form-control" readonly>
-                            </div>
                         </div>
                         <hr>
                         <!-- ตรวจสอบการโอนเงิน -->
                          <!-- check confirm payment -->
-                        <section id="sec_confirmPay_backend" style="display:none;">
+                        <section id="">
                             <h5 class="text-center">ตรวจสอบการโอนเงิน</h5>
                             <hr>
                             <div class="row form-group">
@@ -141,28 +121,7 @@ if (!empty($personTypes)) {
                                     <label for=""><b>หมายเหตุ</b></label>
                                     <textarea name="ip-viewfullJob-memoPay" id="ip-viewfullJob-memoPay" class="form-control"></textarea>
                                 </div>
-                                <div class="btnapproveSec col-md-12 form-group d-flex justify-content-center">
-                                    <div class="custom-control custom-radio mb-5 ml-3">
-                                        <input type="radio" id="ip-viewfullJob-approPay-yes" name="ip-viewfullJob-approPay" value="อนุมัติ" class="custom-control-input" required> 
-                                        <label for="ip-viewfullJob-approPay-yes" class="custom-control-label">อนุมัติ</label>
-                                    </div> 
-                                    <div class="custom-control custom-radio mb-5 ml-3">
-                                        <input type="radio" id="ip-viewfullJob-approPay-no" name="ip-viewfullJob-approPay" value="ไม่อนุมัติ" class="custom-control-input" required> 
-                                        <label for="ip-viewfullJob-approPay-no" class="custom-control-label">ไม่อนุมัติ</label>
-                                    </div>
-                                </div>
                             </div>
-                            
-                        <div id="approSecUser2" class="row form-group" style="display:none;">
-                            <div class="col-md-6 form-group">
-                                <label for=""><b>ผู้อนุมัติ</b></label>
-                                <input type="text" name="ip-viewfullJob-appro2-name" id="ip-viewfullJob-appro2-name" class="form-control" readonly>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label for=""><b>วันที่อนุมัติ</b></label>
-                                <input type="text" name="ip-viewfullJob-appro2-datetime" id="ip-viewfullJob-appro2-datetime" class="form-control" readonly>
-                            </div>
-                        </div>
                         </section>
 
                     </div>
