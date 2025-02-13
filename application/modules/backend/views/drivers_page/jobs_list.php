@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>หน้าแสดงรายการ งาน [<?=$param?>]</title>
+    <title>หน้าแสดงรายการ งาน [ <?=$description_param?> ]</title>
 </head>
 <body>
     <div class="main-container">
@@ -11,11 +11,11 @@
             <div class="row">
                 <div class="col-md-12 form-group">
                     <div class="card-box height-100-p pd-20">
-                        <h3 class="text-center">รายการงาน [<?=$param?>]</h3>
+                        <h3 class="text-center">รายการงาน [ <?=$description_param?> ]</h3>
                         <div class="row form-group mt-3">
                         </div>
 
-                        <table id="tbl_requestList" class="table table-striped table-bordered" cellspacing="0">
+                        <table id="tbl_request_jobList" class="table table-striped table-bordered" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>เลขที่เอกสาร</th>
@@ -42,19 +42,19 @@
 <script>
     $(document).ready(function(){
         let param = "<?php echo $param; ?>";
-        loadRequestList();
-        function loadRequestList()
+        loadRequest_jobList();
+        function loadRequest_jobList()
         {
             let thid = 1;
-            $('#tbl_requestList thead th').each(function() {
+            $('#tbl_request_jobList thead th').each(function() {
                 var title = $(this).text();
-                $(this).html(title + ' <input type="text" id="tbl_requestList'+thid+'" class="col-search-input" placeholder="Search ' + title + '" />');
+                $(this).html(title + ' <input type="text" id="tbl_request_jobList'+thid+'" class="col-search-input" placeholder="Search ' + title + '" />');
                 thid++;
             });
 
-            $('#tbl_requestList').DataTable().destroy();
+            $('#tbl_request_jobList').DataTable().destroy();
 
-            let table = $('#tbl_requestList').DataTable({
+            let table = $('#tbl_request_jobList').DataTable({
                         "scrollX": true,
                         "processing": true,
                         "serverSide": true,
@@ -64,12 +64,12 @@
                             for (let i = 0; i < data.columns["length"]; i++) {
                                 let col_search_val = data.columns[i].search.search;
                                 if (col_search_val !== "") {
-                                    $("input", $("#tbl_prlist thead th")[i]).val(col_search_val);
+                                    $("input", $("#tbl_request_jobList thead th")[i]).val(col_search_val);
                                 }
                             }
                         },
                         "ajax": {
-                            "url":url+"backend/admin/request_list_table/"+param,
+                            "url":url+"backend/drivers/request_job_list/"+param,
                             "type": "POST",
                             "data":function(){
                                 // d.filter_formno = filter_formno;

@@ -10,10 +10,10 @@ class Drivers_model extends CI_Model {
         date_default_timezone_set("Asia/Bangkok");
     }
 
-    public function job_list_avaliable()
+    public function request_job_list_avaliable()
     {
         // DB table to use
-        $table = 'request_list_open';
+        $table = 'request_job_list_avaliable';
 
         // Table's primary key
         $primaryKey = 'm_autoid';
@@ -22,8 +22,10 @@ class Drivers_model extends CI_Model {
             array('db' => 'm_formno', 'dt' => 0,
                 'formatter' => function($d , $row){
                     $output ='
-                    <a href="'.base_url('backend/admin/request_viewfull_page/').$d.'" class="select_formno"
-                    ><b>'.$d.'</b></a>
+                    <a href="'.base_url('backend/drivers/request_viewfull_page/').$d.'" class="select_formno">
+                    <b>'.$d.'</b>
+                    <p style="color:#009900;"><b>[ ว่าง ]</b></p>
+                    </a>
                     ';
                     return $output;
                 }
@@ -87,6 +89,48 @@ class Drivers_model extends CI_Model {
         echo json_encode(
             SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
         );
+    }
+
+
+    public function get_viewfulldata_topage($formno)
+    {
+        if(!empty($formno)){
+            $sql = $this->db->query("SELECT
+            main.m_autoid,
+            main.m_formno,
+            main.m_cusid,
+            main.m_origininput,
+            main.m_destinationinput,
+            main.m_cartype,
+            main.m_distance,
+            main.m_sumpricecardistance,
+            main.m_personsumprice,
+            main.m_totalprice,
+            main.m_persontyped1,
+            main.m_persontyped2,
+            main.m_persontypee1,
+            main.m_persontypee2,
+            main.m_datetimecreate,
+            main.m_status,
+            member.mem_fname,
+            member.mem_lname,
+            member.mem_email,
+            member.mem_tel,
+            member.mem_line_pictureUrl
+            FROM
+            main
+            INNER JOIN member ON member.mem_line_userId = main.m_cusid
+            WHERE main.m_formno = ?
+            " , array($formno));
+
+            if($sql->num_rows() > 0){
+                return $sql;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
     
     
