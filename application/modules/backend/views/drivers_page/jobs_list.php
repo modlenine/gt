@@ -42,7 +42,8 @@
 <script>
     $(document).ready(function(){
         let param = "<?php echo $param; ?>";
-        loadRequest_jobList();
+        jl_checkExpireTime();
+
         function loadRequest_jobList()
         {
             let thid = 1;
@@ -85,9 +86,9 @@
                             [0, 'desc'],
                         ],
                         columnDefs: [
-                          {targets: "_all",orderable: false},
-                          {targets: [0],width: "60px",},
-                          {targets: [4 , 5],width: "150px",},
+                            {targets: "_all",orderable: false},
+                            {targets: [0],width: "60px",},
+                            {targets: [4 , 5],width: "150px",},
                         ],
             });
 
@@ -111,5 +112,15 @@
             //     'cursor':'no-drop'
             // });
         };
+
+        function jl_checkExpireTime()
+        {
+            axios.get(url+'backend/drivers/jl_checkExpireTime').then(res=>{
+                console.log(res.data);
+                loadRequest_jobList();
+            });
+        }
     });
+
+
 </script>

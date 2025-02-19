@@ -42,6 +42,8 @@ class Drivers extends MX_Controller {
             //code
             if($param == "job_avaliable"){
                 $this->drivers->request_job_list_avaliable();
+            }else if($param == "job_pending"){
+                $this->drivers->request_job_list_pending();
             }
         }
     }
@@ -59,6 +61,26 @@ class Drivers extends MX_Controller {
             $this->load->view("drivers_page/requestJob_viewfull" , $data);
             $this->load->view("templates/drivers/footer");
         }
+    }
+
+    public function getJob()
+    {
+        $this->drivers->getJob();
+    }
+
+    public function getExpireTime()
+    {
+        $this->drivers->getExpireTime();
+    }
+
+    public function getJobTimeout()
+    {
+        $this->drivers->getJobTimeout();
+    }
+
+    public function jl_checkExpireTime()
+    {
+        $this->drivers->jl_checkExpireTime();
     }
 
 }

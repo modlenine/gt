@@ -150,7 +150,7 @@ if (!empty($personTypes)) {
                             <div class="row form-group">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-primary btn-block" name="btn_dv-checkin" id="btn_dv-checkin">เช็กอิน</button>
+                                    <button type="button" class="btn btn-primary btn-block" name="btn_dv-getjob" id="btn_dv-getjob">เช็กอิน</button>
                                 </div>
                                 <div class="col-md-4"></div>
                             </div>
