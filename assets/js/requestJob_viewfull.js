@@ -6,6 +6,10 @@ $(document).ready(function(){
             $('#sec_dv-getjob').css('display' , '');
         }else if(formstatus === "Driver Get Job"){
             getExpireTime(formno);
+        }else if(formstatus === "Driver Check In"){
+            getCheckInData();
+            $('#sec_dv-checkInAlready').css('display','');
+            $('#sec-dv_beforeStart').css('display' , '');
         }
     }
 
@@ -13,6 +17,13 @@ $(document).ready(function(){
     $('#btn_dv-getjob').click(()=>{
         getJob(formno);
     });
+
+    //Checkin
+    $('#btn_dv-checkin').click(()=>{
+        checkinDriver();
+    });
+
+
 }); //End ready function 
 
 //function zone 
@@ -61,8 +72,6 @@ function getExpireTime(formno)
     }
 }
 
-
-
 function startCountdown(expiryTime) {
     let countdownElement = document.getElementById("show_expireTime");
     let countdownInterval;
@@ -102,4 +111,5 @@ function getJobTimeout(formno)
         });
     }
 }
+
 

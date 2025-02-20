@@ -84,46 +84,24 @@ if (!empty($personTypes)) {
                         <h5 class="text-center">ยอดเรียกเก็บจากลูกค้า</h5>
                         <hr>
                         <div class="row form-group">
-                            <div class="col-md-6 form-group">
+                            <!-- <div class="col-md-6 form-group">
                                 <label for=""><b>เงินมัดจำ (เปอร์เซ็น) จากยอดเต็ม</b></label>
-                                <!-- <select name="ip-viewfullJob-depositpercen" id="ip-viewfullJob-depositpercen" class="form-control">
-                                    <option value="15">15%</option>
-                                    <option value="16" selected>16%</option>
-                                    <option value="17">17%</option>
-                                    <option value="18">18%</option>
-                                </select> -->
                                 <input readonly type="text" class="form-control" name="ip-viewfullJob-depositpercen" id="ip-viewfullJob-depositpercen" value="<?=$dataviewfull->m_deposit_percen?> %">
+                            </div> -->
+                            <div class="col-md-6 form-group">
+                                <label for=""><b>เงินมัดจำชำระแล้ว</b></label>
+                                <input type="text" name="ip-viewfullJob-deposit" id="ip-viewfullJob-deposit" class="form-control" readonly value="<?=$dataviewfull->m_deposit?> บาท">
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for=""><b>จำนวนเงิน (บาท)</b></label>
-                                <input type="text" name="ip-viewfullJob-deposit" id="ip-viewfullJob-deposit" class="form-control" readonly value="<?=$dataviewfull->m_deposit?>">
+                                <label for=""><b>ยอดคงค้างชำระ</b></label>
+                                <input type="text" name="ip-viewfullJob-deposit" id="ip-viewfullJob-deposit" class="form-control" readonly value="<?=$dataviewfull->m_totalprice-$dataviewfull->m_deposit?> บาท">
                             </div>
-                            <div class="col-md-12 form-group">
+                            <!-- <div class="col-md-12 form-group">
                                 <label for=""><b>หมายเหตุ</b></label>
-                                <textarea readonly name="ip-viewfullJob-memo" id="ip-viewfullJob-memo" class="form-control"><?=$dataviewfull->m_am1_memo?></textarea>
-                            </div>
+                                <textarea style="height:80px;" readonly name="ip-viewfullJob-memo" id="ip-viewfullJob-memo" class="form-control"><?=$dataviewfull->m_am1_memo?></textarea>
+                            </div> -->
        
                         </div>
-                        <hr>
-                        <!-- ตรวจสอบการโอนเงิน -->
-                         <!-- check confirm payment -->
-                        <section id="">
-                            <h5 class="text-center">ตรวจสอบการโอนเงิน</h5>
-                            <hr>
-                            <div class="row form-group">
-                                <div class="col-md-12 form-group">
-                                    <label for=""><b>จำนวนเงินที่โอน</b></label>
-                                    <input type="number" name="ip-viewfullJob-numberPay" id="ip-viewfullJob-numberPay" class="form-control" value="<?=$dataviewfull->m_userconfirm_money?>" readonly>
-                                </div>
-                            </div>
-                            <div id="show_file_confirmPay_backend_job" class="row form-group"></div>
-                            <div class="row form-group">
-                                <div class="col-md-12 form-group">
-                                    <label for=""><b>หมายเหตุ</b></label>
-                                    <textarea name="ip-viewfullJob-memoPay" id="ip-viewfullJob-memoPay" class="form-control" readonly><?=$dataviewfull->m_am2_memo?></textarea>
-                                </div>
-                            </div>
-                        </section>
                         <hr>
                         <!-- Section สำหรับกดรับงาน -->
                         <section id="sec_dv-getjob" style="display:none;">
@@ -156,6 +134,31 @@ if (!empty($personTypes)) {
                             </div>
                         </section>
 
+                        <section id="sec_dv-checkInAlready" style="display:none;">
+                            <h5 class="text-center">คนขับ เช็กอินหน้างาน</h5>
+                            <hr>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6">
+                                    <label for=""><b>ชื่อผู้ขับ : </b><?=getDriverData($this->session->dv_username)->dv_fname." ".getDriverData($this->session->dv_username)->dv_lname?></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" id="checkin-datashow-datetime"></label>
+                                </div>
+                            </div>
+                        </section>
+                        <hr>
+
+                        <section id="sec-dv_beforeStart" style="display:none;">
+                            <h5 class="text-center">รายละเอียดก่อนเริ่มงาน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label for=""><b>ภาพก่อนขนย้าย</b></label>
+                                    <div id="dv_before" class="dropzone"></div>
+                                </div>
+                            </div>
+                        </section>
+
                     </div>
                 </div>
             </div>
@@ -164,24 +167,137 @@ if (!empty($personTypes)) {
 </body>
 </html>
 <script src="<?=base_url('assets/js/requestJob_viewfull.js?v='.filemtime('./assets/js/requestJob_viewfull.js'))?>"></script>
+
+<script>
+    Dropzone.autoDiscover = false;
+    let dv_before = new Dropzone("#dv_before", {
+        url: url+'backend/drivers/uploadFile_before',
+        paramName: "file",
+        maxFilesize: 10, // MB
+        acceptedFiles: "image/*,application/pdf", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
+        addRemoveLinks: true,
+        dictRemoveFile: "Remove file", // เปลี่ยน label ของปุ่ม remove file
+        dictDefaultMessage: "ลากและวางไฟล์ที่นี่หรือคลิกเพื่อเลือกไฟล์",
+        maxRetryAttempts: 3, // จำนวนครั้งสูงสุดในการพยายามเชื่อมต่อใหม่
+        // autoProcessQueue: true, // ให้การประมวลผลคิวเป็นอัตโนมัติ
+        chunking: true, // เปิดใช้งานการแบ่งไฟล์เป็นชิ้น ๆ
+        chunkSize: 250000, // ขนาดของแต่ละ chunk (1 MB) 500000 = 500k
+        parallelUploads: 1, // จำนวนการอัปโหลดพร้อมกัน
+        // resizeWidth: 1024, // กำหนดความกว้างของภาพที่ย่อ (ปรับตามที่ต้องการ)
+        // resizeHeight: 1024, // กำหนดความสูงของภาพที่ย่อ (ปรับตามที่ต้องการ)
+        thumbnailWidth: 120,
+        thumbnailHeight: 120,
+        // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
+        init: function () {
+            this.on("sending", function (file, xhr, formData) {
+                // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
+                formData.append("file_formno", "<?php echo $dataviewfull->m_formno;?>");
+                formData.append("file_driverusername" , "<?php echo $dataviewfull->m_dv_user_checkin;?>");
+                formData.append("file_type" , "before_start");
+            });
+            this.on("success", function (file, response) {
+                file.serverFileName = JSON.parse(response).fileName;
+                console.log(file.serverFileName);
+            });
+            this.on("error", function (file, errorMessage , xhr) {
+                console.error("Error : " , errorMessage);
+                if (!file.retryAttempts) {
+                    file.retryAttempts = 0;
+                }
+
+                // ตรวจสอบว่าข้อผิดพลาดเป็นปัญหาที่สามารถ retry ได้
+                if (xhr && xhr.status >= 500 && xhr.status < 600) {
+                    // ตรวจสอบว่า error เป็นเซิร์ฟเวอร์หรือไม่
+                    if (file.retryAttempts < this.options.maxRetryAttempts) {
+                        file.retryAttempts++;
+                        console.log(`Retrying upload (${file.retryAttempts}/${this.options.maxRetryAttempts})...`);
+
+                        setTimeout(() => {
+                            this.retry(file);
+                        }, 2000); // รอ 1 วินาทีเพื่อพยายามเชื่อมต่อใหม่
+                    } else {
+                        console.log("Failed to upload after maximum retry attempts.");
+                    }
+                } else {
+                    console.log("Upload failed:", errorMessage);
+                }
+            });
+            this.on("removedfile" , function (file){
+                if(file.serverFileName){
+                    //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
+                    console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
+                    fetch(url+"backend/drivers/removeFile_before" , {
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+                        body: JSON.stringify({ fileName: file.serverFileName })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.status === "success"){
+                            console.log("ไฟล์ถูกลบสำเร็จ");
+                        }else{
+                            console.error("เกิดข้อผิดพลาดในการลบไฟล์ : "+data.message);
+                        }
+                    })
+                    .catch(error => console.error("เกิดข้อผิดพลาดในการลบไฟล์ : " , error));
+                }
+            });
+            this.on("chunksUploaded", function (file, done) {
+                console.log("ทุก chunk ของไฟล์นี้ถูกอัปโหลดเสร็จแล้ว");
+                done(); // เรียก callback นี้เพื่อระบุว่าการอัปโหลดเสร็จสมบูรณ์
+            });
+        },
+        resize: function(file) {
+            if (file.width > 1024 || file.height > 1024) {
+                // กำหนดขนาดใหม่
+                let ratio = file.width / file.height;
+                let newWidth = 1024;
+                let newHeight = 1024;
+                if (file.width > file.height) {
+                    newHeight = newWidth / ratio;
+                } else {
+                    newWidth = newHeight * ratio;
+                }
+                return {
+                    srcX: 0,
+                    srcY: 0,
+                    srcWidth: file.width,
+                    srcHeight: file.height,
+                    trgX: 0,
+                    trgY: 0,
+                    trgWidth: newWidth,
+                    trgHeight: newHeight
+                };
+            }
+            return null; // ไม่ต้องย่อขนาด
+        }
+    });
+</script>
+
 <script>
     let formno = "<?php echo $dataviewfull->m_formno ?>";
     let formstatus = "<?php echo $dataviewfull->m_status ?>";
     let totalprice = "<?php echo $dataviewfull->m_totalprice?>";
     let driverUsername = "<?php echo $this->session->dv_username ?>";
     const getapikey = "<?php echo get_googlemap_apikey(); ?>";
-      // ฟังก์ชันเริ่มต้น
-      function initMap() {
+
+    let map;
+    let driverMarker;
+    let currentLocation;
+    // ฟังก์ชันเริ่มต้น
+    function initMap() {
         // สร้างแผนที่
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 7,
-          center: { lat: 13.736717, lng: 100.523186 }, // ตั้งค่าเริ่มต้น (กรุงเทพฯ)
+        map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 7,
+        center: { lat: 13.736717, lng: 100.523186 }, // ตั้งค่าเริ่มต้น (กรุงเทพฯ)
         });
 
         // สร้างบริการ Directions
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer({
-          map: map,
+        map: map,
         });
 
         // ชื่อสถานที่ต้นทางและปลายทาง
@@ -190,23 +306,174 @@ if (!empty($personTypes)) {
 
         // สร้างคำขอเส้นทาง
         const request = {
-          origin: origin,
-          destination: destination,
-          travelMode: "DRIVING", // ประเภทการเดินทาง เช่น DRIVING, WALKING, BICYCLING, TRANSIT
+        origin: origin,
+        destination: destination,
+        travelMode: "DRIVING", // ประเภทการเดินทาง เช่น DRIVING, WALKING, BICYCLING, TRANSIT
         };
 
         // คำนวณเส้นทาง
         directionsService.route(request, (result, status) => {
-          if (status === "OK") {
+        if (status === "OK") {
             directionsRenderer.setDirections(result); // แสดงเส้นทางบนแผนที่
-          } else {
+        } else {
             console.error("เกิดข้อผิดพลาดในการคำนวณเส้นทาง:", status);
-          }
+        }
         });
-      }
+    }
+    // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
 
-      // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
-//   window.onload = initMap;
+    // ฟังก์ชันสำหรับการ Checkin คนขับรถ
+    function checkinDriver() {
+        // ตรวจสอบ permission ด้วย Permissions API
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
+                console.log("สถานะ permission:", permissionStatus.state);
+                if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+                    // ถ้าอนุญาตหรืออยู่ในสถานะ prompt ให้ดึงตำแหน่ง
+                    getAndSaveCurrentLocation();
+                } else {
+                    // ถ้าไม่ได้อนุญาต
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                }
+            });
+        } else {
+            // หากเบราว์เซอร์ไม่รองรับ Permissions API ให้ลองเรียก getCurrentPosition ตรงๆ
+            getAndSaveCurrentLocation();
+        }
+    }
+
+    function getAndSaveCurrentLocation()
+    {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            function (position) {
+                currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // สร้าง marker สำหรับแสดงตำแหน่งบนแผนที่ (ตัวอย่าง)
+                const carIcon = {
+                    url: "http://maps.google.com/mapfiles/kml/shapes/cabs.png",
+                    scaledSize: new google.maps.Size(60, 60)
+                };
+
+                if (driverMarker) {
+                    driverMarker.setPosition(currentLocation);
+                } else {
+                    driverMarker = new google.maps.Marker({
+                        position: currentLocation,
+                        map: map,
+                        title: "ตำแหน่งเช็กอิน",
+                        icon: carIcon,
+                    });
+                }
+                map.setCenter(currentLocation);
+
+                // ส่งข้อมูลตำแหน่งไปบันทึกที่ backend (เช่น PHP)
+                if (driverUsername && formno) {
+                    const formdata = new FormData();
+                    formdata.append('formno', formno);
+                    formdata.append('driverUsername', driverUsername);
+                    formdata.append('lat', currentLocation.lat);
+                    formdata.append('lng', currentLocation.lng);
+                    axios.post(url + 'backend/drivers/checkin', formdata)
+                    .then(res => {
+                    console.log(res.data);
+                    if (res.data.status === "Update Data Success") {
+                        swal({
+                            title: 'เช็กอินหน้างานสำเร็จ',
+                            type: 'success',
+                            showConfirmButton: true,
+                            // timer: 1500
+                        }).then(() => {
+                            // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
+                            getCheckInData();
+                        });
+                    }
+                    })
+                    .catch(err => {
+                        console.error("Error saving data:", err);
+                    });
+                }
+            },
+            function (error) {
+                console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                swal({
+                    title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                    text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                    type: 'error'
+                });
+                } else {
+                swal({
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                    type: 'error'
+                });
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000
+            }
+            );
+        } else {
+            swal({
+            title: 'เบราว์เซอร์ไม่รองรับ',
+            text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
+            type: 'error'
+            });
+        }
+    }
+
+    function getCheckInData()
+    {
+        const formdata = new FormData();
+        formdata.append('formno' , formno);
+        formdata.append('driverUsername' , driverUsername);
+        axios.post(url+'backend/drivers/getCheckInData' , formdata).then(res=>{
+            console.log(res.data);
+            if(res.data.status == "Select Data Success"){
+                let lo = res.data.result;
+                currentLocation = {
+                    lat: parseFloat(lo.m_dv_checkin_lat),
+                    lng: parseFloat(lo.m_dv_checkin_lng),
+                };
+
+                $('#checkin-datashow-datetime').html('<b>วันเวลาเช็กอิน : </b>'+lo.m_dv_datetime_checkin);
+
+                console.log(currentLocation);
+
+            // สร้าง Marker บนแผนที่หรืออัปเดตตำแหน่ง Marker ที่มีอยู่แล้ว
+            const carIcon = {
+                url: url+"images/driverIcon.png",
+                scaledSize: new google.maps.Size(60, 60)
+            };
+            if (driverMarker) {
+                driverMarker.setPosition(currentLocation);
+            } else {
+                driverMarker = new google.maps.Marker({
+                    position: currentLocation,
+                    map: map,
+                    title: "ตำแหน่งเช็กอิน",
+                    icon: carIcon
+                    
+                });
+            }
+
+            // ปรับจุดศูนย์กลางของแผนที่ให้ตรงกับตำแหน่งที่ได้จาก Database
+            map.setCenter(currentLocation);
+            }
+        });
+    }
+
+    //   window.onload = initMap;
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=get_googlemap_apikey()?>&libraries=places&callback=initMap"></script>

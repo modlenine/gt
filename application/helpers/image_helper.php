@@ -256,6 +256,88 @@ function del_fileupload()
 }
 
 
+// Dropzone Library
+function uploadFile_before()
+{
+    if (!empty($_FILES)) {
+        //target
+        $targetDir = "uploads/fileuploads_dv_temp/";
+
+        //parameter
+        $file_formno = $_POST['file_formno'];
+        $file_driverusername = $_POST['file_driverusername'];
+        $file_type = $_POST['file_type'];
+        // paramenter
+
+        //uniqid
+        $time = strtotime("now");
+        $uniqueFileName = bin2hex(random_bytes(16));
+        //uniqid
+
+        $fileName = basename($_FILES["file"]["name"]);
+        $path_parts = pathinfo($fileName);
+
+        if($path_parts['extension'] == "jpeg"){
+            $filename_type = "jpg";
+        }else{
+            $filename_type = $path_parts['extension'];
+        }
+
+        $filenameNotResize = substr_replace($fileName,  $file_formno . "-" . $uniqueFileName . "-" . $file_type.".". $filename_type, 0);
+        move_uploaded_file($_FILES["file"]["tmp_name"], $targetDir . $filenameNotResize);
+
+        $arsaveFileData = array(
+            "f_formno" => $file_formno,
+            "f_driverusername" => $file_driverusername,
+            "f_path" => $targetDir,
+            "f_type" => $file_type,
+            "f_name" => $filenameNotResize,
+            "f_datetime" => Date("Y-m-d H:i:s")
+        );
+        if(imagefn()->db->insert("files_dv_temp" , $arsaveFileData))
+        {
+            echo json_encode(
+                [
+                    "status" => "success", 
+                    "fileName" => $filenameNotResize,
+                    "message" => "ไฟล์ถูกอัพโหลดสำเร็จ!"
+                ]
+            );
+        }else{
+            echo json_encode(["status" => "error", "message" => "เกิดข้อผิดพลาดในการอัพโหลดไฟล์!"]);
+        }
+
+    } else {
+        echo json_encode(["status" => "error", "message" => "ไม่มีไฟล์ถูกอัพโหลด!"]);
+    }
+}
+
+function removeFile_before()
+{
+    $data = json_decode(file_get_contents("php://input" , true));
+    if (!empty($data->fileName)) {
+        $targetDir = "uploads/fileuploads_dv_temp/";
+        $filePath = $targetDir . basename($data->fileName);
+
+        imagefn()->db->where("f_name" , $data->fileName);
+        imagefn()->db->delete("files_dv_temp");
+    
+        // ตรวจสอบว่าไฟล์มีอยู่จริงและทำการลบไฟล์
+        if (file_exists($filePath)) {
+            if (unlink($filePath)) {
+                echo json_encode(["status" => "success", "message" => "ไฟล์ถูกลบสำเร็จ!"]);
+            } else {
+                echo json_encode(["status" => "error", "message" => "เกิดข้อผิดพลาดในการลบไฟล์!"]);
+            }
+        } else {
+            echo json_encode(["status" => "error", "message" => "ไม่พบไฟล์!"]);
+        }
+    } else {
+        echo json_encode(["status" => "error", "message" => "ไม่มีชื่อไฟล์ที่ต้องการลบ!"]);
+    }
+}
+
+
 
 
 

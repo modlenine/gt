@@ -132,6 +132,18 @@ function get_googlemap_apikey()
     return $sql->row()->apikey;
 }
 
+function getDriverData($username)
+{
+    if(!empty($username)){
+        $sql = get()->db->query("SELECT * FROM member_drivers WHERE dv_username = ?" , array($username));
+        if($sql->num_rows() > 0){
+            return $sql->row();
+        }else{
+            return false;
+        }
+    }
+}
+
 
 
 

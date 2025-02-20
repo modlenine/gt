@@ -102,10 +102,16 @@ class Drivers_model extends CI_Model {
         $columns = array(
             array('db' => 'm_formno', 'dt' => 0,
                 'formatter' => function($d , $row){
+                    $thText = "";
+                    if($row[8] == "Driver Get Job"){
+                        $thText = "รับงานแล้ว";
+                    }else if($row[8] == "Driver Check In"){
+                        $thText = "ถึงหน้างานแล้ว";
+                    }
                     $output ='
                     <a href="'.base_url('backend/drivers/request_viewfull_page/').$d.'" class="select_formno">
                     <b>'.$d.'</b>
-                    <p style="color:#009900;"><b>[ รับงาน ]</b></p>
+                    <p style="color:#009900;"><b>[ '.$thText.' ]</b></p>
                     </a>
                     ';
                     return $output;
@@ -167,8 +173,11 @@ class Drivers_model extends CI_Model {
         */
         require('server-side/scripts/ssp.class.php');
 
+        $username = $this->session->dv_username;
+        $queryByUser = "m_dv_user_getjob = '$username'";
+
         echo json_encode(
-            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
+            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, "$queryByUser", null)
         );
     }
 
@@ -202,7 +211,8 @@ class Drivers_model extends CI_Model {
             member.mem_lname,
             member.mem_email,
             member.mem_tel,
-            member.mem_line_pictureUrl
+            member.mem_line_pictureUrl,
+            main.m_dv_user_checkin
             FROM
             main
             INNER JOIN member ON member.mem_line_userId = main.m_cusid
@@ -223,19 +233,22 @@ class Drivers_model extends CI_Model {
     {
         if(!empty($this->input->post("formno"))){
             $formno = $this->input->post("formno");
-
+            $this->db->trans_start();
             // บันทึกเวลาปัจจุบัน + 40 นาที
             $checkin_time = time(); // เวลาปัจจุบัน (timestamp)
-            $expiry_time = $checkin_time + (2 * 60); // บวกเพิ่ม 40 นาที
+            $expiry_time = $checkin_time + (10 * 60); // บวกเพิ่ม 40 นาที
 
             $arUpdateData = array(
                 "m_status" => "Driver Get Job",
                 "m_dv_user_getjob" => $this->session->dv_username,
-                "m_dv_timeexpire_getjob" => $expiry_time
+                "m_dv_timeexpire_getjob" => $expiry_time,
+                "m_dv_datetime_getjob" => date("Y-m-d H:i:s")
             );
 
             $this->db->where("m_formno" , $formno);
             $this->db->update("main" , $arUpdateData);
+
+            $this->db->trans_complete();
 
             $output = array(
                 "msg" => "บันทึกการรับงานสำเร็จ",
@@ -280,7 +293,7 @@ class Drivers_model extends CI_Model {
     {
         if(!empty($this->input->post("formno"))){
             $formno = $this->input->post("formno");
-
+            $this->db->trans_start();
             $arupdate = array(
                 "m_dv_timeexpire_getjob" => null,
                 "m_status" => "Payment Checked",
@@ -289,7 +302,7 @@ class Drivers_model extends CI_Model {
 
             $this->db->where("m_formno" , $formno);
             $this->db->update("main" , $arupdate);
-
+            $this->db->trans_complete();
             $output = array(
                 "msg" => "ล้างค่าการจองงานสำเร็จ สามารถรับงานได้",
                 "status" => "Update Data Success"
@@ -314,6 +327,7 @@ class Drivers_model extends CI_Model {
         ");
 
         if($sql->num_rows() > 0){
+            $this->db->trans_start();
             $count = 0;
             foreach($sql->result() as $rs){
                 $expireTime = $rs->m_dv_timeexpire_getjob;
@@ -332,6 +346,8 @@ class Drivers_model extends CI_Model {
                 }
             }
 
+            $this->db->trans_complete();
+
             $output = array(
                 "msg" => "ปรับปรุงรายการสำเร็จทั้งสิ้น $count รายการ",
                 "status" => "Update Data Success"
@@ -344,6 +360,83 @@ class Drivers_model extends CI_Model {
         }
 
         echo json_encode($output);
+    }
+
+    public function checkin()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("driverUsername"))){
+            $this->db->trans_start();
+            $formno = $this->input->post('formno');
+            $driverUsername = $this->input->post("driverUsername");
+            $checkinLat = $this->input->post("lat");
+            $checkinLng = $this->input->post("lng");
+
+            $arupdate = array(
+                "m_status" => "Driver Check In",
+                "m_dv_user_checkin" => $driverUsername,
+                "m_dv_datetime_checkin" => date("Y-m-d H:i:s"),
+                "m_dv_checkin_lat" => $checkinLat,
+                "m_dv_checkin_lng" => $checkinLng,
+                "m_dv_timeexpire_getjob" => null
+            );
+
+            $this->db->where("m_formno" , $formno);
+            $this->db->update("main" , $arupdate);
+
+            $this->db->trans_complete();
+
+            $output = array(
+                "msg" => "เช็กอินสำเร็จ",
+                "status" => "Update Data Success",
+                "lat" => $checkinLat,
+                "lng" => $checkinLng
+            );
+        }else{
+            $output = array(
+                "msg" => "เช็กอินไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function getCheckInData()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("driverUsername"))){
+            $formno = $this->input->post("formno");
+            $driverUsername = $this->input->post("driverUsername");
+
+            $sql = $this->db->query("SELECT
+            m_dv_user_checkin,
+            DATE_FORMAT(m_dv_datetime_checkin , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_checkin,
+            m_dv_checkin_lat,
+            m_dv_checkin_lng
+            FROM main WHERE m_formno = ? AND m_dv_user_checkin = ?
+            ",array($formno , $driverUsername));
+
+            $output = array(
+                "msg" => "ดึงข้อมูล CheckIn สำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row()
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล CheckIn ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+
+        echo json_encode($output);
+    }
+
+    public function uploadFile_before()
+    {
+        uploadFile_before();
+    }
+
+    public function removeFile_before()
+    {
+        removeFile_before();
     }
     
     

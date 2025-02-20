@@ -169,6 +169,10 @@
 	width: 100% !important;
 }
 
+#tbl_request_jobList{
+	width:100% !important;
+}
+
 @media (min-width:1024px) and (max-width:1439px){
 	
 }

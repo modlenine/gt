@@ -83,6 +83,27 @@ class Drivers extends MX_Controller {
         $this->drivers->jl_checkExpireTime();
     }
 
+    public function checkin()
+    {
+        $this->drivers->checkin();
+    }
+
+    public function getCheckInData()
+    {
+        $this->drivers->getCheckInData();
+    }
+
+    //File function 
+    public function uploadFile_before()
+    {
+        $this->drivers->uploadFile_before();
+    }
+
+    public function removeFile_before()
+    {
+        $this->drivers->removeFile_before();
+    }
+
 }
 
 /* End of file Controllername.php */
