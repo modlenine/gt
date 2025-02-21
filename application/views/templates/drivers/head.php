@@ -217,7 +217,7 @@
 			<div class="sidebar-menu">
 				<ul id="accordion-menu">
 					<li class="dropdown">
-						<a href="<?=base_url('backend/admin')?>" class="dropdown-toggle no-arrow">
+						<a href="<?=base_url('backend/drivers')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-city-hall hicon"></span><span class="mtext">หน้าหลัก</span>
 						</a>
 					</li>

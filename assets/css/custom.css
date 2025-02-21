@@ -173,6 +173,25 @@
 	width:100% !important;
 }
 
+#show_imgStart{
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* กำหนดให้มีคอลัมน์ที่มีความกว้างขั้นต่ำ 150px */
+	gap: 10px; /* ช่องว่างระหว่างรูป */
+	margin-top: 20px;
+}
+  /* สไตล์สำหรับแต่ละ grid item */
+  .grid-item {
+    overflow: hidden;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: #f9f9f9;
+  }
+  .grid-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
 @media (min-width:1024px) and (max-width:1439px){
 	
 }

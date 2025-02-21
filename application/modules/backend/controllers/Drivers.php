@@ -94,14 +94,24 @@ class Drivers extends MX_Controller {
     }
 
     //File function 
-    public function uploadFile_before()
+    public function uploadFile_start()
     {
-        $this->drivers->uploadFile_before();
+        $this->drivers->uploadFile_start();
     }
 
-    public function removeFile_before()
+    public function removeFile_start()
     {
-        $this->drivers->removeFile_before();
+        $this->drivers->removeFile_start();
+    }
+
+    public function saveStart()
+    {
+        $this->drivers->saveStart();
+    }
+
+    public function getStartJobData()
+    {
+        $this->drivers->getStartJobData();
     }
 
 }

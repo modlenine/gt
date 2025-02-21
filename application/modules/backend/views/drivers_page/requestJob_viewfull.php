@@ -139,7 +139,7 @@ if (!empty($personTypes)) {
                             <hr>
                             <div class="row form-group text-center">
                                 <div class="col-md-6">
-                                    <label for=""><b>ชื่อผู้ขับ : </b><?=getDriverData($this->session->dv_username)->dv_fname." ".getDriverData($this->session->dv_username)->dv_lname?></label>
+                                    <label for="" id="checkin-datashow-drivername"></label>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="" id="checkin-datashow-datetime"></label>
@@ -148,13 +148,33 @@ if (!empty($personTypes)) {
                         </section>
                         <hr>
 
-                        <section id="sec-dv_beforeStart" style="display:none;">
-                            <h5 class="text-center">รายละเอียดก่อนเริ่มงาน</h5>
+                        <section id="sec-dv_start" style="display:none;">
+                            <h5 class="text-center">รายละเอียดการเริ่มงาน</h5>
                             <hr>
                             <div class="row form-group">
-                                <div class="col-md-12">
-                                    <label for=""><b>ภาพก่อนขนย้าย</b></label>
-                                    <div id="dv_before" class="dropzone"></div>
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ภาพประกอบ</b></label>
+                                    <div id="dv_start" class="dropzone"></div>
+                                    <div id="show_imgStart"></div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea style="height:80px;" class="form-control" name="dv-ip-memostart" id="dv-ip-memostart"></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group" id="sec_btnsaveStart" style="display:none;">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary btn-block" id="btn-dv-saveStart" name="btn-dv-saveStart" disabled>บันทึก</button>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <div class="row form-group text-center" id="secDataStart" style="display:none;">
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="start-datashow-drivername"></label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="start-datashow-datetime"></label>
                                 </div>
                             </div>
                         </section>
@@ -170,11 +190,11 @@ if (!empty($personTypes)) {
 
 <script>
     Dropzone.autoDiscover = false;
-    let dv_before = new Dropzone("#dv_before", {
-        url: url+'backend/drivers/uploadFile_before',
+    let dv_before = new Dropzone("#dv_start", {
+        url: url+'backend/drivers/uploadFile_start',
         paramName: "file",
         maxFilesize: 10, // MB
-        acceptedFiles: "image/*,application/pdf", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
+        acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
         addRemoveLinks: true,
         dictRemoveFile: "Remove file", // เปลี่ยน label ของปุ่ม remove file
         dictDefaultMessage: "ลากและวางไฟล์ที่นี่หรือคลิกเพื่อเลือกไฟล์",
@@ -182,9 +202,11 @@ if (!empty($personTypes)) {
         // autoProcessQueue: true, // ให้การประมวลผลคิวเป็นอัตโนมัติ
         chunking: true, // เปิดใช้งานการแบ่งไฟล์เป็นชิ้น ๆ
         chunkSize: 250000, // ขนาดของแต่ละ chunk (1 MB) 500000 = 500k
-        parallelUploads: 1, // จำนวนการอัปโหลดพร้อมกัน
+        parallelUploads: 2, // จำนวนการอัปโหลดพร้อมกัน
         // resizeWidth: 1024, // กำหนดความกว้างของภาพที่ย่อ (ปรับตามที่ต้องการ)
         // resizeHeight: 1024, // กำหนดความสูงของภาพที่ย่อ (ปรับตามที่ต้องการ)
+        createImageThumbnails:true,
+        thumbnailMethod:"crop",
         thumbnailWidth: 120,
         thumbnailHeight: 120,
         // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
@@ -193,7 +215,10 @@ if (!empty($personTypes)) {
                 // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
                 formData.append("file_formno", "<?php echo $dataviewfull->m_formno;?>");
                 formData.append("file_driverusername" , "<?php echo $dataviewfull->m_dv_user_checkin;?>");
-                formData.append("file_type" , "before_start");
+                formData.append("file_type" , "start");
+            });
+            this.on("addedfile", function(file) {
+                document.getElementById("btn-dv-saveStart").disabled = false;
             });
             this.on("success", function (file, response) {
                 file.serverFileName = JSON.parse(response).fileName;
@@ -223,10 +248,13 @@ if (!empty($personTypes)) {
                 }
             });
             this.on("removedfile" , function (file){
+                if (this.files.length === 0) {
+                    document.getElementById("btn-dv-saveStart").disabled = true;
+                }
                 if(file.serverFileName){
                     //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
                     console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
-                    fetch(url+"backend/drivers/removeFile_before" , {
+                    fetch(url+"backend/drivers/removeFile_start" , {
                         method:"POST",
                         headers:{
                             "Content-Type":"application/json"
@@ -244,35 +272,38 @@ if (!empty($personTypes)) {
                     .catch(error => console.error("เกิดข้อผิดพลาดในการลบไฟล์ : " , error));
                 }
             });
+            this.on("thumbnail", function(file, dataUrl) {
+                console.log("สร้าง thumbnail สำเร็จ:", file.name);
+            });
             this.on("chunksUploaded", function (file, done) {
                 console.log("ทุก chunk ของไฟล์นี้ถูกอัปโหลดเสร็จแล้ว");
                 done(); // เรียก callback นี้เพื่อระบุว่าการอัปโหลดเสร็จสมบูรณ์
             });
         },
-        resize: function(file) {
-            if (file.width > 1024 || file.height > 1024) {
-                // กำหนดขนาดใหม่
-                let ratio = file.width / file.height;
-                let newWidth = 1024;
-                let newHeight = 1024;
-                if (file.width > file.height) {
-                    newHeight = newWidth / ratio;
-                } else {
-                    newWidth = newHeight * ratio;
-                }
-                return {
-                    srcX: 0,
-                    srcY: 0,
-                    srcWidth: file.width,
-                    srcHeight: file.height,
-                    trgX: 0,
-                    trgY: 0,
-                    trgWidth: newWidth,
-                    trgHeight: newHeight
-                };
-            }
-            return null; // ไม่ต้องย่อขนาด
-        }
+        // resize: function(file) {
+        //     if (file.width > 1024 || file.height > 1024) {
+        //         // กำหนดขนาดใหม่
+        //         let ratio = file.width / file.height;
+        //         let newWidth = 1024;
+        //         let newHeight = 1024;
+        //         if (file.width > file.height) {
+        //             newHeight = newWidth / ratio;
+        //         } else {
+        //             newWidth = newHeight * ratio;
+        //         }
+        //         return {
+        //             srcX: 0,
+        //             srcY: 0,
+        //             srcWidth: file.width,
+        //             srcHeight: file.height,
+        //             trgX: 0,
+        //             trgY: 0,
+        //             trgWidth: newWidth,
+        //             trgHeight: newHeight
+        //         };
+        //     }
+        //     return null; // ไม่ต้องย่อขนาด
+        // }
     });
 </script>
 
@@ -358,7 +389,7 @@ if (!empty($personTypes)) {
 
                 // สร้าง marker สำหรับแสดงตำแหน่งบนแผนที่ (ตัวอย่าง)
                 const carIcon = {
-                    url: "http://maps.google.com/mapfiles/kml/shapes/cabs.png",
+                    url: url+"images/driverIcon.png",
                     scaledSize: new google.maps.Size(60, 60)
                 };
 
@@ -432,46 +463,113 @@ if (!empty($personTypes)) {
         }
     }
 
-    function getCheckInData()
+    function clickSaveStartJob() {
+        // ตรวจสอบ permission ด้วย Permissions API
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
+                console.log("สถานะ permission:", permissionStatus.state);
+                if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+                    // ถ้าอนุญาตหรืออยู่ในสถานะ prompt ให้ดึงตำแหน่ง
+                    startJob();
+                } else {
+                    // ถ้าไม่ได้อนุญาต
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                }
+            });
+        } else {
+            // หากเบราว์เซอร์ไม่รองรับ Permissions API ให้ลองเรียก getCurrentPosition ตรงๆ
+            startJob();
+        }
+    }
+
+    function startJob()
     {
-        const formdata = new FormData();
-        formdata.append('formno' , formno);
-        formdata.append('driverUsername' , driverUsername);
-        axios.post(url+'backend/drivers/getCheckInData' , formdata).then(res=>{
-            console.log(res.data);
-            if(res.data.status == "Select Data Success"){
-                let lo = res.data.result;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            function (position) {
                 currentLocation = {
-                    lat: parseFloat(lo.m_dv_checkin_lat),
-                    lng: parseFloat(lo.m_dv_checkin_lng),
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
                 };
 
-                $('#checkin-datashow-datetime').html('<b>วันเวลาเช็กอิน : </b>'+lo.m_dv_datetime_checkin);
+                // สร้าง marker สำหรับแสดงตำแหน่งบนแผนที่ (ตัวอย่าง)
+                const carIcon = {
+                    url: url+"images/driverIcon.png",
+                    scaledSize: new google.maps.Size(60, 60)
+                };
 
-                console.log(currentLocation);
+                if (driverMarker) {
+                    driverMarker.setPosition(currentLocation);
+                } else {
+                    driverMarker = new google.maps.Marker({
+                        position: currentLocation,
+                        map: map,
+                        title: "ตำแหน่งคนขับ",
+                        icon: carIcon,
+                    });
+                }
+                map.setCenter(currentLocation);
 
-            // สร้าง Marker บนแผนที่หรืออัปเดตตำแหน่ง Marker ที่มีอยู่แล้ว
-            const carIcon = {
-                url: url+"images/driverIcon.png",
-                scaledSize: new google.maps.Size(60, 60)
-            };
-            if (driverMarker) {
-                driverMarker.setPosition(currentLocation);
-            } else {
-                driverMarker = new google.maps.Marker({
-                    position: currentLocation,
-                    map: map,
-                    title: "ตำแหน่งเช็กอิน",
-                    icon: carIcon
-                    
+                // ส่งข้อมูลตำแหน่งไปบันทึกที่ backend (เช่น PHP)
+                if(formno && driverUsername){
+                    const formdata = new FormData();
+                    formdata.append('formno' , formno);
+                    formdata.append('driverusername' , driverUsername);
+                    formdata.append('type' , 'start');
+                    formdata.append('memo' , $('#dv-ip-memostart').val());
+                    formdata.append('lat', currentLocation.lat);
+                    formdata.append('lng', currentLocation.lng);
+                    axios.post(url+'backend/drivers/saveStart' , formdata).then(res=>{
+                        console.log(res.data);
+                        if(res.data.status == "Update Data Success"){
+                            swal({
+                                title: 'บันทึกข้อมูลเริ่มงานสำเร็จ',
+                                type: 'success',
+                                showConfirmButton: true,
+                                // timer: 1500
+                            }).then(() => {
+                                // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
+                                
+                            });
+                        }
+                    });
+                }
+            },
+            function (error) {
+                console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                swal({
+                    title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                    text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                    type: 'error'
                 });
+                } else {
+                swal({
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                    type: 'error'
+                });
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000
             }
-
-            // ปรับจุดศูนย์กลางของแผนที่ให้ตรงกับตำแหน่งที่ได้จาก Database
-            map.setCenter(currentLocation);
-            }
-        });
+            );
+        } else {
+            swal({
+            title: 'เบราว์เซอร์ไม่รองรับ',
+            text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
+            type: 'error'
+            });
+        }
     }
+    
 
     //   window.onload = initMap;
 </script>

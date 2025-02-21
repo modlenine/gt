@@ -257,7 +257,7 @@ function del_fileupload()
 
 
 // Dropzone Library
-function uploadFile_before()
+function uploadFile_start()
 {
     if (!empty($_FILES)) {
         //target
@@ -312,7 +312,7 @@ function uploadFile_before()
     }
 }
 
-function removeFile_before()
+function removeFile_start()
 {
     $data = json_decode(file_get_contents("php://input" , true));
     if (!empty($data->fileName)) {
