@@ -157,6 +157,14 @@ if (!empty($personTypes)) {
                                     <div id="dv_start" class="dropzone"></div>
                                     <div id="show_imgStart"></div>
                                 </div>
+
+                                <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
+                                <div id="image-modal" class="modal">
+                                    <span class="modal-close">&times;</span>
+                                    <img class="modal-content" id="modal-img">
+                                </div>
+
+
                                 <div class="col-md-12 form-group">
                                     <label for=""><b>หมายเหตุ</b></label>
                                     <textarea style="height:80px;" class="form-control" name="dv-ip-memostart" id="dv-ip-memostart"></textarea>
@@ -356,6 +364,7 @@ if (!empty($personTypes)) {
     // ฟังก์ชันสำหรับการ Checkin คนขับรถ
     function checkinDriver() {
         // ตรวจสอบ permission ด้วย Permissions API
+        document.getElementById("btn_dv-checkin").disabled = true;
         if (navigator.permissions) {
             navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
                 console.log("สถานะ permission:", permissionStatus.state);
@@ -369,6 +378,7 @@ if (!empty($personTypes)) {
                         text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
                         type: 'error'
                     });
+                    document.getElementById("btn_dv-checkin").disabled = false;
                 }
             });
         } else {
@@ -415,6 +425,7 @@ if (!empty($personTypes)) {
                     axios.post(url + 'backend/drivers/checkin', formdata)
                     .then(res => {
                     console.log(res.data);
+                    document.getElementById("btn_dv-checkin").disabled = false;
                     if (res.data.status === "Update Data Success") {
                         swal({
                             title: 'เช็กอินหน้างานสำเร็จ',
@@ -435,17 +446,19 @@ if (!empty($personTypes)) {
             function (error) {
                 console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
                 if (error.code === error.PERMISSION_DENIED) {
-                swal({
-                    title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                    text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
-                    type: 'error'
-                });
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-checkin").disabled = false;
                 } else {
-                swal({
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
-                    type: 'error'
-                });
+                    swal({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-checkin").disabled = false;
                 }
             },
             {
@@ -460,11 +473,13 @@ if (!empty($personTypes)) {
             text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
             type: 'error'
             });
+            document.getElementById("btn_dv-checkin").disabled = false;
         }
     }
 
     function clickSaveStartJob() {
         // ตรวจสอบ permission ด้วย Permissions API
+        document.getElementById("btn_dv-saveStart").disabled = true;
         if (navigator.permissions) {
             navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
                 console.log("สถานะ permission:", permissionStatus.state);
@@ -478,6 +493,7 @@ if (!empty($personTypes)) {
                         text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
                         type: 'error'
                     });
+                    document.getElementById("btn_dv-saveStart").disabled = false;
                 }
             });
         } else {
@@ -525,6 +541,7 @@ if (!empty($personTypes)) {
                     formdata.append('lng', currentLocation.lng);
                     axios.post(url+'backend/drivers/saveStart' , formdata).then(res=>{
                         console.log(res.data);
+                        document.getElementById("btn_dv-saveStart").disabled = false;
                         if(res.data.status == "Update Data Success"){
                             swal({
                                 title: 'บันทึกข้อมูลเริ่มงานสำเร็จ',
@@ -542,17 +559,19 @@ if (!empty($personTypes)) {
             function (error) {
                 console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
                 if (error.code === error.PERMISSION_DENIED) {
-                swal({
-                    title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                    text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
-                    type: 'error'
-                });
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-saveStart").disabled = false;
                 } else {
-                swal({
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
-                    type: 'error'
-                });
+                    swal({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-saveStart").disabled = false;
                 }
             },
             {
@@ -563,12 +582,14 @@ if (!empty($personTypes)) {
             );
         } else {
             swal({
-            title: 'เบราว์เซอร์ไม่รองรับ',
-            text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
-            type: 'error'
+                title: 'เบราว์เซอร์ไม่รองรับ',
+                text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
+                type: 'error'
             });
+            document.getElementById("btn_dv-saveStart").disabled = false;
         }
     }
+
     
 
     //   window.onload = initMap;

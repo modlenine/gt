@@ -222,7 +222,7 @@
 			
 					<li>
 						<a href="<?=base_url('backend/admin/request_list_page/data')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการรอรับงาน</span>
+							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการเรียกใช้บริการ</span>
 						</a>
 					</li>
 

@@ -118,6 +118,7 @@
 }
 .grid-item:hover {
 	transform: scale(1.05);
+	cursor:pointer;
 }
 .grid-item input[type="radio"] {
 	position: absolute;
@@ -174,14 +175,14 @@
 }
 
 #show_imgStart{
-	display: grid;
+    display: grid;
+    /* grid-template-columns: repeat(150, 1fr); */
 	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* กำหนดให้มีคอลัมน์ที่มีความกว้างขั้นต่ำ 150px */
-	gap: 10px; /* ช่องว่างระหว่างรูป */
-	margin-top: 20px;
-}
+    gap: 10px; /* ช่องว่างระหว่าง grid item */
+    margin-top: 20px;
+  }
   /* สไตล์สำหรับแต่ละ grid item */
   .grid-item {
-    overflow: hidden;
     border: 1px solid #ddd;
     padding: 5px;
     background: #f9f9f9;
@@ -190,6 +191,37 @@
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  /* CSS สำหรับ Modal */
+.modal {
+	display: none; /* ซ่อน modal โดยเริ่มต้น */
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%; 
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.9); /* พื้นหลังโปร่งแสง */
+	padding-top: 60px;
+  }
+  
+  .modal-content {
+	display: block;
+	margin: auto;
+	width: 80%;
+	max-width: 700px;
+  }
+  
+  .modal-close {
+	position: absolute;
+	top: 15px;
+	right: 35px;
+	color: #fff;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
   }
 
 @media (min-width:1024px) and (max-width:1439px){

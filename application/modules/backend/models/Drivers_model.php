@@ -107,6 +107,8 @@ class Drivers_model extends CI_Model {
                         $thText = "รับงานแล้ว";
                     }else if($row[8] == "Driver Check In"){
                         $thText = "ถึงหน้างานแล้ว";
+                    }else if($row[8] == "Driver Start Job"){
+                        $thText = "กำลังเดินทาง";
                     }
                     $output ='
                     <a href="'.base_url('backend/drivers/request_viewfull_page/').$d.'" class="select_formno">

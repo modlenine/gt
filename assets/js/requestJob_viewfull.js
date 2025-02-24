@@ -19,6 +19,25 @@ $(document).ready(function(){
         clickSaveStartJob();
     });
 
+        // เมื่อคลิกที่รูปใน grid ให้แสดง modal พร้อมแสดงภาพขนาดใหญ่
+    $(document).on('click', '.grid-item img', function() {
+        let src = $(this).attr('src');
+        $('#modal-img').attr('src', src);
+        $('#image-modal').css('display', 'block');
+    });
+  
+    // ปิด modal เมื่อคลิกที่ปุ่มปิด (×)
+    $('.modal-close').click(function() {
+        $('#image-modal').css('display', 'none');
+    });
+  
+    // Optionally ปิด modal เมื่อคลิกที่พื้นหลังนอกภาพ
+    $(window).click(function(event) {
+        if ($(event.target).is('#image-modal')) {
+        $('#image-modal').css('display', 'none');
+        }
+    });
+
 
 }); //End ready function 
 
