@@ -44,6 +44,8 @@ class Drivers extends MX_Controller {
                 $this->drivers->request_job_list_avaliable();
             }else if($param == "job_pending"){
                 $this->drivers->request_job_list_pending();
+            }else if($param == "job_close"){
+                $this->drivers->request_job_list_close();
             }
         }
     }
@@ -61,6 +63,11 @@ class Drivers extends MX_Controller {
             $this->load->view("drivers_page/requestJob_viewfull" , $data);
             $this->load->view("templates/drivers/footer");
         }
+    }
+
+    public function clearDataTempByUser()
+    {
+        $this->drivers->clearDataTempByUser();
     }
 
     public function getJob()
@@ -88,9 +95,19 @@ class Drivers extends MX_Controller {
         $this->drivers->checkin();
     }
 
+    public function checkinDes()
+    {
+        $this->drivers->checkinDes();
+    }
+
     public function getCheckInData()
     {
         $this->drivers->getCheckInData();
+    }
+
+    public function getCheckInDataDes()
+    {
+        $this->drivers->getCheckInDataDes();
     }
 
     //File function 
@@ -112,6 +129,27 @@ class Drivers extends MX_Controller {
     public function getStartJobData()
     {
         $this->drivers->getStartJobData();
+    }
+
+    //File function 
+    public function uploadFile_stop()
+    {
+        $this->drivers->uploadFile_stop();
+    }
+
+    public function removeFile_stop()
+    {
+        $this->drivers->removeFile_stop();
+    }
+
+    public function saveStop()
+    {
+        $this->drivers->saveStop();
+    }
+
+    public function getStopJobData()
+    {
+        $this->drivers->getStopJobData();
     }
 
 }

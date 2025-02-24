@@ -4,7 +4,6 @@ $(document).ready(function(){
     jobProcess();
 
 
-
     $('#btn_dv-getjob').click(()=>{
         getJob(formno);
     });
@@ -14,9 +13,17 @@ $(document).ready(function(){
         checkinDriver();
     });
 
+    $('#btn_dv-checkinDes').click(()=>{
+        checkinDriverDes();
+    });
+
     // beforeStart
     $('#btn-dv-saveStart').click(()=>{
         clickSaveStartJob();
+    });
+
+    $('#btn-dv-saveStop').click(()=>{
+        clickSaveStopJob();
     });
 
         // เมื่อคลิกที่รูปใน grid ให้แสดง modal พร้อมแสดงภาพขนาดใหญ่
@@ -130,6 +137,8 @@ function getJobTimeout(formno)
 async function jobProcess()
 {
     if(formstatus){
+        await clearDataTempByUser();
+        console.log("function เช็ก Temp Data ทำงานเสร็จ");
         if(formstatus === "Payment Checked"){
             $('#sec_dv-getjob').css('display' , '');
         }else if(formstatus === "Driver Get Job"){
@@ -151,6 +160,59 @@ async function jobProcess()
                 $('#secDataStart').css('display' , '');
                 await getStartJobData();
                 console.log('function 2 ทำงานสำเร็จ');
+
+                $('#sec_dv-checkInDes').css('display' , '');
+            } catch (error) {
+                console.error("Error in startJobProcess:", error);
+            }
+        }else if(formstatus === "Driver Check In Destination"){
+            try {
+                await getCheckInData();
+                console.log('function 1 ทำงานสำเร็จ');
+                $('#sec_dv-checkInAlready').css('display','');
+                $('#sec-dv_start').css('display' , '');
+
+                $('#dv_start').hide();
+                $('#sec_btnsaveStart').css('display' , 'none');
+                $('#secDataStart').css('display' , '');
+                await getStartJobData();
+                console.log('function 2 ทำงานสำเร็จ');
+
+                $('#sec_dv-checkInDes').css('display' , 'none');
+                $('#sec_dv-checkInAlreadyDes').css('display' , '');
+                await getCheckInDataDes();
+                console.log('function 3 ทำงานสำเร็จ');
+
+                $('#sec-dv_stop').css('display' , '');
+                $('#sec_btnsaveStop').css('display' , '');
+            } catch (error) {
+                console.error("Error in startJobProcess:", error);
+            }
+        }else if(formstatus === "Driver Close Job"){
+            try {
+                await getCheckInData();
+                console.log('function 1 ทำงานสำเร็จ');
+                $('#sec_dv-checkInAlready').css('display','');
+                $('#sec-dv_start').css('display' , '');
+
+                $('#dv_start').hide();
+                $('#sec_btnsaveStart').css('display' , 'none');
+                $('#secDataStart').css('display' , '');
+                await getStartJobData();
+                console.log('function 2 ทำงานสำเร็จ');
+
+                $('#sec_dv-checkInDes').css('display' , 'none');
+                $('#sec_dv-checkInAlreadyDes').css('display' , '');
+                await getCheckInDataDes();
+                console.log('function 3 ทำงานสำเร็จ');
+
+                $('#sec-dv_stop').css('display' , '');
+                $('#sec_btnsaveStop').css('display' , '');
+
+                await getStopJobData();
+                $('#sec_btnsaveStop').css('display' , 'none');
+                $('#secDataStop').css('display' , '');
+                $('#dv_stop').hide();
             } catch (error) {
                 console.error("Error in startJobProcess:", error);
             }
@@ -199,6 +261,47 @@ function getStartJobData()
     });
 }
 
+function getStopJobData()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    formdata.append('driverusername' , driverUsername);
+    formdata.append('type' , 'stop');
+    axios.post(url+'backend/drivers/getStopJobData' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let resultMain = res.data.result_main;
+            let resultFiles = res.data.result_files;
+            let drivername = res.data.drivername;
+
+            //update map
+            updateMap(resultMain.m_dv_stop_lat , resultMain.m_dv_stop_lng);
+
+            //fill data start main
+            $('#stop-datashow-drivername').html('<b>ชื่อผู้ขับ : </b>'+drivername);
+            $('#stop-datashow-datetime').html('<b>ชื่อผู้ขับ : </b>'+resultMain.m_dv_datetime_stop);
+            $('#dv-ip-memostop').text(resultMain.m_dv_memo_stop).prop('readonly' , true);
+
+            // สร้าง grid แสดงรูปภาพจาก resultFiles
+            let imageGrid = $('#show_imgStop');
+            imageGrid.empty(); // เคลียร์ข้อมูลเก่า (ถ้ามี)
+
+            // ตรวจสอบว่า resultFiles มีข้อมูลหรือไม่
+            if (resultFiles && resultFiles.length > 0) {
+                resultFiles.forEach(function(file) {
+                // สมมุติว่า file.url คือ URL ของรูปภาพแต่ละไฟล์
+                let gridItem = $('<div class="grid-item"></div>');
+                let img = $('<img>').attr('src', url+file.f_path+file.f_name).attr('alt', 'Image');
+                gridItem.append(img);
+                imageGrid.append(gridItem);
+            });
+            } else {
+                imageGrid.append('<p>ไม่พบรูปภาพ</p>');
+            }
+        }
+    });
+}
+
 function getCheckInData()
 {
     const formdata = new FormData();
@@ -214,6 +317,27 @@ function getCheckInData()
 
             $('#checkin-datashow-datetime').html('<b>วันเวลาเช็กอิน : </b>'+lo.m_dv_datetime_checkin);
             $('#checkin-datashow-drivername').html('<b>ชื่อผู้ขับ : </b>'+drivername);
+
+            console.log(currentLocation);
+        }
+    });
+}
+
+function getCheckInDataDes()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    formdata.append('driverUsername' , driverUsername);
+    axios.post(url+'backend/drivers/getCheckInDataDes' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let lo = res.data.result;
+            let drivername = res.data.drivername;
+            
+            updateMap(lo.m_dv_checkin_lat , lo.m_dv_checkin_lng);
+
+            $('#checkinDes-datashow-datetime').html('<b>วันเวลาเช็กอิน : </b>'+lo.m_dv_datetime_checkindes);
+            $('#checkinDes-datashow-drivername').html('<b>ชื่อผู้ขับ : </b>'+drivername);
 
             console.log(currentLocation);
         }
@@ -248,6 +372,17 @@ function updateMap(lat , lng)
         // ปรับจุดศูนย์กลางของแผนที่ให้ตรงกับตำแหน่งที่ได้จาก Database
         map.setCenter(currentLocation);
         //Update Map Zone
+    }
+}
+
+function clearDataTempByUser()
+{
+    if(driverUsername){
+        const formdata = new FormData();
+        formdata.append('driverusername' , driverUsername);
+        axios.post(url+'backend/drivers/clearDataTempByUser' , formdata).then(res=>{
+            console.log(res.data);
+        });
     }
 }
 

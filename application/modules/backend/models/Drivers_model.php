@@ -106,9 +106,107 @@ class Drivers_model extends CI_Model {
                     if($row[8] == "Driver Get Job"){
                         $thText = "รับงานแล้ว";
                     }else if($row[8] == "Driver Check In"){
-                        $thText = "ถึงหน้างานแล้ว";
+                        $thText = "ถึงต้นทางแล้ว";
                     }else if($row[8] == "Driver Start Job"){
                         $thText = "กำลังเดินทาง";
+                    }else if($row[8] == "Driver Check In Destination"){
+                        $thText = "ถึงปลายทางแล้ว";
+                    }
+                    $output ='
+                    <a href="'.base_url('backend/drivers/request_viewfull_page/').$d.'" class="select_formno">
+                    <b>'.$d.'</b>
+                    <p style="color:#009900;"><b>[ '.$thText.' ]</b></p>
+                    </a>
+                    ';
+                    return $output;
+                }
+            ),
+            array('db' => 'm_datetimecreate', 'dt' => 1 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'mem_fullname', 'dt' => 2 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'mem_tel', 'dt' => 3 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_origininput', 'dt' => 4 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_destinationinput', 'dt' => 5 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_cartype', 'dt' => 6 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_totalprice', 'dt' => 7 ,
+                'formatter' => function($d , $row){
+                    return number_format($d , 2);
+                }
+            ),
+            array('db' => 'm_status', 'dt' => 8 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => getDb()->db_username,
+            'pass' => getDb()->db_password,
+            'db'   => getDb()->db_name,
+            'host' => getDb()->db_host
+        );
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        * If you just want to use the basic configuration for DataTables with PHP
+        * server-side, there is no need to edit below this line.
+        */
+        require('server-side/scripts/ssp.class.php');
+
+        $username = $this->session->dv_username;
+        $queryByUser = "m_dv_user_getjob = '$username'";
+
+        echo json_encode(
+            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, "$queryByUser", null)
+        );
+    }
+
+    public function request_job_list_close()
+    {
+        // DB table to use
+        $table = 'request_job_list_close';
+
+        // Table's primary key
+        $primaryKey = 'm_autoid';
+
+        $columns = array(
+            array('db' => 'm_formno', 'dt' => 0,
+                'formatter' => function($d , $row){
+                    $thText = "";
+                    if($row[8] == "Driver Get Job"){
+                        $thText = "รับงานแล้ว";
+                    }else if($row[8] == "Driver Check In"){
+                        $thText = "ถึงต้นทางแล้ว";
+                    }else if($row[8] == "Driver Start Job"){
+                        $thText = "กำลังเดินทาง";
+                    }else if($row[8] == "Driver Check In Destination"){
+                        $thText = "ถึงปลายทางแล้ว";
+                    }else if($row[8] == "Driver Close Job"){
+                        $thText = "ปิดงานแล้ว";
                     }
                     $output ='
                     <a href="'.base_url('backend/drivers/request_viewfull_page/').$d.'" class="select_formno">
@@ -229,6 +327,48 @@ class Drivers_model extends CI_Model {
         }else{
             return null;
         }
+    }
+
+    public function clearDataTempByUser()
+    {
+        if(!empty($this->input->post("driverusername"))){
+            $this->db->trans_start();
+            $driverusername = $this->input->post("driverusername");
+            $sql = $this->db->query("SELECT
+            f_path,
+            f_name
+            FROM files_dv_temp WHERE f_driverusername = ?
+            " , array($driverusername));
+
+            if($sql->num_rows() > 0){
+                foreach($sql->result() as $rs){
+                    $filePath = $rs->f_path . $rs->f_name;
+                    if (file_exists($filePath)){
+                        unlink($filePath);
+                    }
+                }
+                $this->db->where("f_driverusername" , $driverusername);
+                $this->db->delete("files_dv_temp");
+
+                $this->db->trans_complete();
+
+                $output = array(
+                    "msg" => "ลบไฟล์ Temp สำเร็จ",
+                    "status" => "Delete Data Success"
+                );
+            }else{
+                $output = array(
+                    "msg" => "ไม่พบข้อมูล Temp ที่ต้องลบ",
+                    "status" => "Not Found Temp Data"
+                );
+            }
+        }else{
+            $output = array(
+                "msg" => "ไม่พบข้อมูล Temp ที่ต้องลบ",
+                "status" => "Not Found Temp Data"
+            );
+        }
+        echo json_encode($output);
     }
 
     public function getJob()
@@ -402,6 +542,43 @@ class Drivers_model extends CI_Model {
         echo json_encode($output);
     }
 
+    public function checkinDes()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("driverUsername"))){
+            $this->db->trans_start();
+            $formno = $this->input->post('formno');
+            $driverUsername = $this->input->post("driverUsername");
+            $checkinLat = $this->input->post("lat");
+            $checkinLng = $this->input->post("lng");
+
+            $arupdate = array(
+                "m_status" => "Driver Check In Destination",
+                "m_dv_user_checkindes" => $driverUsername,
+                "m_dv_datetime_checkindes" => date("Y-m-d H:i:s"),
+                "m_dv_checkindes_lat" => $checkinLat,
+                "m_dv_checkindes_lng" => $checkinLng,
+            );
+
+            $this->db->where("m_formno" , $formno);
+            $this->db->update("main" , $arupdate);
+
+            $this->db->trans_complete();
+
+            $output = array(
+                "msg" => "เช็กอินปลายทางสำเร็จ",
+                "status" => "Update Data Success",
+                "lat" => $checkinLat,
+                "lng" => $checkinLng
+            );
+        }else{
+            $output = array(
+                "msg" => "เช็กอินปลายทางไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
     public function getCheckInData()
     {
         if(!empty($this->input->post("formno")) && !empty($this->input->post("driverUsername"))){
@@ -427,6 +604,38 @@ class Drivers_model extends CI_Model {
         }else{
             $output = array(
                 "msg" => "ดึงข้อมูล CheckIn ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+
+        echo json_encode($output);
+    }
+
+    public function getCheckInDataDes()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("driverUsername"))){
+            $formno = $this->input->post("formno");
+            $driverUsername = $this->input->post("driverUsername");
+
+            $sql = $this->db->query("SELECT
+            m_dv_user_checkindes,
+            DATE_FORMAT(m_dv_datetime_checkindes , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_checkindes,
+            m_dv_checkindes_lat,
+            m_dv_checkindes_lng
+            FROM main WHERE m_formno = ? AND m_dv_user_checkindes = ?
+            ",array($formno , $driverUsername));
+
+            $drivername = getDriverData($driverUsername)->dv_fname." ".getDriverData($driverUsername)->dv_lname;
+
+            $output = array(
+                "msg" => "ดึงข้อมูล CheckIn Destination สำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row(),
+                "drivername" => $drivername
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล CheckIn Destination ไม่สำเร็จ",
                 "status" => "Select Data Not Success",
             );
         }
@@ -520,7 +729,6 @@ class Drivers_model extends CI_Model {
         echo json_encode($output);
     }
 
-
     public function getStartJobData()
     {
         if(!empty($this->input->post("formno")) && !empty($this->input->post("driverusername"))){
@@ -530,12 +738,139 @@ class Drivers_model extends CI_Model {
 
             $sqlMain = $this->db->query("SELECT
             m_dv_user_start,
-            m_dv_datetime_start,
+            -- m_dv_datetime_start,
             DATE_FORMAT(m_dv_datetime_start , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_start,
             m_dv_memo_start,
             m_dv_start_lat,
             m_dv_start_lng
             FROM main WHERE m_formno = ? AND m_dv_user_start = ?
+            " , array($formno , $driverusername));
+
+            $sqlFile = $this->db->query("SELECT
+            f_path,
+            f_name
+            FROM files_dv WHERE f_formno = ? AND f_driverusername = ? AND f_type = ?
+            " , array($formno , $driverusername , $type));
+
+            $drivername = getDriverData($driverusername)->dv_fname." ".getDriverData($driverusername)->dv_lname;
+
+            $output = array(
+                "msg" => "ดึงข้อมูล Start Job สำเร็จ",
+                "status" => "Select Data Success",
+                "result_main" => $sqlMain->row(),
+                "result_files" => $sqlFile->result(),
+                "drivername" => $drivername
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล Start Job ไม่สำเร็จ",
+                "status" => "Select Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function uploadFile_stop()
+    {
+        uploadFile_stop();
+    }
+
+    public function removeFile_stop()
+    {
+        removeFile_stop();
+    }
+
+    public function saveStop()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("driverusername")) && !empty($this->input->post("type"))){
+            $this->db->trans_start();
+            $formno = $this->input->post("formno");
+            $driverusername = $this->input->post("driverusername");
+            $type = $this->input->post("type");
+            $memo = $this->input->post("memo");
+            $lat = $this->input->post("lat");
+            $lng = $this->input->post("lng");
+
+            $sqlTemp = $this->db->query("SELECT
+            f_formno,
+            f_driverusername,
+            f_path,
+            f_type,
+            f_name,
+            f_datetime
+            FROM files_dv_temp WHERE f_formno = ? AND f_driverusername = ? AND f_type = ?
+            " , array($formno , $driverusername , $type));
+
+            $sourcePathFile = "uploads/fileuploads_dv_temp/";
+            $destinationPathFile = "uploads/fileuploads_dv/";
+            foreach($sqlTemp->result() as $rs){
+                $arInsert = array(
+                    "f_formno" => $rs->f_formno,
+                    "f_driverusername" => $rs->f_driverusername,
+                    "f_path" => $destinationPathFile,
+                    "f_type" => $rs->f_type,
+                    "f_name" => $rs->f_name,
+                    "f_datetime" => $rs->f_datetime
+                );
+
+                $this->db->insert("files_dv" , $arInsert);
+
+                $sourceFile = $sourcePathFile . $rs->f_name;
+                $destinationFile = $destinationPathFile . $rs->f_name;
+
+                if (file_exists($sourceFile)) {
+                    rename($sourceFile, $destinationFile);
+                }
+            }
+
+            //Delete Data From temp
+            $this->db->where("f_formno" , $formno);
+            $this->db->where("f_driverusername" , $driverusername);
+            $this->db->where("f_type" , $type);
+            $this->db->delete("files_dv_temp");
+
+            //Update Status
+            $arupdate_main = array(
+                "m_dv_user_stop" => $driverusername,
+                "m_dv_datetime_stop" => date("Y-m-d H:i:s"),
+                "m_dv_memo_stop" => $memo,
+                "m_status" => "Driver Close Job",
+                "m_dv_stop_lat" => $lat,
+                "m_dv_stop_lng" => $lng
+            );
+            $this->db->where("m_formno" , $formno);
+            $this->db->where("m_dv_user_checkindes" , $driverusername);
+            $this->db->update("main" , $arupdate_main);
+            $this->db->trans_complete();
+
+            $output = array(
+                "msg" => "บันทึกข้อมูล พร้อมย้ายไฟล์อกจาก Temp เรียบร้อยแล้ว",
+                "status" => "Update Data Success"
+            );
+        }else{
+            $output = array(
+                "msg" => "บันทึกข้อมูล พร้อมย้ายไฟล์อกจาก Temp ไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function getStopJobData()
+    {
+        if(!empty($this->input->post("formno")) && !empty($this->input->post("driverusername"))){
+            $formno = $this->input->post("formno");
+            $driverusername = $this->input->post("driverusername");
+            $type = $this->input->post("type");
+
+            $sqlMain = $this->db->query("SELECT
+            m_dv_user_stop,
+            -- m_dv_datetime_stop,
+            DATE_FORMAT(m_dv_datetime_stop , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_stop,
+            m_dv_memo_stop,
+            m_dv_stop_lat,
+            m_dv_stop_lng
+            FROM main WHERE m_formno = ? AND m_dv_user_stop = ?
             " , array($formno , $driverusername));
 
             $sqlFile = $this->db->query("SELECT

@@ -236,7 +236,7 @@
 					</li>
 
 					<li>
-						<a href="<?=base_url('backend/admin/request_list_page/paymented')?>" class="dropdown-toggle no-arrow">
+						<a href="<?=base_url('backend/drivers/job_list_page/job_close')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">งานของฉัน [เสร็จสิ้นแล้ว]</span>
 						</a>
 					</li>

@@ -135,7 +135,7 @@ if (!empty($personTypes)) {
                         </section>
 
                         <section id="sec_dv-checkInAlready" style="display:none;">
-                            <h5 class="text-center">คนขับ เช็กอินหน้างาน</h5>
+                            <h5 class="text-center">คนขับ เช็กอินหน้างาน (ต้นทาง)</h5>
                             <hr>
                             <div class="row form-group text-center">
                                 <div class="col-md-6">
@@ -185,6 +185,71 @@ if (!empty($personTypes)) {
                                     <label for="" id="start-datashow-datetime"></label>
                                 </div>
                             </div>
+                            <hr>
+                        </section>
+
+                        <section id="sec_dv-checkInDes" style="display:none;">
+                            <div class="row form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary btn-block" name="btn_dv-checkinDes" id="btn_dv-checkinDes">เช็กอิน</button>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                        </section>
+
+                        <section id="sec_dv-checkInAlreadyDes" style="display:none;">
+                            <h5 class="text-center">คนขับ เช็กอินหน้างาน (ปลายทาง)</h5>
+                            <hr>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6">
+                                    <label for="" id="checkinDes-datashow-drivername"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" id="checkinDes-datashow-datetime"></label>
+                                </div>
+                            </div>
+                        </section>
+                        <hr>
+
+                        <section id="sec-dv_stop" style="display:none;">
+                            <h5 class="text-center">รายละเอียดการปิดงาน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ภาพประกอบ</b></label>
+                                    <div id="dv_stop" class="dropzone"></div>
+                                    <div id="show_imgStop"></div>
+                                </div>
+
+                                <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
+                                <div id="image-modal-stop" class="modal">
+                                    <span class="modal-close">&times;</span>
+                                    <img class="modal-content" id="modal-img-stop">
+                                </div>
+
+
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea style="height:80px;" class="form-control" name="dv-ip-memostop" id="dv-ip-memostop"></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group" id="sec_btnsaveStop" style="display:none;">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary btn-block" id="btn-dv-saveStop" name="btn-dv-saveStop" disabled>บันทึก</button>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <div class="row form-group text-center" id="secDataStop" style="display:none;">
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="stop-datashow-drivername"></label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="stop-datashow-datetime"></label>
+                                </div>
+                            </div>
+                            <hr>
                         </section>
 
                     </div>
@@ -312,6 +377,98 @@ if (!empty($personTypes)) {
         //     }
         //     return null; // ไม่ต้องย่อขนาด
         // }
+    });
+
+    let dv_stop = new Dropzone("#dv_stop", {
+        url: url+'backend/drivers/uploadFile_stop',
+        paramName: "file",
+        maxFilesize: 10, // MB
+        acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
+        addRemoveLinks: true,
+        dictRemoveFile: "Remove file", // เปลี่ยน label ของปุ่ม remove file
+        dictDefaultMessage: "ลากและวางไฟล์ที่นี่หรือคลิกเพื่อเลือกไฟล์",
+        maxRetryAttempts: 3, // จำนวนครั้งสูงสุดในการพยายามเชื่อมต่อใหม่
+        // autoProcessQueue: true, // ให้การประมวลผลคิวเป็นอัตโนมัติ
+        chunking: true, // เปิดใช้งานการแบ่งไฟล์เป็นชิ้น ๆ
+        chunkSize: 250000, // ขนาดของแต่ละ chunk (1 MB) 500000 = 500k
+        parallelUploads: 2, // จำนวนการอัปโหลดพร้อมกัน
+        // resizeWidth: 1024, // กำหนดความกว้างของภาพที่ย่อ (ปรับตามที่ต้องการ)
+        // resizeHeight: 1024, // กำหนดความสูงของภาพที่ย่อ (ปรับตามที่ต้องการ)
+        createImageThumbnails:true,
+        thumbnailMethod:"crop",
+        thumbnailWidth: 120,
+        thumbnailHeight: 120,
+        // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
+        init: function () {
+            this.on("sending", function (file, xhr, formData) {
+                // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
+                formData.append("file_formno", "<?php echo $dataviewfull->m_formno;?>");
+                formData.append("file_driverusername" , "<?php echo $dataviewfull->m_dv_user_checkin;?>");
+                formData.append("file_type" , "stop");
+            });
+            this.on("addedfile", function(file) {
+                document.getElementById("btn-dv-saveStop").disabled = false;
+            });
+            this.on("success", function (file, response) {
+                file.serverFileName = JSON.parse(response).fileName;
+                console.log(file.serverFileName);
+            });
+            this.on("error", function (file, errorMessage , xhr) {
+                console.error("Error : " , errorMessage);
+                if (!file.retryAttempts) {
+                    file.retryAttempts = 0;
+                }
+
+                // ตรวจสอบว่าข้อผิดพลาดเป็นปัญหาที่สามารถ retry ได้
+                if (xhr && xhr.status >= 500 && xhr.status < 600) {
+                    // ตรวจสอบว่า error เป็นเซิร์ฟเวอร์หรือไม่
+                    if (file.retryAttempts < this.options.maxRetryAttempts) {
+                        file.retryAttempts++;
+                        console.log(`Retrying upload (${file.retryAttempts}/${this.options.maxRetryAttempts})...`);
+
+                        setTimeout(() => {
+                            this.retry(file);
+                        }, 2000); // รอ 1 วินาทีเพื่อพยายามเชื่อมต่อใหม่
+                    } else {
+                        console.log("Failed to upload after maximum retry attempts.");
+                    }
+                } else {
+                    console.log("Upload failed:", errorMessage);
+                }
+            });
+            this.on("removedfile" , function (file){
+                if (this.files.length === 0) {
+                    document.getElementById("btn-dv-saveStop").disabled = true;
+                }
+                if(file.serverFileName){
+                    //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
+                    console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
+                    fetch(url+"backend/drivers/removeFile_stop" , {
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+                        body: JSON.stringify({ fileName: file.serverFileName })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.status === "success"){
+                            console.log("ไฟล์ถูกลบสำเร็จ");
+                        }else{
+                            console.error("เกิดข้อผิดพลาดในการลบไฟล์ : "+data.message);
+                        }
+                    })
+                    .catch(error => console.error("เกิดข้อผิดพลาดในการลบไฟล์ : " , error));
+                }
+            });
+            this.on("thumbnail", function(file, dataUrl) {
+                console.log("สร้าง thumbnail สำเร็จ:", file.name);
+            });
+            this.on("chunksUploaded", function (file, done) {
+                console.log("ทุก chunk ของไฟล์นี้ถูกอัปโหลดเสร็จแล้ว");
+                done(); // เรียก callback นี้เพื่อระบุว่าการอัปโหลดเสร็จสมบูรณ์
+            });
+        },
     });
 </script>
 
@@ -550,7 +707,7 @@ if (!empty($personTypes)) {
                                 // timer: 1500
                             }).then(() => {
                                 // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
-                                
+                                location.reload();
                             });
                         }
                     });
@@ -587,6 +744,235 @@ if (!empty($personTypes)) {
                 type: 'error'
             });
             document.getElementById("btn_dv-saveStart").disabled = false;
+        }
+    }
+
+    function checkinDriverDes() {
+        // ตรวจสอบ permission ด้วย Permissions API
+        document.getElementById("btn_dv-checkinDes").disabled = true;
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
+                console.log("สถานะ permission:", permissionStatus.state);
+                if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+                    // ถ้าอนุญาตหรืออยู่ในสถานะ prompt ให้ดึงตำแหน่ง
+                    getAndSaveCurrentLocationDes();
+                } else {
+                    // ถ้าไม่ได้อนุญาต
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-checkinDes").disabled = false;
+                }
+            });
+        } else {
+            // หากเบราว์เซอร์ไม่รองรับ Permissions API ให้ลองเรียก getCurrentPosition ตรงๆ
+            getAndSaveCurrentLocationDes();
+        }
+    }
+
+    function getAndSaveCurrentLocationDes()
+    {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            function (position) {
+                currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // สร้าง marker สำหรับแสดงตำแหน่งบนแผนที่ (ตัวอย่าง)
+                const carIcon = {
+                    url: url+"images/driverIcon.png",
+                    scaledSize: new google.maps.Size(60, 60)
+                };
+
+                if (driverMarker) {
+                    driverMarker.setPosition(currentLocation);
+                } else {
+                    driverMarker = new google.maps.Marker({
+                        position: currentLocation,
+                        map: map,
+                        title: "ตำแหน่งเช็กอิน",
+                        icon: carIcon,
+                    });
+                }
+                map.setCenter(currentLocation);
+
+                // ส่งข้อมูลตำแหน่งไปบันทึกที่ backend (เช่น PHP)
+                if (driverUsername && formno) {
+                    const formdata = new FormData();
+                    formdata.append('formno', formno);
+                    formdata.append('driverUsername', driverUsername);
+                    formdata.append('lat', currentLocation.lat);
+                    formdata.append('lng', currentLocation.lng);
+                    axios.post(url + 'backend/drivers/checkinDes', formdata)
+                    .then(res => {
+                    console.log(res.data);
+                    document.getElementById("btn_dv-checkinDes").disabled = false;
+                    if (res.data.status === "Update Data Success") {
+                        swal({
+                            title: 'เช็กอินหน้างานสำเร็จ',
+                            type: 'success',
+                            showConfirmButton: true,
+                            // timer: 1500
+                        }).then(() => {
+                            // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
+                            location.reload();
+                            getCheckInDataDes();
+                        });
+                    }
+                    })
+                    .catch(err => {
+                        console.error("Error saving data:", err);
+                    });
+                }
+            },
+            function (error) {
+                console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-checkinDes").disabled = false;
+                } else {
+                    swal({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-checkinDes").disabled = false;
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000
+            }
+            );
+        } else {
+            swal({
+            title: 'เบราว์เซอร์ไม่รองรับ',
+            text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
+            type: 'error'
+            });
+            document.getElementById("btn_dv-checkinDes").disabled = false;
+        }
+    }
+
+    function clickSaveStopJob() {
+        // ตรวจสอบ permission ด้วย Permissions API
+        document.getElementById("btn-dv-saveStop").disabled = true;
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
+                console.log("สถานะ permission:", permissionStatus.state);
+                if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+                    // ถ้าอนุญาตหรืออยู่ในสถานะ prompt ให้ดึงตำแหน่ง
+                    stopJob();
+                } else {
+                    // ถ้าไม่ได้อนุญาต
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn-dv-saveStop").disabled = false;
+                }
+            });
+        } else {
+            // หากเบราว์เซอร์ไม่รองรับ Permissions API ให้ลองเรียก getCurrentPosition ตรงๆ
+            stopJob();
+        }
+    }
+
+    function stopJob()
+    {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            function (position) {
+                currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // สร้าง marker สำหรับแสดงตำแหน่งบนแผนที่ (ตัวอย่าง)
+                const carIcon = {
+                    url: url+"images/driverIcon.png",
+                    scaledSize: new google.maps.Size(60, 60)
+                };
+
+                if (driverMarker) {
+                    driverMarker.setPosition(currentLocation);
+                } else {
+                    driverMarker = new google.maps.Marker({
+                        position: currentLocation,
+                        map: map,
+                        title: "ตำแหน่งคนขับ",
+                        icon: carIcon,
+                    });
+                }
+                map.setCenter(currentLocation);
+
+                // ส่งข้อมูลตำแหน่งไปบันทึกที่ backend (เช่น PHP)
+                if(formno && driverUsername){
+                    const formdata = new FormData();
+                    formdata.append('formno' , formno);
+                    formdata.append('driverusername' , driverUsername);
+                    formdata.append('type' , 'stop');
+                    formdata.append('memo' , $('#dv-ip-memostop').val());
+                    formdata.append('lat', currentLocation.lat);
+                    formdata.append('lng', currentLocation.lng);
+                    axios.post(url+'backend/drivers/saveStop' , formdata).then(res=>{
+                        console.log(res.data);
+                        document.getElementById("btn-dv-saveStop").disabled = false;
+                        if(res.data.status == "Update Data Success"){
+                            swal({
+                                title: 'บันทึกข้อมูลปิดงานสำเร็จ',
+                                type: 'success',
+                                showConfirmButton: true,
+                                // timer: 1500
+                            }).then(() => {
+                                // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            },
+            function (error) {
+                console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn-dv-saveStop").disabled = false;
+                } else {
+                    swal({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                        type: 'error'
+                    });
+                    document.getElementById("btn-dv-saveStop").disabled = false;
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000
+            }
+            );
+        } else {
+            swal({
+                title: 'เบราว์เซอร์ไม่รองรับ',
+                text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
+                type: 'error'
+            });
+            document.getElementById("btn-dv-saveStop").disabled = false;
         }
     }
 
