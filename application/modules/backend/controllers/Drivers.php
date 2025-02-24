@@ -53,15 +53,19 @@ class Drivers extends MX_Controller {
     public function request_viewfull_page($formno)
     {
         if(!empty($formno)){
-            $queryViewfull = $this->drivers->get_viewfulldata_topage($formno);
-            $data = array(
-                "title" => "หน้ารายการรอ แอดมิน ตรวจสอบข้อมูล",
-                "formno" => $formno ,
-                "dataviewfull" => $queryViewfull->row()
-            );
-            $this->load->view("templates/drivers/head");
-            $this->load->view("drivers_page/requestJob_viewfull" , $data);
-            $this->load->view("templates/drivers/footer");
+            if($this->drivers->checkJobProgress($formno) == true){
+                $queryViewfull = $this->drivers->get_viewfulldata_topage($formno);
+                $data = array(
+                    "title" => "หน้ารายการรอ แอดมิน ตรวจสอบข้อมูล",
+                    "formno" => $formno ,
+                    "dataviewfull" => $queryViewfull->row()
+                );
+                $this->load->view("templates/drivers/head");
+                $this->load->view("drivers_page/requestJob_viewfull" , $data);
+                $this->load->view("templates/drivers/footer");
+            }else{
+                $this->load->view("drivers_page/errorpage");
+            }
         }
     }
 

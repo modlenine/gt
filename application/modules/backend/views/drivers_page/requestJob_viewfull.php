@@ -636,7 +636,7 @@ if (!empty($personTypes)) {
 
     function clickSaveStartJob() {
         // ตรวจสอบ permission ด้วย Permissions API
-        document.getElementById("btn_dv-saveStart").disabled = true;
+        document.getElementById("btn-dv-saveStart").disabled = true;
         if (navigator.permissions) {
             navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
                 console.log("สถานะ permission:", permissionStatus.state);
@@ -650,7 +650,7 @@ if (!empty($personTypes)) {
                         text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
                         type: 'error'
                     });
-                    document.getElementById("btn_dv-saveStart").disabled = false;
+                    document.getElementById("btn-dv-saveStart").disabled = false;
                 }
             });
         } else {
@@ -698,7 +698,7 @@ if (!empty($personTypes)) {
                     formdata.append('lng', currentLocation.lng);
                     axios.post(url+'backend/drivers/saveStart' , formdata).then(res=>{
                         console.log(res.data);
-                        document.getElementById("btn_dv-saveStart").disabled = false;
+                        document.getElementById("btn-dv-saveStart").disabled = false;
                         if(res.data.status == "Update Data Success"){
                             swal({
                                 title: 'บันทึกข้อมูลเริ่มงานสำเร็จ',
@@ -721,14 +721,14 @@ if (!empty($personTypes)) {
                         text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
                         type: 'error'
                     });
-                    document.getElementById("btn_dv-saveStart").disabled = false;
+                    document.getElementById("btn-dv-saveStart").disabled = false;
                 } else {
                     swal({
                         title: 'เกิดข้อผิดพลาด',
                         text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
                         type: 'error'
                     });
-                    document.getElementById("btn_dv-saveStart").disabled = false;
+                    document.getElementById("btn-dv-saveStart").disabled = false;
                 }
             },
             {
@@ -743,7 +743,7 @@ if (!empty($personTypes)) {
                 text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
                 type: 'error'
             });
-            document.getElementById("btn_dv-saveStart").disabled = false;
+            document.getElementById("btn-dv-saveStart").disabled = false;
         }
     }
 

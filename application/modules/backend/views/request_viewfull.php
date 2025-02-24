@@ -169,6 +169,54 @@ if (!empty($personTypes)) {
                             </div>
                         </div>
                         </section>
+                        <hr>
+
+                        <!-- Driver Section view -->
+                        <section id="sec_dv-checkInAlready-admin" style="display:none;">
+                            <h5 class="text-center">คนขับ เช็กอินหน้างาน (ต้นทาง)</h5>
+                            <hr>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6">
+                                    <label for="" id="checkin-datashow-admin-drivername"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" id="checkin-datashow-admin-datetime"></label>
+                                </div>
+                            </div>
+                        </section>
+                        <hr>
+
+                        <section id="sec-dv-start-admin" style="display:none;">
+                            <h5 class="text-center">รายละเอียดการเริ่มงาน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ภาพประกอบ</b></label>
+                                    <div id="show_imgStart-admin"></div>
+                                </div>
+
+                                <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
+                                <div id="image-modal" class="modal">
+                                    <span class="modal-close">&times;</span>
+                                    <img class="modal-content" id="modal-img">
+                                </div>
+
+
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea style="height:80px;" class="form-control" name="dv-ip-memostart-admin" id="dv-ip-memostart-admin"></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group text-center" id="secDataStart-admin">
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="start-datashow-admin-drivername"></label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="start-datashow-admin-datetime"></label>
+                                </div>
+                            </div>
+                            <hr>
+                        </section>
 
                     </div>
                 </div>
@@ -182,11 +230,14 @@ if (!empty($personTypes)) {
     let formno = "<?php echo $dataviewfull->m_formno ?>";
     let formstatus = "<?php echo $dataviewfull->m_status ?>";
     let totalprice = "<?php echo $dataviewfull->m_totalprice?>";
+    let driverMarker;
+    let currentLocation;
+    let map;
     const getapikey = "<?php echo get_googlemap_apikey(); ?>";
       // ฟังก์ชันเริ่มต้น
       function initMap() {
         // สร้างแผนที่
-        const map = new google.maps.Map(document.getElementById("map"), {
+        map = new google.maps.Map(document.getElementById("map"), {
           zoom: 7,
           center: { lat: 13.736717, lng: 100.523186 }, // ตั้งค่าเริ่มต้น (กรุงเทพฯ)
         });

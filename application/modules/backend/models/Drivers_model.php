@@ -281,6 +281,21 @@ class Drivers_model extends CI_Model {
         );
     }
 
+    public function checkJobProgress($formno)
+    {
+        $driverusername = $this->session->dv_username;
+        $sql = $this->db->query("SELECT
+        m_formno
+        FROM main WHERE m_dv_user_getjob = ? AND m_status IN ('Driver Get Job' , 'Driver Check In' , 'Driver Start Job' , 'Driver Check In Destination')
+        " , array($driverusername));
+
+        if($sql->num_rows() > 0){
+            return $sql->row()->m_formno == $formno ? true : false;
+        }else{
+            return true;
+        }
+    }
+
 
     public function get_viewfulldata_topage($formno)
     {

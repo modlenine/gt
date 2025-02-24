@@ -38,8 +38,8 @@ class Admin extends MX_Controller {
                 $this->admin->request_list_checkpayment();
             }else if($status == "paymented"){
                 $this->admin->request_list_checkpaymented();
-            }else if($status == "publish_to_driver"){
-                $this->admin->request_list_publishtodriver();
+            }else if($status == "driver_get_job"){
+                $this->admin->request_list_drivergetjob();
             }
         }
     }
@@ -83,6 +83,17 @@ class Admin extends MX_Controller {
     {
         $this->admin->getDataConfirmPayChecked();
     }
+
+    public function getCheckInData()
+    {
+        $this->admin->getCheckInData();
+    }
+
+    public function getStartJobData()
+    {
+        $this->admin->getStartJobData();
+    }
+
 
 }
 

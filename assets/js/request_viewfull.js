@@ -1,35 +1,7 @@
 $(document).ready(function(){
+    adminJobProcess();
     let depositePercen = $('#ip-viewfull-depositpercen').val();
     calcPriceDeposit(depositePercen , totalprice);
-    if(formstatus == "Open"){
-        //code
-        $('#btn-approveDoc').css('display' , '');
-    }else if(formstatus == "Approved"){
-        $('#reqPaySec').css('display' , '');
-        $('#btn-approveDoc').css('display' , 'none');
-        getDataApproved(formno);
-    }else if(formstatus == "Payment Confirmed"){
-        //approve section 
-        $('#btn-approveDoc').css('display' , 'none');
-        getDataApproved(formno);
-
-        //ดึงข้อมูลยืนยันการโอน
-        $('#sec_confirmPay_backend').css('display' , '');
-        $('#btn-approvePay-backend').css('display' , '');
-        getDataConfirmPay(formno);
-    }else if(formstatus == "Payment Checked"){
-        //approve section 
-        $('#btn-approveDoc').css('display' , 'none');
-        getDataApproved(formno);
-
-        //ดึงข้อมูลยืนยันการโอน
-        $('#sec_confirmPay_backend').css('display' , '');
-        $('#btn-approvePay-backend').css('display' , '');
-        getDataConfirmPay(formno);
-
-        //ดึงข้อมูลตรวจสอบการโอน
-        getDataConfirmPayChecked(formno);
-    }
 
     $('#ip-viewfull-depositpercen').change(function(){
         calcPriceDeposit($(this).val() , totalprice);
@@ -81,7 +53,87 @@ $(document).ready(function(){
         }
     });
 
+    async function adminJobProcess(){
+        if(formstatus == "Open"){
+            //code
+            $('#btn-approveDoc').css('display' , '');
+        }else if(formstatus == "Approved"){
+            $('#reqPaySec').css('display' , '');
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+        }else if(formstatus == "Payment Confirmed"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+    
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+        }else if(formstatus == "Payment Checked"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+    
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+    
+            //ดึงข้อมูลตรวจสอบการโอน
+            await getDataConfirmPayChecked(formno);
+        }else if(formstatus == "Driver Check In"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+    
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+    
+            //ดึงข้อมูลตรวจสอบการโอน
+            await getDataConfirmPayChecked(formno);
+            $('#sec_dv-checkInAlready-admin').css('display' , '');
+            await getCheckInData();
+        }else if(formstatus == "Driver Start Job"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+    
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+    
+            //ดึงข้อมูลตรวจสอบการโอน
+            await getDataConfirmPayChecked(formno);
+            $('#sec_dv-checkInAlready-admin').css('display' , '');
+            await getCheckInData();
 
+            $('#sec-dv-start-admin').css('display' , '');
+            await getStartJobData();
+        }
+    }
+
+    // เมื่อคลิกที่รูปใน grid ให้แสดง modal พร้อมแสดงภาพขนาดใหญ่
+    $(document).on('click', '.grid-item img', function() {
+        let src = $(this).attr('src');
+        $('#modal-img').attr('src', src);
+        $('#image-modal').css('display', 'block');
+    });
+    
+    // ปิด modal เมื่อคลิกที่ปุ่มปิด (×)
+    $('.modal-close').click(function() {
+        $('#image-modal').css('display', 'none');
+    });
+    
+    // Optionally ปิด modal เมื่อคลิกที่พื้นหลังนอกภาพ
+    $(window).click(function(event) {
+        if ($(event.target).is('#image-modal')) {
+        $('#image-modal').css('display', 'none');
+        }
+    });
     
 }); //End ready function 
 
@@ -215,5 +267,95 @@ function getDataConfirmPayChecked(formno)
                 $("input:radio[id='ip-viewfull-approPay-no']").attr('onclick','return false');
             }
         });
+    }
+}
+
+function getCheckInData()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    axios.post(url+'backend/admin/getCheckInData' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let result = res.data.result;
+            
+            updateMap(result.m_dv_checkin_lat , result.m_dv_checkin_lng);
+
+            $('#checkin-datashow-admin-datetime').html('<b>วันเวลาเช็กอิน : </b>'+result.m_dv_datetime_checkin);
+            $('#checkin-datashow-admin-drivername').html('<b>ชื่อผู้ขับ : </b>'+res.data.drivername);
+
+            console.log(currentLocation);
+        }
+    });
+}
+
+function getStartJobData()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    formdata.append('type' , 'start');
+    axios.post(url+'backend/admin/getStartJobData' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let resultMain = res.data.result_main;
+            let resultFiles = res.data.result_files;
+            let drivername = res.data.drivername;
+
+            //update map
+            updateMap(resultMain.m_dv_start_lat , resultMain.m_dv_start_lng);
+
+            //fill data start main
+            $('#start-datashow-admin-drivername').html('<b>ชื่อผู้ขับ : </b>'+drivername);
+            $('#start-datashow-admin-datetime').html('<b>ชื่อผู้ขับ : </b>'+resultMain.m_dv_datetime_start);
+            $('#dv-ip-memostart-admin').text(resultMain.m_dv_memo_start).prop('readonly' , true);
+
+            // สร้าง grid แสดงรูปภาพจาก resultFiles
+            let imageGrid = $('#show_imgStart-admin');
+            imageGrid.empty(); // เคลียร์ข้อมูลเก่า (ถ้ามี)
+
+            // ตรวจสอบว่า resultFiles มีข้อมูลหรือไม่
+            if (resultFiles && resultFiles.length > 0) {
+                resultFiles.forEach(function(file) {
+                // สมมุติว่า file.url คือ URL ของรูปภาพแต่ละไฟล์
+                let gridItem = $('<div class="grid-item"></div>');
+                let img = $('<img>').attr('src', url+file.f_path+file.f_name).attr('alt', 'Image');
+                gridItem.append(img);
+                imageGrid.append(gridItem);
+            });
+            } else {
+                imageGrid.append('<p>ไม่พบรูปภาพ</p>');
+            }
+        }
+    });
+}
+
+function updateMap(lat , lng)
+{
+    if(lat && lng){
+        //Update Map Zone
+        currentLocation = {
+            lat: parseFloat(lat),
+            lng: parseFloat(lng),
+        };
+
+        // สร้าง Marker บนแผนที่หรืออัปเดตตำแหน่ง Marker ที่มีอยู่แล้ว
+        const carIcon = {
+            url: url+"images/driverIcon.png",
+            scaledSize: new google.maps.Size(60, 60)
+        };
+        if (driverMarker) {
+            driverMarker.setPosition(currentLocation);
+        } else {
+            driverMarker = new google.maps.Marker({
+                position: currentLocation,
+                map: map,
+                title: "ตำแหน่งเช็กอิน",
+                icon: carIcon
+                
+            });
+        }
+        // ปรับจุดศูนย์กลางของแผนที่ให้ตรงกับตำแหน่งที่ได้จาก Database
+        map.setCenter(currentLocation);
+        //Update Map Zone
     }
 }

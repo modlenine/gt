@@ -288,9 +288,83 @@ class Admin_model extends CI_Model {
         );
     }
 
-    public function request_list_publishtodriver()
+    public function request_list_drivergetjob()
     {
+        // DB table to use
+        $table = 'request_list_drivergetjob';
 
+        // Table's primary key
+        $primaryKey = 'm_autoid';
+
+        $columns = array(
+            array('db' => 'm_formno', 'dt' => 0,
+                'formatter' => function($d , $row){
+                    $output ='
+                    <a href="'.base_url('backend/admin/request_viewfull_page/').$d.'" class="select_formno"
+                    ><b>'.$d.'</b></a>
+                    ';
+                    return $output;
+                }
+            ),
+            array('db' => 'm_datetimecreate', 'dt' => 1 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'mem_fullname', 'dt' => 2 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'mem_tel', 'dt' => 3 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_origininput', 'dt' => 4 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_destinationinput', 'dt' => 5 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_cartype', 'dt' => 6 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'm_totalprice', 'dt' => 7 ,
+                'formatter' => function($d , $row){
+                    return number_format($d , 2);
+                }
+            ),
+            array('db' => 'm_status', 'dt' => 8 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => getDb()->db_username,
+            'pass' => getDb()->db_password,
+            'db'   => getDb()->db_name,
+            'host' => getDb()->db_host
+        );
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        * If you just want to use the basic configuration for DataTables with PHP
+        * server-side, there is no need to edit below this line.
+        */
+        require('server-side/scripts/ssp.class.php');
+
+        echo json_encode(
+            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
+        );
     }
 
     public function saveApproveDoc()
@@ -446,6 +520,77 @@ class Admin_model extends CI_Model {
             $output = array(
                 "msg" => "ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงิน ไม่สำเร็จ",
                 "status" => "Select Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
+
+    public function getCheckInData()
+    {
+        if(!empty($this->input->post("formno"))){
+            $formno = $this->input->post("formno");
+
+            $sql = $this->db->query("SELECT
+            m_dv_user_checkin,
+            DATE_FORMAT(m_dv_datetime_checkin , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_checkin,
+            m_dv_checkin_lat,
+            m_dv_checkin_lng
+            FROM main WHERE m_formno = ?
+            ",array($formno));
+
+            $drivername = getDriverData($sql->row()->m_dv_user_checkin)->dv_fname." ".getDriverData($sql->row()->m_dv_user_checkin)->dv_lname;
+
+            $output = array(
+                "msg" => "ดึงข้อมูล CheckIn สำเร็จ",
+                "status" => "Select Data Success",
+                "result" => $sql->row(),
+                "drivername" => $drivername
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล CheckIn ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            );
+        }
+
+        echo json_encode($output);
+    }
+
+    public function getStartJobData()
+    {
+        if(!empty($this->input->post("formno"))){
+            $formno = $this->input->post("formno");
+            $type = $this->input->post("type");
+
+            $sqlMain = $this->db->query("SELECT
+            m_dv_user_start,
+            -- m_dv_datetime_start,
+            DATE_FORMAT(m_dv_datetime_start , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_start,
+            m_dv_memo_start,
+            m_dv_start_lat,
+            m_dv_start_lng
+            FROM main WHERE m_formno = ?
+            " , array($formno));
+
+            $sqlFile = $this->db->query("SELECT
+            f_path,
+            f_name
+            FROM files_dv WHERE f_formno = ? AND f_type = ?
+            " , array($formno , $type));
+
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fname." ".getDriverData($sqlMain->row()->m_dv_user_start)->dv_lname;
+
+            $output = array(
+                "msg" => "ดึงข้อมูล Start Job สำเร็จ",
+                "status" => "Select Data Success",
+                "result_main" => $sqlMain->row(),
+                "result_files" => $sqlFile->result(),
+                "drivername" => $drivername
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูล Start Job ไม่สำเร็จ",
+                "status" => "Select Data Not Success"
             );
         }
         echo json_encode($output);

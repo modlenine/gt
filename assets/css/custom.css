@@ -181,6 +181,13 @@
 		gap: 10px; /* ช่องว่างระหว่าง grid item */
 		margin-top: 20px;
   	}
+	#show_imgStart-admin{
+		display: grid;
+		/* grid-template-columns: repeat(150, 1fr); */
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* กำหนดให้มีคอลัมน์ที่มีความกว้างขั้นต่ำ 150px */
+		gap: 10px; /* ช่องว่างระหว่าง grid item */
+		margin-top: 20px;
+  	}
 	#show_imgStop{
 		display: grid;
 		/* grid-template-columns: repeat(150, 1fr); */

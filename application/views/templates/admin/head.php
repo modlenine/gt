@@ -239,7 +239,7 @@
 					</li>
 
 					<li>
-						<a href="<?=base_url('backend/admin/request_list_page/publish_to_driver')?>" class="dropdown-toggle no-arrow">
+						<a href="<?=base_url('backend/admin/request_list_page/driver_get_job')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการปล่อยงานแล้ว</span>
 						</a>
 					</li>
@@ -267,11 +267,9 @@
 	const url = "<?php echo base_url()?>";
 	$(document).ready(function(){
 
-
 		$('#logoutBtn').click(function(){
 			logoutConfirm();
 		});
-
 
 		function logoutConfirm()
 		{
@@ -289,7 +287,6 @@
 				}
 			});
 		}
-
 		// controlButton_foradmin(ecode);
 		
 	});
