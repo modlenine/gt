@@ -124,8 +124,8 @@ if (!empty($personTypes)) {
                                 <label for=""><b>วันที่อนุมัติ</b></label>
                                 <input type="text" name="ip-viewfull-appro-datetime" id="ip-viewfull-appro-datetime" class="form-control" readonly>
                             </div>
+                            <hr>
                         </div>
-                        <hr>
                         <!-- ตรวจสอบการโอนเงิน -->
                          <!-- check confirm payment -->
                         <section id="sec_confirmPay_backend" style="display:none;">
@@ -168,8 +168,9 @@ if (!empty($personTypes)) {
                                 <input type="text" name="ip-viewfull-appro2-datetime" id="ip-viewfull-appro2-datetime" class="form-control" readonly>
                             </div>
                         </div>
-                        </section>
                         <hr>
+                        </section>
+
 
                         <!-- Driver Section view -->
                         <section id="sec_dv-checkInAlready-admin" style="display:none;">
@@ -183,8 +184,8 @@ if (!empty($personTypes)) {
                                     <label for="" id="checkin-datashow-admin-datetime"></label>
                                 </div>
                             </div>
+                            <hr>
                         </section>
-                        <hr>
 
                         <section id="sec-dv-start-admin" style="display:none;">
                             <h5 class="text-center">รายละเอียดการเริ่มงาน</h5>
@@ -229,8 +230,8 @@ if (!empty($personTypes)) {
                                     <label for="" id="checkinDes-datashow-admin-datetime"></label>
                                 </div>
                             </div>
+                            <hr>
                         </section>
-                        <hr>
 
                         <section id="sec-dv-stop-admin" style="display:none;">
                             <h5 class="text-center">รายละเอียดการปิดงาน</h5>

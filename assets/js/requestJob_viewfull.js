@@ -48,28 +48,7 @@ $(document).ready(function(){
 
 }); //End ready function 
 
-//function zone 
-function getJob(formno)
-{
-    if(formno){
-        const formdata = new FormData();
-        formdata.append('formno' , formno);
-        axios.post(url+'backend/drivers/getJob' , formdata).then(res=>{
-            console.log(res.data);
-            if(res.data.status == "Update Data Success"){
-                swal({
-                    title: 'รับงานสำเร็จ คุณมีเวลา 40 นาที',
-                    type: 'success',
-                    showConfirmButton: false,
-                    timer:1500
-                }).then(()=>{
-                    location.reload();
-                    getExpireTime(formno);
-                });
-            }
-        });
-    }
-}
+//function zone
 
 function getExpireTime(formno)
 {
@@ -80,9 +59,12 @@ function getExpireTime(formno)
             console.log(res.data);
             if(res.data.status == "Select Data Success"){
                 let result = res.data.result;
+                let drivername = res.data.drivername;
                 $('#sec_dv-getjob').css('display' , 'none');
                 $('#sec_dv-getjob-already').css('display' , '');
                 startCountdown(result.m_dv_timeexpire_getjob);
+
+                updateMap(result.m_dv_getjob_lat , result.m_dv_getjob_lng);
 
                 if(driverUsername == result.m_dv_user_getjob){
                     $('#sec_dv-checkIn').css('display' , '');
@@ -92,6 +74,11 @@ function getExpireTime(formno)
             }
         });
     }
+}
+
+function openNavigation(originLat, originLng, destinationLat, destinationLng) {
+    const navigationUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&travelmode=driving`;
+    window.open(navigationUrl, '_blank');
 }
 
 function startCountdown(expiryTime) {

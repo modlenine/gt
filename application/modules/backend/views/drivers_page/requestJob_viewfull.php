@@ -482,6 +482,9 @@ if (!empty($personTypes)) {
     let map;
     let driverMarker;
     let currentLocation;
+
+    let origin;
+    let destination;
     // ฟังก์ชันเริ่มต้น
     function initMap() {
         // สร้างแผนที่
@@ -497,8 +500,8 @@ if (!empty($personTypes)) {
         });
 
         // ชื่อสถานที่ต้นทางและปลายทาง
-        const origin = "<?php echo $dataviewfull->m_origininput ?>"; // ต้นทาง
-        const destination = "<?php echo $dataviewfull->m_destinationinput ?>"; // ปลายทาง
+        origin = "<?php echo $dataviewfull->m_origininput ?>"; // ต้นทาง
+        destination = "<?php echo $dataviewfull->m_destinationinput ?>"; // ปลายทาง
 
         // สร้างคำขอเส้นทาง
         const request = {
@@ -517,6 +520,118 @@ if (!empty($personTypes)) {
         });
     }
     // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
+
+
+    function clickGetJob()
+    {
+        // ตรวจสอบ permission ด้วย Permissions API
+        document.getElementById("btn_dv-getjob").disabled = true;
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' }).then(function(permissionStatus) {
+                console.log("สถานะ permission:", permissionStatus.state);
+                if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+                    // ถ้าอนุญาตหรืออยู่ในสถานะ prompt ให้ดึงตำแหน่ง
+                    getJob(formno);
+                } else {
+                    // ถ้าไม่ได้อนุญาต
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-getjob").disabled = false;
+                }
+            });
+        } else {
+            // หากเบราว์เซอร์ไม่รองรับ Permissions API ให้ลองเรียก getCurrentPosition ตรงๆ
+            getJob(formno);
+        }
+    }
+
+    function getJob(formno)
+    {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+            function (position) {
+                currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // สร้าง marker สำหรับแสดงตำแหน่งบนแผนที่ (ตัวอย่าง)
+                const carIcon = {
+                    url: url+"images/driverIcon.png",
+                    scaledSize: new google.maps.Size(60, 60)
+                };
+
+                if (driverMarker) {
+                    driverMarker.setPosition(currentLocation);
+                } else {
+                    driverMarker = new google.maps.Marker({
+                        position: currentLocation,
+                        map: map,
+                        title: "ตำแหน่งคนขับ",
+                        icon: carIcon,
+                    });
+                }
+                map.setCenter(currentLocation);
+
+                // ส่งข้อมูลตำแหน่งไปบันทึกที่ backend (เช่น PHP)
+                if(formno){
+                    const formdata = new FormData();
+                    formdata.append('formno' , formno);
+                    formdata.append('lat', currentLocation.lat);
+                    formdata.append('lng', currentLocation.lng);
+                    axios.post(url+'backend/drivers/getJob' , formdata).then(res=>{
+                        console.log(res.data);
+                        if(res.data.status == "Update Data Success"){
+                            swal({
+                                title: 'รับงานสำเร็จ คุณมีเวลา 40 นาที',
+                                type: 'success',
+                                showConfirmButton: false,
+                                timer:1500
+                            }).then(()=>{
+                                location.reload();
+                                getExpireTime(formno);
+                            });
+                        }
+                    });
+                }
+            },
+            function (error) {
+                console.error("ไม่สามารถดึงตำแหน่งของคุณได้", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                    swal({
+                        title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-getjob").disabled = false;
+                } else {
+                    swal({
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถดึงตำแหน่งของคุณได้',
+                        type: 'error'
+                    });
+                    document.getElementById("btn_dv-getjob").disabled = false;
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 5000
+            }
+            );
+        } else {
+            swal({
+            title: 'เบราว์เซอร์ไม่รองรับ',
+            text: 'เบราว์เซอร์นี้ไม่รองรับ Geolocation',
+            type: 'error'
+            });
+            document.getElementById("btn_dv-getjob").disabled = false;
+        }
+
+    }
 
     // ฟังก์ชันสำหรับการ Checkin คนขับรถ
     function checkinDriver() {

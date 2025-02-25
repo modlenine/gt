@@ -151,12 +151,49 @@
 }
 
 .bg_cardlist{
-	background-color: #dfdfdf;
+	border: 3px solid #008ec1;
+}
+.cardstatus_Open{
+	background-color:#45bfec;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:3px;
+	border-radius: 15px;
 }
 
 .bg_cardlistApprove{
-	background-color: #f7c739;
+	border: 3px solid #e1aa06;
 }
+.cardstatus_Approve{
+	background-color:#e1aa06;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:3px;
+	border-radius: 15px;
+}
+
+.bg_cardlistDone{
+	border: 3px solid #007f1e;
+}
+.cardstatus_Done{
+	background-color:#44b25d;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:3px;
+	border-radius: 15px;
+}
+
+.bg_cardlistCancel{
+	border: 3px solid #bd0404;
+}
+.cardstatus_Not{
+	background-color:#cc4444;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:3px;
+	border-radius: 15px;
+}
+
 
 .reListAttr{
 	transition: transform 0.3s;

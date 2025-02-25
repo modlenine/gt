@@ -390,16 +390,20 @@ class Drivers_model extends CI_Model {
     {
         if(!empty($this->input->post("formno"))){
             $formno = $this->input->post("formno");
+            $getJobLat = $this->input->post("lat");
+            $getJobLng = $this->input->post("lng");
             $this->db->trans_start();
             // บันทึกเวลาปัจจุบัน + 40 นาที
             $checkin_time = time(); // เวลาปัจจุบัน (timestamp)
-            $expiry_time = $checkin_time + (10 * 60); // บวกเพิ่ม 40 นาที
+            $expiry_time = $checkin_time + (5 * 60); // บวกเพิ่ม 40 นาที
 
             $arUpdateData = array(
                 "m_status" => "Driver Get Job",
                 "m_dv_user_getjob" => $this->session->dv_username,
                 "m_dv_timeexpire_getjob" => $expiry_time,
-                "m_dv_datetime_getjob" => date("Y-m-d H:i:s")
+                "m_dv_datetime_getjob" => date("Y-m-d H:i:s"),
+                "m_dv_getjob_lat" => $getJobLat,
+                "m_dv_getjob_lng" => $getJobLng
             );
 
             $this->db->where("m_formno" , $formno);
@@ -428,14 +432,19 @@ class Drivers_model extends CI_Model {
             $sql = $this->db->query("SELECT
             m_dv_timeexpire_getjob,
             m_dv_user_getjob,
-            m_status
+            m_status,
+            m_dv_getjob_lat,
+            m_dv_getjob_lng
             FROM main WHERE m_formno = ?
             " , array($formno));
+
+            $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fname." ".getDriverData($sql->row()->m_dv_user_getjob)->dv_lname;
 
             $output = array(
                 "msg" => "ดึงข้อมูล Time Expire สำเร็จ",
                 "status" => "Select Data Success",
-                "result" => $sql->row()
+                "result" => $sql->row(),
+                "drivername" => $drivername
             );
         }else{
             $output = array(
@@ -454,7 +463,9 @@ class Drivers_model extends CI_Model {
             $arupdate = array(
                 "m_dv_timeexpire_getjob" => null,
                 "m_status" => "Payment Checked",
-                "m_dv_user_getjob" => null
+                "m_dv_user_getjob" => null,
+                "m_dv_getjob_lat" => null,
+                "m_dv_getjob_lng" => null
             );
 
             $this->db->where("m_formno" , $formno);

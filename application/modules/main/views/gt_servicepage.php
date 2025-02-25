@@ -121,8 +121,8 @@
                         <label for="destinationInput"><b>สถานที่ปลายทาง : </b></label>
                         <input class="form-control form-group" type="text" id="destinationInput" placeholder="ป้อนสถานที่ปลายทาง">
                     </div>
-                    <button class="btn btn-primary" onclick="calculateRoute()">คำนวณเส้นทาง</button>
-                    <button class="btn btn-warning" onclick="resetMap()">Reset</button>
+                    <button class="btn btn-primary" onclick="calculateRoute()"><i class="dw dw-car mr-2"></i>คำนวณเส้นทาง</button>
+                    <button class="btn btn-warning" onclick="resetMap()"><i class="dw dw-refresh2 mr-2"></i>Reset</button>
                     <p id="distance"></p>
                     <div id="map"></div>
                 
@@ -136,8 +136,8 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12 form-group">
-                        <button type="button" id="btn-calculate" class="btn btn-primary">คำนวณค่าบริการ</button>
-                        <button type="button" id="btn-reset" class="btn btn-warning">ล้างค่า</button>
+                        <button type="button" id="btn-calculate" class="btn btn-primary"><i class="dw dw-pin mr-2"></i>คำนวณค่าบริการ</button>
+                        <button type="button" id="btn-reset" class="btn btn-warning"><i class="dw dw-refresh2 mr-2"></i>ล้างค่า</button>
                     </div>
                 </div>
                 <div class="row form-group">

@@ -1,26 +1,6 @@
 $(document).ready(function(){
     //code
-    deleteTempfileFrist(userid);
-
-    //check form status frist
-    if(formstatus == "Open"){
-        //code
-        let statusText = `รายการอยู่ระหว่างตรวจสอบจากเจ้าหน้าที่`;
-        $('#statusForUserText').html(statusText);
-    }else if(formstatus == "Approved"){
-        $('.sec_waitConfirm').css('display' , '');
-        $('#reqPaySec').css('display' , '');
-    }else if(formstatus == "Payment Confirmed"){
-        $('.sec_waitConfirm').css('display' , 'none');
-        getDataConfirmPay(formno);
-        let statusText = `ยืนยันการโอนเงินสำเร็จ เจ้าหน้าที่กำลังตรวจสอบข้อมูล`;
-        $('#statusForUserText').html(statusText);
-    }else if(formstatus == "Payment Checked"){
-        $('.sec_waitConfirm').css('display' , 'none');
-        getDataConfirmPay(formno);
-        let statusText = `เจ้าหน้าที่ตรวจสอบข้อมูลเรียบร้อยแล้ว กำลังติดต่อคนขับรถเพื่อรับงานของท่าน`;
-        $('#statusForUserText').html(statusText);
-    }
+    jobProcess_user();
 
     $('#btn_confirmPay').on("click" , function (){
         if(myDropzone1.files.length == 0){
@@ -122,6 +102,35 @@ function getDataConfirmPay(formno)
                 $('#show_file_confirmPay').html(imageHtml);
             }
         });
+    }
+}
+
+async function jobProcess_user()
+{
+    //check form status frist
+    await deleteTempfileFrist(userid);
+    if(formstatus == "Open"){
+        //code
+        let statusText = `รายการอยู่ระหว่างตรวจสอบจากเจ้าหน้าที่`;
+        $('#statusForUserText').html(statusText);
+    }else if(formstatus == "Approved"){
+        $('.sec_waitConfirm').css('display' , '');
+        $('#reqPaySec').css('display' , '');
+    }else if(formstatus == "Payment Confirmed"){
+        $('.sec_waitConfirm').css('display' , 'none');
+        await getDataConfirmPay(formno);
+        let statusText = `ยืนยันการโอนเงินสำเร็จ เจ้าหน้าที่กำลังตรวจสอบข้อมูล`;
+        $('#statusForUserText').html(statusText);
+    }else if(formstatus == "Payment Checked"){
+        $('.sec_waitConfirm').css('display' , 'none');
+        await getDataConfirmPay(formno);
+        let statusText = `เจ้าหน้าที่ตรวจสอบข้อมูลเรียบร้อยแล้ว กำลังติดต่อคนขับรถเพื่อรับงานของท่าน`;
+        $('#statusForUserText').html(statusText);
+    }else if(formstatus == "Driver Get Job"){
+        $('.sec_waitConfirm').css('display' , 'none');
+        await getDataConfirmPay(formno);
+        let statusText = `คนขับรับงานแล้ว กำลังเดินทางไปหาท่าน`;
+        $('#statusForUserText').html(statusText);
     }
 }
 

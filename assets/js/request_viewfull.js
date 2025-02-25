@@ -9,15 +9,17 @@ $(document).ready(function(){
 
     $('#btn-approveDoc').click(function(){
         //check input null
+        $('#btn-approveDoc').prop('disabled' , true);
         if($('input[name="ip-viewfull-appro"]:checked').length === 0){
             swal({
                 title: 'กรุณาเลือกการอนุมัติ',
                 type: 'error',
                 showConfirmButton: true,
                 // timer:1500
+            }).then(()=>{
+                $('#btn-approveDoc').prop('disabled' , false);
             });
         }else{
-            $('#btn-approveDoc').prop('disabled' , true);
             const formdata = new FormData();
             formdata.append('formno' , formno);
             formdata.append('depositpercen' , $('#ip-viewfull-depositpercen').val());

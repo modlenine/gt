@@ -96,7 +96,7 @@ if (!empty($personTypes)) {
                             </div>
                         </div>
                         <hr>
-                            <h5 class="text-center">ยืนยันการโอนเงิน <?=$dataviewfull->m_cusid?></h5>
+                            <h5 class="text-center">ยืนยันการโอนเงิน</h5>
                         <hr>
                         <div class="row form-group">
                             <div class="col-md-12 text-center">
@@ -128,7 +128,7 @@ if (!empty($personTypes)) {
                         <div class="row form-group sec_waitConfirm" style="display:none;">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
-                                <button type="button" id="btn_confirmPay" name="btn_confirmPay" class="btn btn-success btn-block">ยืนยัน</button>
+                                <button type="button" id="btn_confirmPay" name="btn_confirmPay" class="btn btn-success btn-block"><i class="dw dw-diskette2 mr-2"></i>ยืนยัน</button>
                             </div>
                             <div class="col-md-4"></div>
                         </div>
@@ -231,30 +231,30 @@ if (!empty($personTypes)) {
                 done(); // เรียก callback นี้เพื่อระบุว่าการอัปโหลดเสร็จสมบูรณ์
             });
         },
-        resize: function(file) {
-            if (file.width > 1024 || file.height > 1024) {
-                // กำหนดขนาดใหม่
-                let ratio = file.width / file.height;
-                let newWidth = 1024;
-                let newHeight = 1024;
-                if (file.width > file.height) {
-                    newHeight = newWidth / ratio;
-                } else {
-                    newWidth = newHeight * ratio;
-                }
-                return {
-                    srcX: 0,
-                    srcY: 0,
-                    srcWidth: file.width,
-                    srcHeight: file.height,
-                    trgX: 0,
-                    trgY: 0,
-                    trgWidth: newWidth,
-                    trgHeight: newHeight
-                };
-            }
-            return null; // ไม่ต้องย่อขนาด
-        }
+        // resize: function(file) {
+        //     if (file.width > 1024 || file.height > 1024) {
+        //         // กำหนดขนาดใหม่
+        //         let ratio = file.width / file.height;
+        //         let newWidth = 1024;
+        //         let newHeight = 1024;
+        //         if (file.width > file.height) {
+        //             newHeight = newWidth / ratio;
+        //         } else {
+        //             newWidth = newHeight * ratio;
+        //         }
+        //         return {
+        //             srcX: 0,
+        //             srcY: 0,
+        //             srcWidth: file.width,
+        //             srcHeight: file.height,
+        //             trgX: 0,
+        //             trgY: 0,
+        //             trgWidth: newWidth,
+        //             trgHeight: newHeight
+        //         };
+        //     }
+        //     return null; // ไม่ต้องย่อขนาด
+        // }
     });
 </script>
 <script>

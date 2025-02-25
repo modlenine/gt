@@ -225,7 +225,7 @@
 			<div class="sidebar-menu">
 				<ul id="accordion-menu">
 					<li class="dropdown">
-						<a href="<?=base_url()?>" class="dropdown-toggle no-arrow">
+						<a href="<?=base_url('main/gt_service')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-city-hall hicon"></span><span class="mtext">หน้าหลัก</span>
 						</a>
 					</li>
@@ -243,7 +243,7 @@
 					</li>
 	
 
-					<li>
+					<!-- <li>
 						<div class="dropdown-divider"></div>
 					</li>
 					<li>
@@ -253,7 +253,7 @@
 						<a href="<?=base_url('advance_report.html')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-profits-1 wdfI1"></span><span class="mtext">ประวัติการเรียกรถ</span>
 						</a>
-					</li>
+					</li> -->
 					
 				</ul>
 			</div>
