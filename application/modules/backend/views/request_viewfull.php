@@ -218,6 +218,52 @@ if (!empty($personTypes)) {
                             <hr>
                         </section>
 
+                        <section id="sec_dv-checkInAlreadyDes-admin" style="display:none;">
+                            <h5 class="text-center">คนขับ เช็กอินหน้างาน (ปลายทาง)</h5>
+                            <hr>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6">
+                                    <label for="" id="checkinDes-datashow-admin-drivername"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" id="checkinDes-datashow-admin-datetime"></label>
+                                </div>
+                            </div>
+                        </section>
+                        <hr>
+
+                        <section id="sec-dv-stop-admin" style="display:none;">
+                            <h5 class="text-center">รายละเอียดการปิดงาน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ภาพประกอบ</b></label>
+                                    <div id="show_imgStop-admin"></div>
+                                </div>
+
+                                <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
+                                <div id="image-modal-stop" class="modal">
+                                    <span class="modal-close">&times;</span>
+                                    <img class="modal-content" id="modal-img-stop">
+                                </div>
+
+
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea style="height:80px;" class="form-control" name="dv-ip-memostop-admin" id="dv-ip-memostop-admin"></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="stop-datashow-admin-drivername"></label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="stop-datashow-admin-datetime"></label>
+                                </div>
+                            </div>
+                            <hr>
+                        </section>
+
                     </div>
                 </div>
             </div>

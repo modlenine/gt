@@ -113,6 +113,49 @@ $(document).ready(function(){
 
             $('#sec-dv-start-admin').css('display' , '');
             await getStartJobData();
+        }else if(formstatus == "Driver Check In Destination"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+    
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+    
+            //ดึงข้อมูลตรวจสอบการโอน
+            await getDataConfirmPayChecked(formno);
+            $('#sec_dv-checkInAlready-admin').css('display' , '');
+            await getCheckInData();
+
+            $('#sec-dv-start-admin').css('display' , '');
+            await getStartJobData();
+
+            $('#sec_dv-checkInAlreadyDes-admin').css('display' , '');
+            await getCheckInDataDes();
+        }else if(formstatus == "Driver Close Job"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+
+            //ดึงข้อมูลตรวจสอบการโอน
+            await getDataConfirmPayChecked(formno);
+            $('#sec_dv-checkInAlready-admin').css('display' , '');
+            await getCheckInData();
+
+            $('#sec-dv-start-admin').css('display' , '');
+            await getStartJobData();
+
+            $('#sec_dv-checkInAlreadyDes-admin').css('display' , '');
+            await getCheckInDataDes();
+
+            $('#sec-dv-stop-admin').css('display' , '');
+            await getStopJobData();
         }
     }
 
@@ -311,6 +354,66 @@ function getStartJobData()
 
             // สร้าง grid แสดงรูปภาพจาก resultFiles
             let imageGrid = $('#show_imgStart-admin');
+            imageGrid.empty(); // เคลียร์ข้อมูลเก่า (ถ้ามี)
+
+            // ตรวจสอบว่า resultFiles มีข้อมูลหรือไม่
+            if (resultFiles && resultFiles.length > 0) {
+                resultFiles.forEach(function(file) {
+                // สมมุติว่า file.url คือ URL ของรูปภาพแต่ละไฟล์
+                let gridItem = $('<div class="grid-item"></div>');
+                let img = $('<img>').attr('src', url+file.f_path+file.f_name).attr('alt', 'Image');
+                gridItem.append(img);
+                imageGrid.append(gridItem);
+            });
+            } else {
+                imageGrid.append('<p>ไม่พบรูปภาพ</p>');
+            }
+        }
+    });
+}
+
+function getCheckInDataDes()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    axios.post(url+'backend/admin/getCheckInDataDes' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let result = res.data.result;
+            let drivername = res.data.drivername;
+            
+            updateMap(result.m_dv_checkin_lat , result.m_dv_checkin_lng);
+
+            $('#checkinDes-datashow-admin-datetime').html('<b>วันเวลาเช็กอิน : </b>'+result.m_dv_datetime_checkindes);
+            $('#checkinDes-datashow-admin-drivername').html('<b>ชื่อผู้ขับ : </b>'+drivername);
+
+            console.log(currentLocation);
+        }
+    });
+}
+
+function getStopJobData()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    formdata.append('type' , 'stop');
+    axios.post(url+'backend/admin/getStopJobData' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let resultMain = res.data.result_main;
+            let resultFiles = res.data.result_files;
+            let drivername = res.data.drivername;
+
+            //update map
+            updateMap(resultMain.m_dv_stop_lat , resultMain.m_dv_stop_lng);
+
+            //fill data start main
+            $('#stop-datashow-admin-drivername').html('<b>ชื่อผู้ขับ : </b>'+drivername);
+            $('#stop-datashow-admin-datetime').html('<b>ชื่อผู้ขับ : </b>'+resultMain.m_dv_datetime_stop);
+            $('#dv-ip-memostop-admin').text(resultMain.m_dv_memo_stop).prop('readonly' , true);
+
+            // สร้าง grid แสดงรูปภาพจาก resultFiles
+            let imageGrid = $('#show_imgStop-admin');
             imageGrid.empty(); // เคลียร์ข้อมูลเก่า (ถ้ามี)
 
             // ตรวจสอบว่า resultFiles มีข้อมูลหรือไม่

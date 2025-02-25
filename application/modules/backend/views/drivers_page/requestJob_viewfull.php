@@ -591,6 +591,7 @@ if (!empty($personTypes)) {
                             // timer: 1500
                         }).then(() => {
                             // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
+                            location.reload();
                             getCheckInData();
                         });
                     }

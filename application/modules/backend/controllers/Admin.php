@@ -94,6 +94,16 @@ class Admin extends MX_Controller {
         $this->admin->getStartJobData();
     }
 
+    public function getCheckInDataDes()
+    {
+        $this->admin->getCheckInDataDes();
+    }
+
+    public function getStopJobData()
+    {
+        $this->admin->getStopJobData();
+    }
+
 
 }
 
