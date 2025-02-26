@@ -65,11 +65,15 @@ function getExpireTime(formno)
                 startCountdown(result.m_dv_timeexpire_getjob);
 
                 updateMap(result.m_dv_getjob_lat , result.m_dv_getjob_lng);
+                const navigationUrl = `https://www.google.com/maps/dir/?api=1&origin=${result.m_dv_getjob_lat},${result.m_dv_getjob_lng}&destination=${origin}&travelmode=driving`;
+                let bt_showmap = `<a href="`+navigationUrl+`" target="_blank"><button type="button" class="btn btn-primary btn-block">นำทาง</button></a>`;
 
                 if(driverUsername == result.m_dv_user_getjob){
                     $('#sec_dv-checkIn').css('display' , '');
+                    $('#show_navigator').html(bt_showmap);
                 }else{
                     $('#sec_dv-checkIn').css('display' , 'none');
+                    $('#show_navigator').html('');
                 }
             }
         });

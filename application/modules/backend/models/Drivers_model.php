@@ -465,7 +465,8 @@ class Drivers_model extends CI_Model {
                 "m_status" => "Payment Checked",
                 "m_dv_user_getjob" => null,
                 "m_dv_getjob_lat" => null,
-                "m_dv_getjob_lng" => null
+                "m_dv_getjob_lng" => null,
+                "m_dv_datetime_getjob" => null
             );
 
             $this->db->where("m_formno" , $formno);

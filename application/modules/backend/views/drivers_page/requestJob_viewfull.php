@@ -125,6 +125,11 @@ if (!empty($personTypes)) {
                         </section>
 
                         <section id="sec_dv-checkIn" style="display:none;">
+                        <div class="row form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4" id="show_navigator"></div>
+                                <div class="col-md-4"></div>
+                            </div>
                             <div class="row form-group">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4">
@@ -702,8 +707,8 @@ if (!empty($personTypes)) {
                         swal({
                             title: 'เช็กอินหน้างานสำเร็จ',
                             type: 'success',
-                            showConfirmButton: true,
-                            // timer: 1500
+                            showConfirmButton: false,
+                            timer: 1500
                         }).then(() => {
                             // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
                             location.reload();
@@ -819,8 +824,8 @@ if (!empty($personTypes)) {
                             swal({
                                 title: 'บันทึกข้อมูลเริ่มงานสำเร็จ',
                                 type: 'success',
-                                showConfirmButton: true,
-                                // timer: 1500
+                                showConfirmButton: false,
+                                timer: 1500
                             }).then(() => {
                                 // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
                                 location.reload();
@@ -931,8 +936,8 @@ if (!empty($personTypes)) {
                         swal({
                             title: 'เช็กอินหน้างานสำเร็จ',
                             type: 'success',
-                            showConfirmButton: true,
-                            // timer: 1500
+                            showConfirmButton: false,
+                            timer: 1500
                         }).then(() => {
                             // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
                             location.reload();
@@ -1048,8 +1053,8 @@ if (!empty($personTypes)) {
                             swal({
                                 title: 'บันทึกข้อมูลปิดงานสำเร็จ',
                                 type: 'success',
-                                showConfirmButton: true,
-                                // timer: 1500
+                                showConfirmButton: false,
+                                timer: 1500
                             }).then(() => {
                                 // ตัวอย่างเรียกดึงข้อมูลกลับมาใช้งาน
                                 location.reload();
