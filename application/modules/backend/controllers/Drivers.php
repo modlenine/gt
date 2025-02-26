@@ -25,6 +25,10 @@ class Drivers extends MX_Controller {
         $destext = "";
         if($param == "job_avaliable"){
             $destext = "รอรับงาน";
+        }else if($param == "job_pending"){
+            $destext = "กำลังดำเนินการ";
+        }else if($param == "job_close"){
+            $destext = "ดำเนินการเสร็จสิ้น";
         }
         $data = array(
             "title" => "",

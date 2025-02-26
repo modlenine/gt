@@ -225,19 +225,19 @@
 			
 					<li>
 						<a href="<?=base_url('backend/drivers/job_list_page/job_avaliable')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">รายการงาน [รอรับงาน]</span>
+							<span class="micon dw dw-suitcase2 wdfI1"></span><span class="mtext">รายการงาน [รอรับงาน]</span>
 						</a>
 					</li>
 
 					<li>
 						<a href="<?=base_url('backend/drivers/job_list_page/job_pending')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">งานของฉัน [กำลังทำ]</span>
+							<span class="micon dw dw-car wdfI1"></span><span class="mtext">งานของฉัน [กำลังทำ]</span>
 						</a>
 					</li>
 
 					<li>
 						<a href="<?=base_url('backend/drivers/job_list_page/job_close')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-wallet1 wdfI1"></span><span class="mtext">งานของฉัน [เสร็จสิ้นแล้ว]</span>
+							<span class="micon dw dw-checked wdfI1"></span><span class="mtext">งานของฉัน [เสร็จสิ้นแล้ว]</span>
 						</a>
 					</li>
 

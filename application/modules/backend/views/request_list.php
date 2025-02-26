@@ -86,8 +86,9 @@
                         ],
                         columnDefs: [
                           {targets: "_all",orderable: false},
-                          {targets: [0],width: "60px",},
+                          {targets: [0 , 1 , 2],width: "120px",},
                           {targets: [4 , 5],width: "150px",},
+                          {targets: [8],width:"150px",},
                         ],
             });
 

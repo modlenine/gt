@@ -89,6 +89,7 @@
                             {targets: "_all",orderable: false},
                             {targets: [0],width: "60px",},
                             {targets: [4 , 5],width: "150px",},
+                            {targets:[8],width:"150px"}
                         ],
             });
 

@@ -67,7 +67,19 @@ class Drivers_model extends CI_Model {
             ),
             array('db' => 'm_status', 'dt' => 8 ,
                 'formatter' => function($d , $row){
-                    return $d;
+                    $class = "";
+                    if($d == "Open"){
+                        $class = "class='cardstatus_Open'";
+                    }else if($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
+                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination"){
+                        $class = "class='cardstatus_Approve'";
+                    }else if($d == "Driver Close Job"){
+                        $class = "class='cardstatus_Done'";
+                    }else if($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel"){
+                        $class = "class='cardstatus_Done'";
+                    }
+                    $htlml = '<span '.$class.'>'.$d.'</span>';
+                    return $htlml;
                 }
             ),
         );
@@ -158,7 +170,19 @@ class Drivers_model extends CI_Model {
             ),
             array('db' => 'm_status', 'dt' => 8 ,
                 'formatter' => function($d , $row){
-                    return $d;
+                    $class = "";
+                    if($d == "Open"){
+                        $class = "class='cardstatus_Open'";
+                    }else if($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
+                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination"){
+                        $class = "class='cardstatus_Approve'";
+                    }else if($d == "Driver Close Job"){
+                        $class = "class='cardstatus_Done'";
+                    }else if($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel"){
+                        $class = "class='cardstatus_Done'";
+                    }
+                    $htlml = '<span '.$class.'>'.$d.'</span>';
+                    return $htlml;
                 }
             ),
         );
@@ -254,7 +278,19 @@ class Drivers_model extends CI_Model {
             ),
             array('db' => 'm_status', 'dt' => 8 ,
                 'formatter' => function($d , $row){
-                    return $d;
+                    $class = "";
+                    if($d == "Open"){
+                        $class = "class='cardstatus_Open'";
+                    }else if($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
+                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination"){
+                        $class = "class='cardstatus_Approve'";
+                    }else if($d == "Driver Close Job"){
+                        $class = "class='cardstatus_Done'";
+                    }else if($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel"){
+                        $class = "class='cardstatus_Done'";
+                    }
+                    $htlml = '<span '.$class.'>'.$d.'</span>';
+                    return $htlml;
                 }
             ),
         );
