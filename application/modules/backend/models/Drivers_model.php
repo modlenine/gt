@@ -395,7 +395,7 @@ class Drivers_model extends CI_Model {
             $this->db->trans_start();
             // บันทึกเวลาปัจจุบัน + 40 นาที
             $checkin_time = time(); // เวลาปัจจุบัน (timestamp)
-            $expiry_time = $checkin_time + (5 * 60); // บวกเพิ่ม 40 นาที
+            $expiry_time = $checkin_time + (40 * 60); // บวกเพิ่ม 40 นาที
 
             $arUpdateData = array(
                 "m_status" => "Driver Get Job",

@@ -34,7 +34,8 @@ $(document).ready(function(){
                     swal({
                         title: 'บันทึกข้อมูลสำเร็จ',
                         type: 'success',
-                        showConfirmButton: true,
+                        showConfirmButton: false,
+                        timer: 1500
                     }).then(function(){
                         location.href = url+'backend/admin/request_list_page/data';
                     });

@@ -89,6 +89,31 @@ class Main extends MX_Controller {
         $this->main->getDataConfirmPay();
     }
 
+    public function getDriverGetjobData()
+    {
+        $this->main->getDriverGetjobData();
+    }
+
+    public function getDriverCheckinData()
+    {
+        $this->main->getDriverCheckinData();
+    }
+
+    public function getDriverStartJobData()
+    {
+        $this->main->getDriverStartJobData();
+    }
+
+    public function getDriverCheckinDesData()
+    {
+        $this->main->getDriverCheckinDesData();
+    }
+
+    public function getDriverStopJobData()
+    {
+        $this->main->getDriverStopJobData();
+    }
+
 
 }/* End of file Main.php */
 ?>

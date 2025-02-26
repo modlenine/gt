@@ -82,62 +82,148 @@ if (!empty($personTypes)) {
                             </div>
                         </div>
                         <hr>
-                    <section id="reqPaySec" style="display:none;">
-                        <h5 class="text-center">ยอดเรียกเก็บจากลูกค้า (เงินมัดจำ)</h5>
-                        <hr>
-                        <div class="row form-group">
-                            <div class="col-md-12 form-group">
-                                <label for=""><b>จำนวนเงิน (บาท)</b></label>
-                                <input type="text" name="ip-viewfull-deposit" id="ip-viewfull-deposit" class="form-control" readonly value="<?=number_format($dataviewfull->m_deposit , 2)?>">
+                        <section id="reqPaySec" style="display:none;">
+                            <h5 class="text-center">ยอดเรียกเก็บจากลูกค้า (เงินมัดจำ)</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>จำนวนเงิน (บาท)</b></label>
+                                    <input type="text" name="ip-viewfull-deposit" id="ip-viewfull-deposit" class="form-control" readonly value="<?=number_format($dataviewfull->m_deposit , 2)?>">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea name="ip-viewfull-memo" id="ip-viewfull-memo" class="form-control" readonly><?=$dataviewfull->m_am1_memo?></textarea>
+                                </div>
                             </div>
-                            <div class="col-md-12 form-group">
-                                <label for=""><b>หมายเหตุ</b></label>
-                                <textarea name="ip-viewfull-memo" id="ip-viewfull-memo" class="form-control" readonly><?=$dataviewfull->m_am1_memo?></textarea>
+                            <hr>
+                                <h5 class="text-center">ยืนยันการโอนเงิน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 text-center">
+                                    <p><b>กรุณาโอนเงิน เข้ามาที่บัญชีบริษัทเท่านั้น หลังโอนเสร็จกรุณาแนบหลักฐานการโอนเงินเข้ามาในระบบ เพื่อยืนยันการโอนเงิน</b></p>
+                                    <p>
+                                        <span class="mr-2"><b>เลขที่บัญชี : </b> 123456789</span>
+                                        <span class="mr-2"><b>ชื่อบัญชี : </b>บริษัท จีที ทรานสปอร์ต จำกัด</span>
+                                        <span class="mr-2"><b>ธนาคาร : </b>กสิกรไทย</span>
+                                    </p>
+                                    <p>
+                                        <span class="mr-2"><b>เลขที่บัญชี : </b> 123456789</span>
+                                        <span class="mr-2"><b>ชื่อบัญชี : </b>บริษัท จีที ทรานสปอร์ต จำกัด</span>
+                                        <span class="mr-2"><b>ธนาคาร : </b>กสิกรไทย</span>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
-                            <h5 class="text-center">ยืนยันการโอนเงิน</h5>
-                        <hr>
-                        <div class="row form-group">
-                            <div class="col-md-12 text-center">
-                                <p><b>กรุณาโอนเงิน เข้ามาที่บัญชีบริษัทเท่านั้น หลังโอนเสร็จกรุณาแนบหลักฐานการโอนเงินเข้ามาในระบบ เพื่อยืนยันการโอนเงิน</b></p>
-                                <p>
-                                    <span class="mr-2"><b>เลขที่บัญชี : </b> 123456789</span>
-                                    <span class="mr-2"><b>ชื่อบัญชี : </b>บริษัท จีที ทรานสปอร์ต จำกัด</span>
-                                    <span class="mr-2"><b>ธนาคาร : </b>กสิกรไทย</span>
-                                </p>
-                                <p>
-                                    <span class="mr-2"><b>เลขที่บัญชี : </b> 123456789</span>
-                                    <span class="mr-2"><b>ชื่อบัญชี : </b>บริษัท จีที ทรานสปอร์ต จำกัด</span>
-                                    <span class="mr-2"><b>ธนาคาร : </b>กสิกรไทย</span>
-                                </p>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group text-center">
+                                    <label for=""><b>จำนวนเงินที่โอน</b></label>
+                                    <input type="number" name="ip-confirmNumPay" id="ip-confirmNumPay" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-12 form-group text-center">
-                                <label for=""><b>จำนวนเงินที่โอน</b></label>
-                                <input type="number" name="ip-confirmNumPay" id="ip-confirmNumPay" class="form-control">
+                            <div id="show_file_confirmPay" class="row form-group"></div>
+                            <div class="row form-group sec_waitConfirm" style="display:none;">
+                                <div class="col-md-12">
+                                    <div id="fd_files1" class="dropzone"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div id="show_file_confirmPay" class="row form-group"></div>
-                        <div class="row form-group sec_waitConfirm" style="display:none;">
-                            <div class="col-md-12">
-                                <div id="fd_files1" class="dropzone"></div>
+                            <div class="row form-group sec_waitConfirm" style="display:none;">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="button" id="btn_confirmPay" name="btn_confirmPay" class="btn btn-success btn-block"><i class="dw dw-diskette2 mr-2"></i>ยืนยัน</button>
+                                </div>
+                                <div class="col-md-4"></div>
                             </div>
-                        </div>
-                        <div class="row form-group sec_waitConfirm" style="display:none;">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4">
-                                <button type="button" id="btn_confirmPay" name="btn_confirmPay" class="btn btn-success btn-block"><i class="dw dw-diskette2 mr-2"></i>ยืนยัน</button>
+                        </section>
+                            <!-- <div style="height:100px;"></div> -->
+                        <section id="sec-showcus-getjob" style="display:none;">
+                            <h5 class="text-center">ข้อมูลคนขับ</h5>
+                            <div class="row form-group text-center mt-3">
+                                <div class="col-md-12">
+                                    <p>
+                                        <span id="cus-drivername"></span>
+                                        <span id="cus-drivertel"></span>
+                                    </p>
+                                    <p>
+                                        <span id="cus-drivergetjob-datetime"></span>
+                                    </p>
+                                    <p>
+                                        <span id="cus-driverCheckin-datetime"></span>
+                                    </p>
+                                    <p>
+                                        <span id="cus-driverCheckinDes-datetime"></span>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="col-md-4"></div>
-                        </div>
-                    </section>
-                        <!-- <div style="height:100px;"></div> -->
+                        </section>
+
+                        <section id="sec-dv_start-customer" style="display:none;">
+                            <h5 class="text-center">รายละเอียดการเริ่มงาน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ภาพประกอบ</b></label>
+                                    <div id="show_imgStart-cus"></div>
+                                </div>
+
+                                <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
+                                <div id="image-modal" class="modal">
+                                    <span class="modal-close">&times;</span>
+                                    <img class="modal-content" id="modal-img">
+                                </div>
+
+
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea style="height:80px;" class="form-control" name="dv-ip-memostart" id="dv-ip-memostart"></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="start-datashow-cus-drivername"></label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="start-datashow-cus-datetime"></label>
+                                </div>
+                            </div>
+                            <hr>
+                        </section>
+
+                        <section id="sec-dv_stop-customer" style="display:none;">
+                            <h5 class="text-center">รายละเอียดการปิดงาน</h5>
+                            <hr>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ภาพประกอบ</b></label>
+                                    <div id="show_imgStop-cus"></div>
+                                </div>
+
+                                <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
+                                <div id="image-modal" class="modal">
+                                    <span class="modal-close">&times;</span>
+                                    <img class="modal-content" id="modal-img">
+                                </div>
+
+
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>หมายเหตุ</b></label>
+                                    <textarea style="height:80px;" class="form-control" name="dv-ip-memostop" id="dv-ip-memostop"></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="stop-datashow-cus-drivername"></label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="" id="stop-datashow-cus-datetime"></label>
+                                </div>
+                            </div>
+                            <hr>
+                        </section>
+
                     </div>
 
                 </div>
             </div>
+
 
             <div class="row form-group mt-2">
                 <div class="col-md-12">
@@ -263,18 +349,23 @@ if (!empty($personTypes)) {
     let totalprice = "<?php echo $dataviewfull->m_totalprice?>";
     let userid = "<?php echo $dataviewfull->m_cusid ?>";
     const getapikey = "<?php echo get_googlemap_apikey(); ?>";
-      // ฟังก์ชันเริ่มต้น
-      function initMap() {
+
+    let map;
+    let driverMarker;
+    let currentLocation;
+
+    // ฟังก์ชันเริ่มต้น
+    function initMap() {
         // สร้างแผนที่
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 7,
-          center: { lat: 13.736717, lng: 100.523186 }, // ตั้งค่าเริ่มต้น (กรุงเทพฯ)
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 7,
+            center: { lat: 13.736717, lng: 100.523186 }, // ตั้งค่าเริ่มต้น (กรุงเทพฯ)
         });
 
         // สร้างบริการ Directions
         const directionsService = new google.maps.DirectionsService();
         const directionsRenderer = new google.maps.DirectionsRenderer({
-          map: map,
+            map: map,
         });
 
         // ชื่อสถานที่ต้นทางและปลายทาง
@@ -283,20 +374,20 @@ if (!empty($personTypes)) {
 
         // สร้างคำขอเส้นทาง
         const request = {
-          origin: origin,
-          destination: destination,
-          travelMode: "DRIVING", // ประเภทการเดินทาง เช่น DRIVING, WALKING, BICYCLING, TRANSIT
+            origin: origin,
+            destination: destination,
+            travelMode: "DRIVING", // ประเภทการเดินทาง เช่น DRIVING, WALKING, BICYCLING, TRANSIT
         };
 
         // คำนวณเส้นทาง
         directionsService.route(request, (result, status) => {
-          if (status === "OK") {
+            if (status === "OK") {
             directionsRenderer.setDirections(result); // แสดงเส้นทางบนแผนที่
-          } else {
+            } else {
             console.error("เกิดข้อผิดพลาดในการคำนวณเส้นทาง:", status);
-          }
+            }
         });
-      }
+    }
 
       // เรียกใช้ฟังก์ชันเมื่อโหลดหน้า
 //   window.onload = initMap;

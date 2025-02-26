@@ -26,7 +26,8 @@ $(document).ready(function(){
         clickSaveStopJob();
     });
 
-        // เมื่อคลิกที่รูปใน grid ให้แสดง modal พร้อมแสดงภาพขนาดใหญ่
+    // Modal Event
+    // เมื่อคลิกที่รูปใน grid ให้แสดง modal พร้อมแสดงภาพขนาดใหญ่
     $(document).on('click', '.grid-item img', function() {
         let src = $(this).attr('src');
         $('#modal-img').attr('src', src);
@@ -44,6 +45,7 @@ $(document).ready(function(){
         $('#image-modal').css('display', 'none');
         }
     });
+    // Modal Event
 
 
 }); //End ready function 
@@ -376,6 +378,35 @@ function clearDataTempByUser()
         });
     }
 }
+
+// ฟังก์ชันสำหรับเริ่มติดตามตำแหน่งแบบ realtime
+function watchDriverLocation() {
+    if (navigator.geolocation) {
+      // เริ่มติดตามตำแหน่งและรับ watchId สำหรับหยุดติดตามเมื่อไม่ต้องการแล้ว
+      const watchId = navigator.geolocation.watchPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          // เรียก updateMap เพื่ออัปเดต marker บนแผนที่
+          updateMap(lat, lng);
+        },
+        function(error) {
+          console.error("ไม่สามารถดึงตำแหน่งแบบ realtime ได้", error);
+        },
+        {
+          enableHighAccuracy: true,
+          maximumAge: 0,
+          timeout: 5000
+        }
+      );
+      return watchId;
+    } else {
+      console.error("เบราว์เซอร์นี้ไม่รองรับ Geolocation");
+    }
+}
+  
+  // เรียกใช้งานฟังก์ชันเพื่อเริ่มติดตามตำแหน่งแบบ realtime
+//   const driverWatchId = watchDriverLocation();
 
 
 
