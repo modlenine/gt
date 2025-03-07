@@ -22,6 +22,11 @@ class Driverslogin extends MX_Controller {
         $this->driverslogin->drivers_checklogin();
     }
 
+    public function register()
+    {
+        $this->load->view("drivers_register");
+    }
+
 }
 
 /* End of file Adminlogin.php */
