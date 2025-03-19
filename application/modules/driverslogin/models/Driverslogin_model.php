@@ -39,6 +39,20 @@ class Driverslogin_model extends CI_Model {
             exit();
         }
     }
+
+    public function drivers_logout()
+    {
+        $this->session->unset_userdata('dv_username');
+        $this->session->unset_userdata('dv_fname');
+        $this->session->unset_userdata('dv_lname');
+        $this->session->unset_userdata('dv_permission');
+        die();
+    }
+
+    public function uploadFile_mem_doc1()
+    {
+        uploadFile_register();
+    }
     
     
 

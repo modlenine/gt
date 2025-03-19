@@ -288,7 +288,11 @@
 				cancelButtonText:'ยกเลิก'
 			}).then((result)=> {
 				if(result.value == true){
-					location.href = url+'backend/drivers';
+					axios.post(url+'driverslogin/driver_logout').then(res=>{
+						console.log(res.data);
+						location.href = url+'backend/drivers';
+					});
+
 				}
 			});
 		}

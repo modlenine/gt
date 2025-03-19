@@ -54,6 +54,10 @@
             border-radius: 5px;
             box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
         }
+        .textRequestRegis{
+            color:#e20707;
+            font-weight:600;
+        }
 	</style>
 </head>
 
@@ -186,30 +190,30 @@
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-6 form-group">
-                                    <label for=""><b>ชื่อ : </b></label>
+                                    <label for=""><b>ชื่อ : <span class="textRequestRegis">*</span></b></label>
                                     <input type="text" name="reg-fname" id="reg-fname" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for=""><b>นามสกุล : </b></label>
-                                    <input type="text" name="reg-fname" id="reg-fname" class="form-control">
+                                    <label for=""><b>นามสกุล : <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-lname" id="reg-lname" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for=""><b>เบอร์โทร : </b></label>
-                                    <input type="text" name="reg-fname" id="reg-fname" class="form-control">
+                                    <label for=""><b>เบอร์โทร : <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-tel" id="reg-tel" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for=""><b>LINE ID : </b></label>
-                                    <input type="text" name="reg-fname" id="reg-fname" class="form-control">
+                                    <input type="text" name="reg-linenid" id="reg-lineid" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for=""><b>ทะเบียนรถ</b></label>
-                                    <input type="text" name="reg-fname" id="reg-fname" class="form-control">
+                                    <label for=""><b>ทะเบียนรถ : <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-numberplate" id="reg-numberplate" class="form-control">
                                 </div>
                             </div>
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-12 form-group">
-                                    <label for=""><b>แนบเอกสารสำเนาบัตรประชาชน</b></label>
+                                    <label for=""><b>แนบเอกสารสำเนาบัตรประชาชน <span class="textRequestRegis">*</span></b></label>
                                     <div id="dv_mem_doc1" class="dropzone"></div>
                                     <div id="show_mem_doc1"></div>
                                 </div>
@@ -217,7 +221,7 @@
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-12 form-group">
-                                    <label for=""><b>แนบเอกสารสำเนาทะเบียนบ้าน</b></label>
+                                    <label for=""><b>แนบเอกสารสำเนาทะเบียนบ้าน <span class="textRequestRegis">*</span></b></label>
                                     <div id="dv_mem_doc2" class="dropzone"></div>
                                     <div id="show_mem_doc1"></div>
                                 </div>
@@ -225,7 +229,7 @@
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-12 form-group">
-                                    <label for=""><b>แนบเอกสารสำเนาใบขับขี่</b></label>
+                                    <label for=""><b>แนบเอกสารสำเนาใบขับขี่ <span class="textRequestRegis">*</span></b></label>
                                     <div id="dv_mem_doc3" class="dropzone"></div>
                                     <div id="show_mem_doc1"></div>
                                 </div>
@@ -233,7 +237,7 @@
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-12 form-group">
-                                    <label for=""><b>แนบเอกสารสำเนากรมธรรม์ประกันภัย</b></label>
+                                    <label for=""><b>แนบเอกสารสำเนากรมธรรม์ประกันภัย <span class="textRequestRegis">*</span></b></label>
                                     <div id="dv_mem_doc4" class="dropzone"></div>
                                     <div id="show_mem_doc1"></div>
                                 </div>
@@ -259,7 +263,7 @@
 
         Dropzone.autoDiscover = false;
         let dv_mem_doc1 = new Dropzone("#dv_mem_doc1", {
-            url: url+'backend/drivers/uploadFile_mem_doc1',
+            url: url+'backend/driverslogin/uploadFile_mem_doc1',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -281,9 +285,8 @@
             init: function () {
                 this.on("sending", function (file, xhr, formData) {
                     // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
-                    formData.append("file_formno", "");
-                    formData.append("file_driverusername" , "");
-                    formData.append("file_type" , "start");
+                    formData.append("file_driverusername" , document.getElementById("reg-tel").value);
+                    formData.append("file_type" , "doc1");
                 });
                 this.on("addedfile", function(file) {
                     document.getElementById("btn-dv-saveStart").disabled = false;
@@ -375,7 +378,7 @@
         });
 
         let dv_mem_doc2 = new Dropzone("#dv_mem_doc2", {
-            url: url+'backend/drivers/uploadFile_stop',
+            url: url+'backend/driverslogin/uploadFile_mem_doc2',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -467,7 +470,7 @@
         });
 
         let dv_mem_doc3 = new Dropzone("#dv_mem_doc3", {
-            url: url+'backend/drivers/uploadFile_stop',
+            url: url+'backend/driverslogin/uploadFile_mem_doc3',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -559,7 +562,7 @@
         });
 
         let dv_mem_doc4 = new Dropzone("#dv_mem_doc4", {
-            url: url+'backend/drivers/uploadFile_stop',
+            url: url+'backend/driverslogin/uploadFile_mem_doc4',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้

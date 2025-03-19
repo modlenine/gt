@@ -22,9 +22,34 @@ class Driverslogin extends MX_Controller {
         $this->driverslogin->drivers_checklogin();
     }
 
+    public function driver_logout()
+    {
+        $this->driverslogin->drivers_logout();
+    }
+
     public function register()
     {
         $this->load->view("drivers_register");
+    }
+
+    public function uploadFile_mem_doc1()
+    {
+        $this->driverslogin->uploadFile_mem_doc1();
+    }
+
+    public function uploadFile_mem_doc2()
+    {
+        $this->driverslogin->uploadFile_mem_doc2();
+    }
+
+    public function uploadFile_mem_doc3()
+    {
+        $this->driverslogin->uploadFile_mem_doc3();
+    }
+
+    public function uploadFile_mem_doc4()
+    {
+        $this->driverslogin->uploadFile_mem_doc4();
     }
 
 }
