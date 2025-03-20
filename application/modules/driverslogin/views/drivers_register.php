@@ -20,6 +20,7 @@
 	<link rel="stylesheet" type="text/css" href="<?=base_url('assets/')?>vendors/styles/icon-font.min.css">
 	<link rel="stylesheet" type="text/css" href="<?=base_url('assets/')?>vendors/styles/style.css">
 	<link rel="stylesheet" type="text/css" href="<?=base_url('assets/')?>src/plugins/sweetalert2/sweetalert2.css">
+    <script src="<?=base_url('assets/js/axios.min.js')?>"></script>
 
     <script src="<?=base_url()?>assets/dropzone-mobile/dist/dropzone.js"></script>
 	<link href="<?=base_url()?>assets/dropzone-mobile/dist/dropzone.css" rel="stylesheet" type="text/css" />
@@ -149,7 +150,7 @@
                     <button type="button" class="btn btn-danger" data-dismiss="modal">
                         ไม่ยินยอม
                     </button>
-                    <button type="button" class="btn btn-success">
+                    <button type="button" class="btn btn-success" id="btn-save-driverregister-accept">
                         ยินยอม
                     </button>
                 </div>
@@ -190,12 +191,20 @@
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-6 form-group">
-                                    <label for=""><b>ชื่อ : <span class="textRequestRegis">*</span></b></label>
-                                    <input type="text" name="reg-fname" id="reg-fname" class="form-control">
+                                    <label for=""><b>ชื่อ (ภาษาไทย): <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-fnameTH" id="reg-fnameTH" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for=""><b>นามสกุล : <span class="textRequestRegis">*</span></b></label>
-                                    <input type="text" name="reg-lname" id="reg-lname" class="form-control">
+                                    <label for=""><b>นามสกุล (ภาษาไทย): <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-lnameTH" id="reg-lnameTH" class="form-control">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for=""><b>ชื่อ (ภาษาอังกฤษ): <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-fnameEN" id="reg-fnameEN" class="form-control">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for=""><b>นามสกุล (ภาษาอังกฤษ): <span class="textRequestRegis">*</span></b></label>
+                                    <input type="text" name="reg-lnameEN" id="reg-lnameEN" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for=""><b>เบอร์โทร : <span class="textRequestRegis">*</span></b></label>
@@ -244,9 +253,11 @@
                             </div>
                             <hr>
                             <div class="row form-group">
-                                <div class="col-md-12">
-                                    <button type="button" id="btn-save-driverregister" class="btn btn-success">ส่งข้อมูล</button>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="button" id="btn-save-driverregister" class="btn btn-success btn-block">ส่งข้อมูล</button>
                                 </div>
+                                <div class="col-md-4"></div>
                             </div>
 						</div>
 					</div>
@@ -260,10 +271,11 @@
 
     <script>
         const url = "<?php echo base_url()?>";
+        let fnameTH , lnameTH , fnameEN , lnameEN , tel , lineid , numberplate , username , regisNo;
 
         Dropzone.autoDiscover = false;
         let dv_mem_doc1 = new Dropzone("#dv_mem_doc1", {
-            url: url+'backend/driverslogin/uploadFile_mem_doc1',
+            url: url+'driverslogin/uploadFile_mem_doc1',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -281,15 +293,17 @@
             thumbnailMethod:"crop",
             thumbnailWidth: 120,
             thumbnailHeight: 120,
+            autoProcessQueue: false, // ปิดการอัปโหลดอัตโนมัติ
             // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
             init: function () {
                 this.on("sending", function (file, xhr, formData) {
                     // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
-                    formData.append("file_driverusername" , document.getElementById("reg-tel").value);
+                    formData.append("file_registerno" , regisNo);
+                    formData.append("file_driverusername" , username);
                     formData.append("file_type" , "doc1");
                 });
                 this.on("addedfile", function(file) {
-                    document.getElementById("btn-dv-saveStart").disabled = false;
+                    // document.getElementById("btn-save-driverregister").disabled = false;
                 });
                 this.on("success", function (file, response) {
                     file.serverFileName = JSON.parse(response).fileName;
@@ -320,12 +334,12 @@
                 });
                 this.on("removedfile" , function (file){
                     if (this.files.length === 0) {
-                        document.getElementById("btn-dv-saveStart").disabled = true;
+                        // document.getElementById("btn-dv-saveStart").disabled = true;
                     }
                     if(file.serverFileName){
                         //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
                         console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
-                        fetch(url+"backend/drivers/removeFile_start" , {
+                        fetch(url+"driverslogin/removeFile_mem_doc1" , {
                             method:"POST",
                             headers:{
                                 "Content-Type":"application/json"
@@ -351,34 +365,10 @@
                     done(); // เรียก callback นี้เพื่อระบุว่าการอัปโหลดเสร็จสมบูรณ์
                 });
             },
-            // resize: function(file) {
-            //     if (file.width > 1024 || file.height > 1024) {
-            //         // กำหนดขนาดใหม่
-            //         let ratio = file.width / file.height;
-            //         let newWidth = 1024;
-            //         let newHeight = 1024;
-            //         if (file.width > file.height) {
-            //             newHeight = newWidth / ratio;
-            //         } else {
-            //             newWidth = newHeight * ratio;
-            //         }
-            //         return {
-            //             srcX: 0,
-            //             srcY: 0,
-            //             srcWidth: file.width,
-            //             srcHeight: file.height,
-            //             trgX: 0,
-            //             trgY: 0,
-            //             trgWidth: newWidth,
-            //             trgHeight: newHeight
-            //         };
-            //     }
-            //     return null; // ไม่ต้องย่อขนาด
-            // }
         });
 
         let dv_mem_doc2 = new Dropzone("#dv_mem_doc2", {
-            url: url+'backend/driverslogin/uploadFile_mem_doc2',
+            url: url+'driverslogin/uploadFile_mem_doc2',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -396,16 +386,17 @@
             thumbnailMethod:"crop",
             thumbnailWidth: 120,
             thumbnailHeight: 120,
+            autoProcessQueue: false, // ปิดการอัปโหลดอัตโนมัติ
             // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
             init: function () {
                 this.on("sending", function (file, xhr, formData) {
                     // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
-                    formData.append("file_formno", "");
-                    formData.append("file_driverusername" , "");
-                    formData.append("file_type" , "stop");
+                    formData.append("file_registerno" , regisNo);
+                    formData.append("file_driverusername" , username);
+                    formData.append("file_type" , "doc2");
                 });
                 this.on("addedfile", function(file) {
-                    document.getElementById("btn-dv-saveStop").disabled = false;
+                    // document.getElementById("btn-dv-saveStop").disabled = false;
                 });
                 this.on("success", function (file, response) {
                     file.serverFileName = JSON.parse(response).fileName;
@@ -436,12 +427,12 @@
                 });
                 this.on("removedfile" , function (file){
                     if (this.files.length === 0) {
-                        document.getElementById("btn-dv-saveStop").disabled = true;
+                        // document.getElementById("btn-dv-saveStop").disabled = true;
                     }
                     if(file.serverFileName){
                         //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
                         console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
-                        fetch(url+"backend/drivers/removeFile_stop" , {
+                        fetch(url+"driverslogin/removeFile_mem_doc2" , {
                             method:"POST",
                             headers:{
                                 "Content-Type":"application/json"
@@ -470,7 +461,7 @@
         });
 
         let dv_mem_doc3 = new Dropzone("#dv_mem_doc3", {
-            url: url+'backend/driverslogin/uploadFile_mem_doc3',
+            url: url+'driverslogin/uploadFile_mem_doc3',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -488,16 +479,17 @@
             thumbnailMethod:"crop",
             thumbnailWidth: 120,
             thumbnailHeight: 120,
+            autoProcessQueue: false, // ปิดการอัปโหลดอัตโนมัติ
             // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
             init: function () {
                 this.on("sending", function (file, xhr, formData) {
                     // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
-                    formData.append("file_formno", "");
-                    formData.append("file_driverusername" , "");
-                    formData.append("file_type" , "stop");
+                    formData.append("file_registerno" , regisNo);
+                    formData.append("file_driverusername" , username);
+                    formData.append("file_type" , "doc3");
                 });
                 this.on("addedfile", function(file) {
-                    document.getElementById("btn-dv-saveStop").disabled = false;
+                    // document.getElementById("btn-dv-saveStop").disabled = false;
                 });
                 this.on("success", function (file, response) {
                     file.serverFileName = JSON.parse(response).fileName;
@@ -528,12 +520,12 @@
                 });
                 this.on("removedfile" , function (file){
                     if (this.files.length === 0) {
-                        document.getElementById("btn-dv-saveStop").disabled = true;
+                        // document.getElementById("btn-dv-saveStop").disabled = true;
                     }
                     if(file.serverFileName){
                         //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
                         console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
-                        fetch(url+"backend/drivers/removeFile_stop" , {
+                        fetch(url+"driverslogin/removeFile_mem_doc3" , {
                             method:"POST",
                             headers:{
                                 "Content-Type":"application/json"
@@ -562,7 +554,7 @@
         });
 
         let dv_mem_doc4 = new Dropzone("#dv_mem_doc4", {
-            url: url+'backend/driverslogin/uploadFile_mem_doc4',
+            url: url+'driverslogin/uploadFile_mem_doc4',
             paramName: "file",
             maxFilesize: 10, // MB
             acceptedFiles: "image/*", // กำหนดประเภทของไฟล์ที่สามารถอัพโหลดได้
@@ -580,16 +572,17 @@
             thumbnailMethod:"crop",
             thumbnailWidth: 120,
             thumbnailHeight: 120,
+            autoProcessQueue: false, // ปิดการอัปโหลดอัตโนมัติ
             // resizeMethod: 'contain', // วิธีการย่อขนาด สามารถใช้ contain, crop, หรือ none
             init: function () {
                 this.on("sending", function (file, xhr, formData) {
                     // ส่งพารามิเตอร์เพิ่มเติมไปด้วย
-                    formData.append("file_formno", "");
-                    formData.append("file_driverusername" , "");
-                    formData.append("file_type" , "stop");
+                    formData.append("file_registerno" , regisNo);
+                    formData.append("file_driverusername" , username);
+                    formData.append("file_type" , "doc4");
                 });
                 this.on("addedfile", function(file) {
-                    document.getElementById("btn-dv-saveStop").disabled = false;
+                    // document.getElementById("btn-dv-saveStop").disabled = false;
                 });
                 this.on("success", function (file, response) {
                     file.serverFileName = JSON.parse(response).fileName;
@@ -620,12 +613,12 @@
                 });
                 this.on("removedfile" , function (file){
                     if (this.files.length === 0) {
-                        document.getElementById("btn-dv-saveStop").disabled = true;
+                        // document.getElementById("btn-dv-saveStop").disabled = true;
                     }
                     if(file.serverFileName){
                         //ส่งคำขอลบไฟล์ไปยังเซอร์เวอร์
                         console.log("ลบไฟล์:", file.serverFileName); // log ชื่อไฟล์ก่อนส่งคำขอลบ
-                        fetch(url+"backend/drivers/removeFile_stop" , {
+                        fetch(url+"driverslogin/removeFile_mem_doc4" , {
                             method:"POST",
                             headers:{
                                 "Content-Type":"application/json"

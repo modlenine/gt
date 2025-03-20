@@ -421,11 +421,12 @@ function uploadFile_register()
 {
     if (!empty($_FILES)) {
         //target
-        $targetDir = "uploads/fileuploads_dv_member_temp/";
+        $targetDir = "uploads/fileuploads_dv_member/";
 
         //parameter
         $file_driverusername = $_POST['file_driverusername'];
         $file_type = $_POST['file_type'];
+        $file_registerno = $_POST['file_registerno'];
         // paramenter
 
         //uniqid
@@ -442,17 +443,18 @@ function uploadFile_register()
             $filename_type = $path_parts['extension'];
         }
 
-        $filenameNotResize = substr_replace($fileName,  $file_driverusername . "-" . $uniqueFileName . "-" . $file_type.".". $filename_type, 0);
+        $filenameNotResize = substr_replace($fileName, $file_registerno."-".$uniqueFileName . "-" . $file_type.".". $filename_type, 0);
         move_uploaded_file($_FILES["file"]["tmp_name"], $targetDir . $filenameNotResize);
 
         $arsaveFileData = array(
+            "f_registerno" => $file_registerno,
             "f_driverusername" => $file_driverusername,
             "f_path" => $targetDir,
             "f_type" => $file_type,
             "f_name" => $filenameNotResize,
             "f_datetime" => Date("Y-m-d H:i:s")
         );
-        if(imagefn()->db->insert("files_dv_member_temp" , $arsaveFileData))
+        if(imagefn()->db->insert("files_dv_member" , $arsaveFileData))
         {
             echo json_encode(
                 [

@@ -37,9 +37,19 @@ class Driverslogin extends MX_Controller {
         $this->driverslogin->uploadFile_mem_doc1();
     }
 
+    public function removeFile_mem_doc1()
+    {
+        $this->driverslogin->removeFile_mem_doc1();
+    }
+
     public function uploadFile_mem_doc2()
     {
         $this->driverslogin->uploadFile_mem_doc2();
+    }
+
+    public function removeFile_mem_doc2()
+    {
+        $this->driverslogin->removeFile_mem_doc2();
     }
 
     public function uploadFile_mem_doc3()
@@ -47,9 +57,24 @@ class Driverslogin extends MX_Controller {
         $this->driverslogin->uploadFile_mem_doc3();
     }
 
+    public function removeFile_mem_doc3()
+    {
+        $this->driverslogin->removeFile_mem_doc3();
+    }
+
     public function uploadFile_mem_doc4()
     {
         $this->driverslogin->uploadFile_mem_doc4();
+    }
+
+    public function removeFile_mem_doc4()
+    {
+        $this->driverslogin->removeFile_mem_doc4();
+    }
+
+    public function saveRegisterAccept()
+    {
+        $this->driverslogin->saveRegisterAccept();
     }
 
 }

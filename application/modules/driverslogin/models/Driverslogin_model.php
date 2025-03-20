@@ -53,6 +53,95 @@ class Driverslogin_model extends CI_Model {
     {
         uploadFile_register();
     }
+
+    public function removeFile_mem_doc1()
+    {
+        removeFile_register();
+    }
+
+    public function uploadFile_mem_doc2()
+    {
+        uploadFile_register();
+    }
+
+    public function removeFile_mem_doc2()
+    {
+        removeFile_register();
+    }
+
+    public function uploadFile_mem_doc3()
+    {
+        uploadFile_register();
+    }
+
+    public function removeFile_mem_doc3()
+    {
+        removeFile_register();
+    }
+
+    public function uploadFile_mem_doc4()
+    {
+        uploadFile_register();
+    }
+
+    public function removeFile_mem_doc4()
+    {
+        removeFile_register();
+    }
+
+    public function saveRegisterAccept()
+    {
+        $this->db->trans_start();
+
+        $fnameTH = $this->input->post("fnameTH");
+        $lnameTH = $this->input->post("lnameTH");
+        $fnameEN = $this->input->post("fnameEN");
+        $lnameEN = $this->input->post("lnameEN");
+        $tel = $this->input->post("tel");
+        $lineid = $this->input->post("lineid");
+        $numberplate = $this->input->post("numberplate");
+        $username = $this->input->post("username");
+        $registerNo = getRegisNo();
+
+        $arInsert = array(
+            "dv_username" => $username,
+            "dv_fnameth" => $fnameTH,
+            "dv_lnameth" => $lnameTH,
+            "dv_fnameen" => $fnameEN,
+            "dv_lnameen" => $lnameEN,
+            "dv_tel" => $tel,
+            "dv_lineid" => $lineid,
+            "dv_number_plate" => $numberplate,
+            "dv_registerno" => $registerNo,
+            "dv_permission" => "Driver",
+            "dv_status" => "wait approve"
+
+        );
+        $this->db->insert("member_drivers" , $arInsert);
+
+        $arInsertRe = array(
+            "regis_no" => $registerNo
+        );
+        $this->db->insert("register_no_autorun" , $arInsertRe);
+
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE){
+            $output = array(
+                "msg" => "ทำรายการไม่สำเร็จ พบปัญหาการบันทึกข้อมูล",
+                "status" => "System Failed"
+            );
+        }else{
+            $output = array(
+                "msg" => "อัพเดตข้อมูลการยืนยันการโอนเงินสำเร็จ",
+                "status" => "Insert Data Success",
+                "registerNo" => $registerNo
+            );
+            //ส่ง Emial หรือการแจ้งเตือนไปยัง Admin เพื่อให้ตรวจสอบข้อมูล
+        }
+
+        echo json_encode($output);
+    }
     
     
 
