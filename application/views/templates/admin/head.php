@@ -247,14 +247,14 @@
 					<li>
 						<div class="dropdown-divider"></div>
 					</li>
-					<!-- <li>
-						<div class="sidebar-small-cap mtext">รายงาน</div>
+					<li>
+						<div class="sidebar-small-cap mtext">Drivers</div>
 					</li>
 					<li>
-						<a href="<?=base_url('advance_report.html')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-profits-1 wdfI1"></span><span class="mtext">ประวัติการเรียกรถ</span>
+						<a href="<?=base_url('backend/admin/register_list_page')?>" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ใบสมัครรถร่วม</span>
 						</a>
-					</li> -->
+					</li>
 					
 				</ul>
 			</div>

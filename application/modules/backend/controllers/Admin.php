@@ -104,6 +104,16 @@ class Admin extends MX_Controller {
         $this->admin->getStopJobData();
     }
 
+    public function register_list_page()
+    {
+        $data = array(
+            'title' => "Register list page"
+        );
+        $this->load->view("templates/admin/head");
+        $this->load->view("request_list" , $data);
+        $this->load->view("templates/admin/footer");
+    }
+
 
 }
 

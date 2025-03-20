@@ -114,6 +114,7 @@ class Driverslogin_model extends CI_Model {
             "dv_number_plate" => $numberplate,
             "dv_registerno" => $registerNo,
             "dv_permission" => "Driver",
+            "dv_privacy_status" => "yes",
             "dv_status" => "wait approve"
 
         );
