@@ -110,7 +110,25 @@ class Admin extends MX_Controller {
             'title' => "Register list page"
         );
         $this->load->view("templates/admin/head");
-        $this->load->view("request_list" , $data);
+        $this->load->view("register_list" , $data);
+        $this->load->view("templates/admin/footer");
+    }
+
+    public function load_register_list()
+    {
+        $this->admin->load_register_list();
+    }
+
+    public function register_viewfull($registerNo)
+    {
+        $registerData = $this->admin->get_registerdata_viewfull($registerNo);
+        $data = array(
+            "title" => "Register viewfull page",
+            "registerData" => $registerData,
+            "registerNo" => $registerNo
+        );
+        $this->load->view("templates/admin/head");
+        $this->load->view("register_viewfull" , $data);
         $this->load->view("templates/admin/footer");
     }
 

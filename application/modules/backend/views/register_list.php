@@ -15,17 +15,14 @@
                         <div class="row form-group mt-3">
                         </div>
 
-                        <table id="tbl_requestList" class="table table-striped table-bordered" cellspacing="0">
+                        <table id="tbl_registerList" class="table table-striped table-bordered" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>เลขที่เอกสาร</th>
-                                    <th class="">วันที่</th>
-                                    <th class="">ชื่อลูกค้า</th>
+                                    <th class="">วันที่ลงทะเบียน</th>
+                                    <th class="">ชื่อ-สกุล</th>
                                     <th class="">เบอร์โทร</th>
-                                    <th class="">ต้นทาง</th>
-                                    <th class="">ปลายทาง</th>
-                                    <th class="">ประเภทรถ</th>
-                                    <th class="">ยอดเรียกเก็บ</th>
+                                    <th class="">ทะเบียนรถ</th>
                                     <th class="">สถานะ</th>
                                 </tr>
                             </thead>
@@ -41,20 +38,21 @@
 
 <script>
     $(document).ready(function(){
-        let param = "<?php echo $param; ?>";
-        loadRequestList();
-        function loadRequestList()
+
+        loadRegisterList();
+
+        function loadRegisterList()
         {
             let thid = 1;
-            $('#tbl_requestList thead th').each(function() {
+            $('#tbl_registerList thead th').each(function() {
                 var title = $(this).text();
-                $(this).html(title + ' <input type="text" id="tbl_requestList'+thid+'" class="col-search-input" placeholder="Search ' + title + '" />');
+                $(this).html(title + ' <input type="text" id="tbl_registerList'+thid+'" class="col-search-input" placeholder="Search ' + title + '" />');
                 thid++;
             });
 
-            $('#tbl_requestList').DataTable().destroy();
+            $('#tbl_registerList').DataTable().destroy();
 
-            let table = $('#tbl_requestList').DataTable({
+            let table = $('#tbl_registerList').DataTable({
                         "scrollX": true,
                         "processing": true,
                         "serverSide": true,
@@ -64,12 +62,12 @@
                             for (let i = 0; i < data.columns["length"]; i++) {
                                 let col_search_val = data.columns[i].search.search;
                                 if (col_search_val !== "") {
-                                    $("input", $("#tbl_prlist thead th")[i]).val(col_search_val);
+                                    $("input", $("#tbl_registerList thead th")[i]).val(col_search_val);
                                 }
                             }
                         },
                         "ajax": {
-                            "url":url+"backend/admin/request_list_table/"+param,
+                            "url":url+"backend/admin/load_register_list",
                             "type": "POST",
                             "data":function(){
                                 // d.filter_formno = filter_formno;
@@ -88,7 +86,6 @@
                           {targets: "_all",orderable: false},
                           {targets: [0 , 1 , 2],width: "120px",},
                           {targets: [4 , 5],width: "150px",},
-                          {targets: [8],width:"150px",},
                         ],
             });
 
