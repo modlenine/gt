@@ -48,7 +48,7 @@ async function getRegisterData()
                 let doc2 = res.data.doc2;
                 let doc3 = res.data.doc3;
                 let doc4 = res.data.doc4;
-                let registerdata = res.data.registerdata;
+                registerData = res.data.registerdata;
 
                 // สร้าง grid แสดงรูปภาพจาก resultFiles
                 let imageGrid1 = $('#show_imgdoc1-admin');
@@ -121,7 +121,7 @@ async function getRegisterData()
                     imageGrid4.append('<p>ไม่พบรูปภาพ</p>');
                 }
 
-                await checkRegisStatus(registerdata.dv_status);
+                await checkRegisStatus(registerData);
             }
         }
     } catch (error) {
@@ -156,9 +156,13 @@ async function saveRegisterApprove(approveChoice)
     }
 }
 
-function checkRegisStatus(regisStatus){
-    if(regisStatus === "wait approve"){
+function checkRegisStatus(registerData){
+    if(registerData.dv_status === "wait approve"){
         $("#btn-approveRegis").css('display' , '');
+    }else if(registerData.dv_status === "active" || registerData.dv_status === "not active"){
+        $('input:radio[name="ip-regis-appro"][value="' + registerData.dv_approve_status + '"]').prop('checked', true);
+        $('input:radio[name="ip-regis-appro"]').attr('onclick' , 'return false');
+        $('#ip-regis-memo').val(registerData.dv_approve_memo).prop('readonly' , true);
     }else{
         $("#btn-approveRegis").css('display' , 'none');
     }

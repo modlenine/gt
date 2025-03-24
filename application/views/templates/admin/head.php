@@ -251,8 +251,18 @@
 						<div class="sidebar-small-cap mtext">Drivers</div>
 					</li>
 					<li>
-						<a href="<?=base_url('backend/admin/register_list_page')?>" class="dropdown-toggle no-arrow">
-							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ใบสมัครรถร่วม</span>
+						<a href="<?=base_url('backend/admin/register_list_page/waitapprove')?>" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ใบสมัครรถร่วม [รออนุมัติ]</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?=base_url('backend/admin/register_list_page/active')?>" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ใบสมัครรถร่วม [อนุมัติแล้ว]</span>
+						</a>
+					</li>
+					<li>
+						<a href="<?=base_url('backend/admin/register_list_page/notapprove')?>" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ใบสมัครรถร่วม [ไม่อนุมัติ]</span>
 						</a>
 					</li>
 					

@@ -38,10 +38,10 @@
 
 <script>
     $(document).ready(function(){
+        let listtype = "<?php echo $listtype; ?>";
+        loadRegisterList(listtype);
 
-        loadRegisterList();
-
-        function loadRegisterList()
+        function loadRegisterList(listtype)
         {
             let thid = 1;
             $('#tbl_registerList thead th').each(function() {
@@ -67,7 +67,7 @@
                             }
                         },
                         "ajax": {
-                            "url":url+"backend/admin/load_register_list",
+                            "url":url+"backend/admin/load_register_list/"+listtype,
                             "type": "POST",
                             "data":function(){
                                 // d.filter_formno = filter_formno;

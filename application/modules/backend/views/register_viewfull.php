@@ -88,4 +88,5 @@
 <script src="<?=base_url('assets/js/register_viewfull.js?v='.filemtime('./assets/js/register_viewfull.js'))?>"></script>
 <script>
     let registerNo = "<?php echo $registerNo; ?>";
+    let registerData = "";
 </script>

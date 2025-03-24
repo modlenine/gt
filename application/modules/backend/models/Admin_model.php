@@ -715,10 +715,74 @@ class Admin_model extends CI_Model {
         echo json_encode($output);
     }
 
-    public function load_register_list()
+    public function load_register_list_waitapprove()
     {
         // DB table to use
-        $table = 'register_list';
+        $table = 'register_list_waitapprove';
+
+        // Table's primary key
+        $primaryKey = 'dv_autoid';
+
+        $columns = array(
+            array('db' => 'dv_registerno', 'dt' => 0,
+                'formatter' => function($d , $row){
+                    $output ='
+                    <a href="'.base_url('backend/admin/register_viewfull/').$d.'" class="select_formno"
+                    ><b>'.$d.'</b></a>
+                    ';
+                    return $output;
+                }
+            ),
+            array('db' => 'dv_register_datetime', 'dt' => 1 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'dv_fullname', 'dt' => 2 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'dv_tel', 'dt' => 3 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'dv_number_plate', 'dt' => 4 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'dv_status', 'dt' => 5 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => getDb()->db_username,
+            'pass' => getDb()->db_password,
+            'db'   => getDb()->db_name,
+            'host' => getDb()->db_host
+        );
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        * If you just want to use the basic configuration for DataTables with PHP
+        * server-side, there is no need to edit below this line.
+        */
+        require('server-side/scripts/ssp.class.php');
+
+        echo json_encode(
+            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
+        );
+    }
+
+    public function load_register_list_active()
+    {
+        // DB table to use
+        $table = 'register_list_active';
 
         // Table's primary key
         $primaryKey = 'dv_autoid';
@@ -863,10 +927,17 @@ class Admin_model extends CI_Model {
             $approveChoice = $this->input->post("approveChoice");
             $memo = $this->input->post("memo");
 
+            $approveStatus = "";
+            if($approveChoice == "อนุมัติ"){
+                $approveStatus = "active";
+            }else{
+                $approveStatus = "not active";
+            }
+
             $arsave = array(
                 "dv_approve_memo" => $memo,
                 "dv_approve_status" => $approveChoice,
-                "dv_status" => "active"
+                "dv_status" => $approveStatus
             );
 
             $this->db->where("dv_registerno" , $registerNo);

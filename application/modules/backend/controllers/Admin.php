@@ -104,19 +104,24 @@ class Admin extends MX_Controller {
         $this->admin->getStopJobData();
     }
 
-    public function register_list_page()
+    public function register_list_page($type)
     {
         $data = array(
-            'title' => "Register list page"
+            'title' => "Register list page",
+            'listtype' => $type
         );
         $this->load->view("templates/admin/head");
         $this->load->view("register_list" , $data);
         $this->load->view("templates/admin/footer");
     }
 
-    public function load_register_list()
+    public function load_register_list($type)
     {
-        $this->admin->load_register_list();
+        if($type == "waitapprove"){
+            $this->admin->load_register_list_waitapprove();
+        }else if($type == "active"){
+            $this->admin->load_register_list_active();
+        }
     }
 
     public function register_viewfull($registerNo)
