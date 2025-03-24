@@ -134,7 +134,7 @@
 	if($this->session->dv_username == ""){
 		$fnamedata = "Gust";
 	}else{
-		$fnamedata = $this->session->dv_fname." ".$this->session->dv_lname;
+		$fnamedata = $this->session->dv_fnameth." ".$this->session->dv_lnameth;
 	}
 ?>
 

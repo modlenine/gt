@@ -20,6 +20,12 @@ function isEnglishOnly(text) {
     return /^[A-Za-z]+$/.test(text);
 }
 
+function validatePassword(password) {
+    // ต้องมีอย่างน้อย 4 ตัว และมีได้เฉพาะตัวอักษรภาษาอังกฤษและตัวเลข
+    const passwordRegex = /^(?=.{4,})[A-Za-z0-9]+$/;
+    return passwordRegex.test(password);
+}
+
 async function saveDataRegisterAccept()
 {
     //savedata
@@ -34,6 +40,7 @@ async function saveDataRegisterAccept()
         formdata.append('lineid', lineid);
         formdata.append('numberplate', numberplate);
         formdata.append('username', username);
+        formdata.append('password' , password);
 
         // ส่งข้อมูลไปยัง backend
         const res = await axios.post(url + 'driverslogin/saveRegisterAccept', formdata);
@@ -68,6 +75,7 @@ function validateAndSave() {
     tel        = document.getElementById("reg-tel").value.trim();
     lineid     = document.getElementById("reg-lineid").value.trim(); // ไม่บังคับก็ได้
     numberplate= document.getElementById("reg-numberplate").value.trim();
+    password   = document.getElementById("reg-password").value.trim();
   
     // เช็กชื่อ (ภาษาไทย)
     if (fnameTH === "") {
@@ -153,6 +161,12 @@ function validateAndSave() {
     }else if(dv_mem_doc4.files.length == 0){
         swal({
             title: 'กรุณาอัพโหลดสำเนากรมธรรม์ประกันภัย หรือ ถ่ายรูปกรมธรรม์ประกันภัย',
+            type: 'warning',
+            showConfirmButton: true,
+        });
+    }else if(!validatePassword(password)){
+        swal({
+            title: 'กรุณาตั้งรหัสผ่านที่ประกอบไปด้วย ภาษาอังกฤษ หรือ ตัวเลขเท่านั้น อย่างน้อย 4 ตัวขึ้นไป',
             type: 'warning',
             showConfirmButton: true,
         });

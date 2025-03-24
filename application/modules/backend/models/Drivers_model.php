@@ -656,7 +656,7 @@ class Drivers_model extends CI_Model {
             FROM main WHERE m_formno = ? AND m_dv_user_checkin = ?
             ",array($formno , $driverUsername));
 
-            $drivername = getDriverData($driverUsername)->dv_fname." ".getDriverData($driverUsername)->dv_lname;
+            $drivername = getDriverData($driverUsername)->dv_fnameth." ".getDriverData($driverUsername)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล CheckIn สำเร็จ",
@@ -688,7 +688,7 @@ class Drivers_model extends CI_Model {
             FROM main WHERE m_formno = ? AND m_dv_user_checkindes = ?
             ",array($formno , $driverUsername));
 
-            $drivername = getDriverData($driverUsername)->dv_fname." ".getDriverData($driverUsername)->dv_lname;
+            $drivername = getDriverData($driverUsername)->dv_fnameth." ".getDriverData($driverUsername)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล CheckIn Destination สำเร็จ",
@@ -815,7 +815,7 @@ class Drivers_model extends CI_Model {
             FROM files_dv WHERE f_formno = ? AND f_driverusername = ? AND f_type = ?
             " , array($formno , $driverusername , $type));
 
-            $drivername = getDriverData($driverusername)->dv_fname." ".getDriverData($driverusername)->dv_lname;
+            $drivername = getDriverData($driverusername)->dv_fnameth." ".getDriverData($driverusername)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล Start Job สำเร็จ",
@@ -942,7 +942,7 @@ class Drivers_model extends CI_Model {
             FROM files_dv WHERE f_formno = ? AND f_driverusername = ? AND f_type = ?
             " , array($formno , $driverusername , $type));
 
-            $drivername = getDriverData($driverusername)->dv_fname." ".getDriverData($driverusername)->dv_lname;
+            $drivername = getDriverData($driverusername)->dv_fnameth." ".getDriverData($driverusername)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล Start Job สำเร็จ",

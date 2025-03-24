@@ -800,6 +800,91 @@ class Admin_model extends CI_Model {
             }
         }
     }
+
+    public function getRegisterData()
+    {
+        if(!empty($this->input->post("registerNo"))){
+            $registerNo = $this->input->post("registerNo");
+            $doc1 = $this->getRegisterFile($registerNo , "doc1");
+            $doc2 = $this->getRegisterFile($registerNo , "doc2");
+            $doc3 = $this->getRegisterFile($registerNo , "doc3");
+            $doc4 = $this->getRegisterFile($registerNo , "doc4");
+
+            $sql = $this->db->query("SELECT
+            dv_username,
+            dv_fnameth,
+            dv_lnameth,
+            dv_tel,
+            dv_number_plate,
+            DATE_FORMAT(dv_register_datetime , '%d-%M-%Y %H:%i:%s') AS dv_register_datetime,
+            DATE_FORMAT(dv_active_datetime , '%d-%M-%Y %H:%i:%s') AS dv_active_datetime,
+            dv_approve_status,
+            dv_approve_memo,
+            dv_status
+            FROM member_drivers WHERE dv_registerno = ?
+            ",array($registerNo));
+
+            $output = array(
+                "msg" => "ดึงข้อมูลไฟล์สำเร็จ" ,
+                "status" => "Select Data Success",
+                "doc1" => $doc1->result(),
+                "doc2" => $doc2->result(),
+                "doc3" => $doc3->result(),
+                "doc4" => $doc4->result(),
+                "registerdata" => $sql->row()
+            );
+        }else{
+            $output = array(
+                "msg" => "ดึงข้อมูลไฟล์ไม่สำเร็จ" ,
+                "status" => "Select Data Not Success",
+            );
+        }
+        echo json_encode($output);
+    }
+    private function getRegisterFile($registerNo , $type){
+        if(!empty($registerNo) && !empty($type)){
+            $sql = $this->db->query("SELECT
+            f_registerno,
+            f_driverusername,
+            f_path,
+            f_type,
+            f_name
+            FROM files_dv_member WHERE f_registerno = ? AND f_type = ?
+            " , array($registerNo , $type));
+
+            return $sql;
+        }
+    }
+
+    public function saveRegisterData()
+    {
+        if(!empty($this->input->post("registerNo")) && !empty($this->input->post("approveChoice"))){
+            $registerNo = $this->input->post("registerNo");
+            $approveChoice = $this->input->post("approveChoice");
+            $memo = $this->input->post("memo");
+
+            $arsave = array(
+                "dv_approve_memo" => $memo,
+                "dv_approve_status" => $approveChoice,
+                "dv_status" => "active"
+            );
+
+            $this->db->where("dv_registerno" , $registerNo);
+            $this->db->update("member_drivers" , $arsave);
+
+            $output = array(
+                "msg" => "อนุมัติรายการสำเร็จ",
+                "status" => "Update Data Success",
+            );
+        }else{
+            $output = array(
+                "msg" => "อนุมัติรายการไม่สำเร็จ",
+                "status" => "Update Data Not Success"
+            );
+        }
+
+        echo json_encode($output);
+    }
     
     
 

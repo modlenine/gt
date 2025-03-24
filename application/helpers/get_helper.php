@@ -77,7 +77,7 @@ function getRegisNo()
 {
     // check formno ซ้ำในระบบ
     $checkRowdata = get()->db->query("SELECT
-    regis_no FROM register_no_autorun ORDER BY autoid DESC LIMIT 1 
+    regis_no FROM register_no_autorun ORDER BY regis_autoid DESC LIMIT 1 
     ");
     $result = $checkRowdata->num_rows();
 
@@ -88,7 +88,7 @@ function getRegisNo()
         $formno = "REG" . $cutYear.$getMonth. "000001";
     } else {
 
-        $getFormno = $checkRowdata->row()->m_formno;
+        $getFormno = $checkRowdata->row()->regis_no;
         $cutGetYear = substr($getFormno, 3, 2); //KB2003001
         $cutNo = substr($getFormno, 7, 6); //อันนี้ตัดเอามาแค่ตัวเลขจาก CRF2003001 ตัดเหลือ 001
         $cutNo++;

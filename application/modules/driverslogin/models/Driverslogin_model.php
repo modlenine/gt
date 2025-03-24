@@ -16,12 +16,12 @@ class Driverslogin_model extends CI_Model {
             $username = $this->input->post("drivers-username");
             $password = $this->input->post("drivers-password");
 
-            $sql = $this->db->query("SELECT * FROM member_drivers WHERE dv_username =? AND dv_password=? " , array($username , $password));
+            $sql = $this->db->query("SELECT * FROM member_drivers WHERE dv_username =? AND dv_password=? AND dv_status = 'active'" , array($username , $password));
 
             if($sql->num_rows() != 0){
                 $_SESSION['dv_username'] = $sql->row()->dv_username;
-                $_SESSION['dv_fname'] = $sql->row()->dv_fname;
-                $_SESSION['dv_lname'] = $sql->row()->dv_lname;
+                $_SESSION['dv_fnameth'] = $sql->row()->dv_fnameth;
+                $_SESSION['dv_lnameth'] = $sql->row()->dv_lnameth;
                 $_SESSION['dv_permission'] = $sql->row()->dv_permission;
 
                 // insert login log
@@ -102,6 +102,7 @@ class Driverslogin_model extends CI_Model {
         $numberplate = $this->input->post("numberplate");
         $username = $this->input->post("username");
         $registerNo = getRegisNo();
+        $password = $this->input->post("password");
 
         $arInsert = array(
             "dv_username" => $username,
@@ -115,13 +116,16 @@ class Driverslogin_model extends CI_Model {
             "dv_registerno" => $registerNo,
             "dv_permission" => "Driver",
             "dv_privacy_status" => "yes",
-            "dv_status" => "wait approve"
+            "dv_status" => "wait approve",
+            "dv_register_datetime" => date("Y-m-d H:i:s"),
+            "dv_password" => $password
 
         );
         $this->db->insert("member_drivers" , $arInsert);
 
         $arInsertRe = array(
-            "regis_no" => $registerNo
+            "regis_no" => $registerNo,
+            "regis_datetime" => date("Y-m-d H:i:s")
         );
         $this->db->insert("register_no_autorun" , $arInsertRe);
 

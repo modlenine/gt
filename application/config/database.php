@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 if($_SERVER['HTTP_HOST'] == "localhost"){
-	$mysqlServer = "31.220.110.101";
+	$mysqlServer = "217.21.74.1";
 }else{
 	$mysqlServer = "localhost";
 }

@@ -251,6 +251,12 @@
                                     <div id="show_mem_doc1"></div>
                                 </div>
                             </div>
+                            <div class="row form-group">
+                                <div class="col-md-12 form-group">
+                                    <label for=""><b>ตั้งรหัสผ่าน<span class="textRequestRegis">*</span></b></label>
+                                    <input type="password" name="reg-password" id="reg-password" class="form-control">
+                                </div>
+                            </div>
                             <hr>
                             <div class="row form-group">
                                 <div class="col-md-4"></div>
@@ -271,7 +277,7 @@
 
     <script>
         const url = "<?php echo base_url()?>";
-        let fnameTH , lnameTH , fnameEN , lnameEN , tel , lineid , numberplate , username , regisNo;
+        let fnameTH , lnameTH , fnameEN , lnameEN , tel , lineid , numberplate , username , regisNo , password;
 
         Dropzone.autoDiscover = false;
         let dv_mem_doc1 = new Dropzone("#dv_mem_doc1", {

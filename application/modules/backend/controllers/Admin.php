@@ -132,6 +132,16 @@ class Admin extends MX_Controller {
         $this->load->view("templates/admin/footer");
     }
 
+    public function getRegisterData()
+    {
+        $this->admin->getRegisterData();
+    }
+
+    public function saveRegisterData()
+    {
+        $this->admin->saveRegisterData();
+    }
+
 
 }
 
