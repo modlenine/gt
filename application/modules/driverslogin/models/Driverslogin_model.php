@@ -104,47 +104,61 @@ class Driverslogin_model extends CI_Model {
         $registerNo = getRegisNo();
         $password = $this->input->post("password");
 
-        $arInsert = array(
-            "dv_username" => $username,
-            "dv_fnameth" => $fnameTH,
-            "dv_lnameth" => $lnameTH,
-            "dv_fnameen" => $fnameEN,
-            "dv_lnameen" => $lnameEN,
-            "dv_tel" => $tel,
-            "dv_lineid" => $lineid,
-            "dv_number_plate" => $numberplate,
-            "dv_registerno" => $registerNo,
-            "dv_permission" => "Driver",
-            "dv_privacy_status" => "yes",
-            "dv_status" => "wait approve",
-            "dv_register_datetime" => date("Y-m-d H:i:s"),
-            "dv_password" => $password
+        //check Duplicate Register
+        $sql = $this->db->query("SELECT
+        dv_username ,
+        dv_tel ,
+        dv_number_plate
+        FROM member_drivers WHERE dv_username = ? AND dv_tel = ? AND dv_number_plate = ?
+        " , array($username , $tel , $numberplate));
 
-        );
-        $this->db->insert("member_drivers" , $arInsert);
-
-        $arInsertRe = array(
-            "regis_no" => $registerNo,
-            "regis_datetime" => date("Y-m-d H:i:s")
-        );
-        $this->db->insert("register_no_autorun" , $arInsertRe);
-
-        $this->db->trans_complete();
-
-        if ($this->db->trans_status() === FALSE){
+        if($sql->num_rows() > 0){
             $output = array(
-                "msg" => "ทำรายการไม่สำเร็จ พบปัญหาการบันทึกข้อมูล",
-                "status" => "System Failed"
+                "msg" => "พบข้อมูลซ้ำในระบบ กรุณาติดต่อเจ้าหน้าที่",
+                "status" => "Found Duplicate Data"
             );
         }else{
-            $output = array(
-                "msg" => "อัพเดตข้อมูลการยืนยันการโอนเงินสำเร็จ",
-                "status" => "Insert Data Success",
-                "registerNo" => $registerNo
+            $arInsert = array(
+                "dv_username" => $username,
+                "dv_fnameth" => $fnameTH,
+                "dv_lnameth" => $lnameTH,
+                "dv_fnameen" => $fnameEN,
+                "dv_lnameen" => $lnameEN,
+                "dv_tel" => $tel,
+                "dv_lineid" => $lineid,
+                "dv_number_plate" => $numberplate,
+                "dv_registerno" => $registerNo,
+                "dv_permission" => "Driver",
+                "dv_privacy_status" => "yes",
+                "dv_status" => "wait approve",
+                "dv_register_datetime" => date("Y-m-d H:i:s"),
+                "dv_password" => $password
+    
             );
-            //ส่ง Emial หรือการแจ้งเตือนไปยัง Admin เพื่อให้ตรวจสอบข้อมูล
+            $this->db->insert("member_drivers" , $arInsert);
+    
+            $arInsertRe = array(
+                "regis_no" => $registerNo,
+                "regis_datetime" => date("Y-m-d H:i:s")
+            );
+            $this->db->insert("register_no_autorun" , $arInsertRe);
+    
+            $this->db->trans_complete();
+    
+            if ($this->db->trans_status() === FALSE){
+                $output = array(
+                    "msg" => "ทำรายการไม่สำเร็จ พบปัญหาการบันทึกข้อมูล",
+                    "status" => "System Failed"
+                );
+            }else{
+                $output = array(
+                    "msg" => "อัพเดตข้อมูลการยืนยันการโอนเงินสำเร็จ",
+                    "status" => "Insert Data Success",
+                    "registerNo" => $registerNo
+                );
+                //ส่ง Emial หรือการแจ้งเตือนไปยัง Admin เพื่อให้ตรวจสอบข้อมูล
+            }
         }
-
         echo json_encode($output);
     }
     

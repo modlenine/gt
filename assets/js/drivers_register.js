@@ -53,8 +53,16 @@ async function saveDataRegisterAccept()
             await dv_mem_doc4.processQueue();
 
             swal({
-                title: 'ลงทพเบียนสำเร็จ กรุณารอการตอบกลับจากเจ้าหน้าที่',
+                title: 'ลงทะเบียนสำเร็จ กรุณารอการตอบกลับจากเจ้าหน้าที่',
                 type: 'success',
+                showConfirmButton: true,
+            }).then(()=>{
+                location.href = url+'backend/drivers';
+            });
+        }else if(res.data.status == "Found Duplicate Data"){
+            swal({
+                title: 'พบข้อมูลซ้ำในระบบ กรุราติดต่อเจ้าหน้าที่',
+                type: 'error',
                 showConfirmButton: true,
             }).then(()=>{
                 location.href = url+'backend/drivers';

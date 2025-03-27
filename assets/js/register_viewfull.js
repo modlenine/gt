@@ -147,7 +147,7 @@ async function saveRegisterApprove(approveChoice)
                     type: 'success',
                     showConfirmButton: true,
                 }).then(()=>{
-                    location.href = url+'backend/admin/register_list_page';
+                    location.href = url+'backend/admin/register_list_page/waitapprove';
                 });
             }
         }

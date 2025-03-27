@@ -121,6 +121,8 @@ class Admin extends MX_Controller {
             $this->admin->load_register_list_waitapprove();
         }else if($type == "active"){
             $this->admin->load_register_list_active();
+        }else if($type == "notapprove"){
+            $this->admin->load_register_list_notapprove();
         }
     }
 

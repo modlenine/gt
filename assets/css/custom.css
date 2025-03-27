@@ -208,6 +208,10 @@
 	width: 100% !important;
 }
 
+#tbl_registerList{
+	width: 100% !important;
+}
+
 	#show_imgStart{
 		display: grid;
 		/* grid-template-columns: repeat(150, 1fr); */
