@@ -30,7 +30,7 @@ class Adminlogin_model extends CI_Model {
                 exit();
             }else{
                 echo $this->session->set_flashdata('msg', '<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง</div>');
-                header('location:' . base_url('backend/admin'));
+                header('location:' . base_url('adminlogin'));
                 exit();
             }
         }else{
@@ -38,6 +38,15 @@ class Adminlogin_model extends CI_Model {
             header('location:' . base_url('adminlogin'));
             exit();
         }
+    }
+
+    public function admin_logout()
+    {
+        $this->session->unset_userdata('am_username');
+        $this->session->unset_userdata('am_fname');
+        $this->session->unset_userdata('am_lname');
+        $this->session->unset_userdata('am_permission');
+        die();
     }
     
     

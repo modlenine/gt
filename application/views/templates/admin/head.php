@@ -293,7 +293,7 @@
 				cancelButtonText:'ยกเลิก'
 			}).then((result)=> {
 				if(result.value == true){
-					location.href = url+'login/logout';
+					location.href = url+'adminlogin';
 				}
 			});
 		}
