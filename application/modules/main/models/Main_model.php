@@ -64,17 +64,29 @@ class Main_model extends CI_Model {
 
             $this->db->insert("main" , $arSaveData);
 
-            // $message = "\n🚩 บริษัทได้รับรายการของท่านเรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \n✅ รายการเลขที่ $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination \n💸 ค่าใช้จ่ายทั้งสิ้น : $totalprice";
-            // $token = $this->session->accesstoken;
-            // $response = sendLineNotify($message, $token);
+            $message = "\n🚩 บริษัทได้รับรายการของท่านเรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \n✅ รายการเลขที่ $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination \n💸 ค่าใช้จ่ายทั้งสิ้น : $totalprice";
+            $token = $this->session->accesstoken;
+            $response = sendLineNotify($message, $token);
 
             // $messageAdmin = "\n✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination";
             // $tokenAdmin = getAdmintoken()->t_token;
             // $responseAdmin = sendLineNotify($messageAdmin, $tokenAdmin);
 
+
+            $url = "https://gttransport.co.th/gt/backend/admin/request_list_page/data/".$formno;
+
+            $token = "7761809698:AAHDQFnXNSoh6lSDlusDLOYVBpTneeA_s5M";
+            $chat_id = "-4656603888"; //GT Admin Grokup
+            $message = "<b>✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล</b>\n"
+            ."<b>เอกสารเลขที่ : </b><a href='$url'>$formno </a>\n"
+            ."<b>ต้นทางจาก : </b> $origin \n"
+            ."<b>ปลายทาง : </b> $destination";
+            $response = send_notify($token , $chat_id , $message);
+
             $output = array(
                 "msg" => "บันทึกข้อมูลสำเร็จ",
-                "status" => "Insert Data Success"
+                "status" => "Insert Data Success",
+                "notify_response" => $response
             );
         }else{
             $output = array(
@@ -532,10 +544,10 @@ class Main_model extends CI_Model {
         }
         echo json_encode($output);
     }
+
+
     
-
 }
-
 /* End of file ModelName.php */
 
 

@@ -226,13 +226,65 @@ class Login extends MX_Controller {
         $this->login->saveSignup();
     }
 
+    public function line_webhook()
+    {
+        // รับข้อมูลจาก LINE
+        $input = file_get_contents('php://input');
+        $events = json_decode($input, true);
 
+        if (!isset($events['events'])) {
+            show_error('No events', 400);
+        }
 
+        // Access Token
+        $access_token = '5a06dcd47c3cffbe3624f59c98d80453';
 
+        foreach ($events['events'] as $event) {
+            $sourceType = $event['source']['type'];
 
+            if ($sourceType === 'group') {
+                $groupId = $event['source']['groupId'];
 
+                // ตรวจสอบว่ามีอยู่หรือยัง
+                $exists = $this->db->get_where('line_groupid', ['group_id' => $groupId])->row();
 
+                if (!$exists) {
+                    $this->db->insert('line_groupid', [
+                        'group_id' => $groupId
+                    ]);
+                }
 
+                // ตอบกลับ LINE
+                $replyToken = $event['replyToken'];
+                $this->_replyMessage($replyToken, "บันทึก Group ID เรียบร้อยแล้ว", $access_token);
+            }
+        }
+    }
+
+    private function _replyMessage($replyToken, $messageText, $access_token) {
+        $url = 'https://api.line.me/v2/bot/message/reply';
+
+        $messageData = [
+            'replyToken' => $replyToken,
+            'messages' => [[
+                'type' => 'text',
+                'text' => $messageText
+            ]]
+        ];
+
+        $headers = [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $access_token
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($messageData));
+        curl_exec($ch);
+        curl_close($ch);
+    }
 
 
 
