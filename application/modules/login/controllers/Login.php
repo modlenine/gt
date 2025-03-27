@@ -152,9 +152,7 @@ class Login extends MX_Controller {
 
                 if($rsCheckuser == "Not Have Data"){
                     $this->load->view("signupbyline" , $data);
-                }else if($rsCheckuser == "Wait Allow Notify"){
-                    $this->load->view("allowlinenotify");
-                }else if($rsCheckuser == "User Activated"){
+                }else{
                     header("Location:".base_url());
                     exit(); 
                 }
