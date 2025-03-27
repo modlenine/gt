@@ -29,13 +29,13 @@ class Driverslogin_model extends CI_Model {
                 header('location:' . base_url('backend/drivers'));
                 exit();
             }else{
-                echo $this->session->set_flashdata('msg', '<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง</div>');
-                header('location:' . base_url('backend/drivers'));
+                echo $this->session->set_flashdata('msgdriver', '<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง</div>');
+                header('location:' . base_url('driverslogin'));
                 exit();
             }
         }else{
-            echo $this->session->set_flashdata('msg', '<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">กรุณาระบุชื่อผู้ใช้และรหัสผ่าน</div>');
-            header('location:' . base_url('driverlogin'));
+            echo $this->session->set_flashdata('msgdriver', '<div class="alert alert-danger" role="alert" style="font-size:15px;text-align: center;">กรุณาระบุชื่อผู้ใช้และรหัสผ่าน</div>');
+            header('location:' . base_url('driverslogin'));
             exit();
         }
     }

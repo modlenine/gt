@@ -59,7 +59,7 @@
 						<div class="login-box bg-white box-shadow border-radius-10">
 							<div class="login-title">
 								<h2 class="text-center mb-2">ล็อกอินเข้าสู่ระบบ คนขับรถ</h2>
-								<?php echo $this->session->flashdata('msg');?>
+								<?php echo $this->session->flashdata('msgdriver');?>
 								<?=$this->session->dv_username?>
 							</div>
 							<form id="frm_driverslogin" name="frm_driverslogin" action="<?=base_url('driverslogin/drivers_checklogin')?>" method="post" autocomplete="off">
