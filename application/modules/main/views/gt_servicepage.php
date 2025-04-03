@@ -6,7 +6,26 @@
     <title>เรียกใช้บริการ รถรับจ้างทั่วไป</title>
 
     <style>
+      .customRadio {
+          display: none;
+      }
 
+      .customRadio:checked + label {
+          border: 2px solid #007BFF;
+          border-radius: 10px;
+          background-color: #f0f8ff;
+      }
+      label img {
+          display: block;
+          width: 100%;
+          cursor: pointer;
+      }
+      label {
+          cursor: pointer;
+          padding: 10px;
+          display: block;
+          text-align: center;
+      }
     </style>
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3A9Mc08SyCJjtWFLFijSITvvx0UmdmFU&libraries=places"></script> -->
 </head>
@@ -22,29 +41,15 @@
                 <hr>
                 <div class="grid-container">
                     <div class="grid-item">
-                        <input type="radio" class="customRadio" id="input-choosecar-type1" name="input-choosecar" value="type1">
-                        <label for="option1">
-                            <img src="<?=base_url('uploads/image_system/motocycle-type.webp')?>" alt="input-choosecar-type1">
-                            รถมอเตอร์ไซต์
-                        </label>
-                    </div>
-                    <div class="grid-item">
-                        <input type="radio" class="customRadio" id="input-choosecar-type2" name="input-choosecar" value="type2">
-                        <label for="option2">
-                            <img src="<?=base_url('uploads/image_system/car-type.webp')?>" alt="input-choosecar-type2">
-                            รถเก๋ง
-                        </label>
-                    </div>
-                    <div class="grid-item">
                         <input type="radio" class="customRadio" id="input-choosecar-type3" name="input-choosecar" value="type3">
-                        <label for="option3">
+                        <label for="input-choosecar-type3">
                             <img src="<?=base_url('uploads/image_system/truck3-type.webp')?>" alt="input-choosecar-type3">
                             รถกระบะแคปเปลือย
                         </label>
                     </div>
                     <div class="grid-item">
                         <input type="radio" class="customRadio" id="input-choosecar-type4" name="input-choosecar" value="type4">
-                        <label for="option4">
+                        <label for="input-choosecar-type4">
                             <img src="<?=base_url('uploads/image_system/truck2-type.webp')?>" alt="input-choosecar-type4">
                             รถกระบะตอนเดียวมีหลังคา
                         </label>

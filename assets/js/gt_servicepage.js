@@ -44,6 +44,7 @@ $(document).ready(function(){
             }
             $('#input-sum-cartype').val(namecarType);
         }
+
     });
 
     $("#input-person-typeD1").change(function(){

@@ -212,7 +212,7 @@
 		</div>
 		<div class="menu-block customscroll">
 			<div class="sidebar-menu">
-				<ul id="accordion-menu">
+				<ul id="accordion-menu" class="mb-4">
 					<li class="dropdown">
 						<a href="<?=base_url('backend/admin')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-city-hall hicon"></span><span class="mtext">หน้าหลัก</span>
@@ -263,6 +263,18 @@
 					<li>
 						<a href="<?=base_url('backend/admin/register_list_page/notapprove')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ใบสมัครรถร่วม [ไม่อนุมัติ]</span>
+						</a>
+					</li>
+
+					<li>
+						<div class="dropdown-divider"></div>
+					</li>
+					<li>
+						<div class="sidebar-small-cap mtext">ตั้งค่า</div>
+					</li>
+					<li>
+						<a href="<?=base_url('backend/admin/setting_pricerate_page')?>" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-name wdfI1"></span><span class="mtext">ตั้งค่า เรทค่าบริการ</span>
 						</a>
 					</li>
 					

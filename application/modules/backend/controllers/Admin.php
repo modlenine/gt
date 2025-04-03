@@ -149,6 +149,13 @@ class Admin extends MX_Controller {
         $this->admin->saveRegisterData();
     }
 
+    public function setting_pricerate_page()
+    {
+        $this->load->view("templates/admin/head");
+        $this->load->view("setting_pricerate");
+        $this->load->view("templates/admin/footer");
+    }
+
 
 }
 
