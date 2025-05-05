@@ -173,6 +173,11 @@ class Admin extends MX_Controller {
         $this->admin->loadPricerateList();
     }
 
+    public function saveEditPricerate()
+    {
+        $this->admin->saveEditPricerate();
+    }
+
 
 }
 

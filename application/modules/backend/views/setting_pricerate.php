@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for=""><b>ตัวคูณของระยะทาง</b></label>
-                                <input type="number" name="ip-st-distant_x" id="ip-st-distant_x" class="form-control">
+                                <input type="number" name="ip-st-distance_x" id="ip-st-distance_x" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for=""><b>อัตราการบริโภคน้ำมัน</b></label>

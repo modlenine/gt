@@ -59,6 +59,7 @@
             color:#e20707;
             font-weight:600;
         }
+
 	</style>
 </head>
 

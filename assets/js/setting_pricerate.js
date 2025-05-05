@@ -3,7 +3,7 @@ $(document).ready(() => {
         // ดึงค่าจากฟอร์ม
         $('#btn_saveSettingPrice').prop('disabled' , true);
         let cartype = $('#ip-st-cartype').val();
-        let distant_x = $('#ip-st-distant_x').val();
+        let distance_x = $('#ip-st-distance_x').val();
         let fuel_consumption = $('#ip-st-fuel_consumption').val();
         let fuel_pricerate = $('#ip-st-fuel_pricerate').val();
         let ratio_x = $('#ip-st-ratio_x').val();
@@ -13,7 +13,7 @@ $(document).ready(() => {
         let missingFields = [];
 
         if (cartype === "") missingFields.push("ประเภทรถ");
-        if (distant_x === "") missingFields.push("ตัวคูณระยะทาง");
+        if (distance_x === "") missingFields.push("ตัวคูณระยะทาง");
         if (fuel_consumption === "") missingFields.push("อัตราการบริโภคน้ำมัน");
         if (fuel_pricerate === "") missingFields.push("เรทราคาน้ำมัน");
         if (ratio_x === "") missingFields.push("อัตราส่วน");
@@ -35,7 +35,7 @@ $(document).ready(() => {
         let formData = new FormData();
         formData.append('action', 'saveSettingPrice');
         formData.append('cartype', cartype);
-        formData.append('distant_x', distant_x);
+        formData.append('distance_x', distance_x);
         formData.append('fuel_consumption', fuel_consumption);
         formData.append('fuel_pricerate', fuel_pricerate);
         formData.append('ratio_x', ratio_x);
@@ -54,7 +54,7 @@ $(document).ready(() => {
                         type: 'success',
                         showConfirmButton: true,
                     }).then(() => {
-                        location.reload();
+                        location.href = url+'backend/admin/setting_pricerate_page'
                     });
                 } else {
                     swal({

@@ -274,36 +274,6 @@
     display: block;
   }
 
-  /* CSS สำหรับ Modal */
-.modal {
-	display: none; /* ซ่อน modal โดยเริ่มต้น */
-	position: fixed;
-	z-index: 1000;
-	left: 0;
-	top: 0;
-	width: 100%; 
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0,0,0,0.9); /* พื้นหลังโปร่งแสง */
-	padding-top: 60px;
-  }
-  
-  .modal-content {
-	display: block;
-	margin: auto;
-	width: 80%;
-	max-width: 700px;
-  }
-  
-  .modal-close {
-	position: absolute;
-	top: 15px;
-	right: 35px;
-	color: #fff;
-	font-size: 40px;
-	font-weight: bold;
-	cursor: pointer;
-  }
 
 #tbl_pricerateList{
 	min-width:100% !important;
