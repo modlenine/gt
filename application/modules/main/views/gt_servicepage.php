@@ -52,21 +52,21 @@
                       <div class="grid-item">
                           <input type="radio" class="customRadio" id="input-choosecar-type1" name="input-choosecar" value="type1">
                           <label for="input-choosecar-type1">
-                              <img src="<?=base_url('uploads/image_system/truck3-type.webp')?>" alt="input-choosecar-type1">
+                              <img src="<?php echo base_url('uploads/image_system/truck3-type.webp') ?>" alt="input-choosecar-type1">
                               รถกระบะคอก
                           </label>
                       </div>
                       <div class="grid-item">
                           <input type="radio" class="customRadio" id="input-choosecar-type2" name="input-choosecar" value="type2">
                           <label for="input-choosecar-type2">
-                              <img src="<?=base_url('uploads/image_system/truck2-type.webp')?>" alt="input-choosecar-type2">
+                              <img src="<?php echo base_url('uploads/image_system/truck2-type.webp') ?>" alt="input-choosecar-type2">
                               รถกระบะตู้ทึบ
                           </label>
                       </div>
                       <div class="grid-item">
                           <input type="radio" class="customRadio" id="input-choosecar-type3" name="input-choosecar" value="type3">
                           <label for="input-choosecar-type3">
-                              <img src="<?=base_url('uploads/image_system/truck1-type.webp')?>" alt="input-choosecar-type3">
+                              <img src="<?php echo base_url('uploads/image_system/truck1-type.webp') ?>" alt="input-choosecar-type3">
                               รถกระบะเปลือย
                           </label>
                       </div>
@@ -123,7 +123,7 @@
                           <h5>เลือกจุดหมายปลายทาง</h5>
                       </div>
                   </div>
-                  
+
                       <div>
                           <label for="originInput"><b>สถานที่ต้นทาง : </b></label>
                           <input class="form-control form-group" type="text" id="originInput" placeholder="ป้อนสถานที่ต้นทาง">
@@ -142,7 +142,7 @@
                     </div>
                       <p id="distance"></p>
                       <div id="map"></div>
-                  
+
               </div>
 
               <div class="card-box pd-20 height-100-p mb-30">
@@ -151,14 +151,14 @@
                           <h5>สรุปรายการ</h5>
                       </div>
                   </div>
-                  <div class="row form-group">
+                  <!-- <div class="row form-group">
                       <div class="col-md-6 form-group">
                           <button type="button" id="btn-calculate" class="btn btn-primary btn-block"><i class="dw dw-pin mr-2"></i>คำนวณค่าบริการ</button>
                       </div>
                       <div class="col-md-6 form-group">
                         <button type="button" id="btn-reset" class="btn btn-warning btn-block"><i class="dw dw-refresh2 mr-2"></i>ล้างค่า</button>
                       </div>
-                  </div>
+                  </div> -->
                   <div class="row form-group">
                       <div class="col-md-6 form-group">
                           <label for=""><b>ประเภทรถ</b></label>
@@ -205,7 +205,7 @@
                       </div>
                       <!-- <div class="col-md-6 form-group">
                           <label for=""><b>ราคารวม Vat 3%</b></label>
-                          
+
                           <div class="input-group">
                             <input type="text" name="input-sum-sumprice" id="input-sum-sumprice" class="form-control" readonly>
                             <div class="input-group-append">
@@ -237,7 +237,7 @@
                           <p>
                           4.ผู้ใช้บริการแพลตฟอร์มต้องไม่นำสิ่งของผิดกฎหมายส่งผ่านการให้บริการ ทั้งนี้ ผู้ให้บริการรถร่วมอิสระมีสิทธิยกเลิกการให้บริการได้ตามความเหมาะสม โดยบริษัท GT Transport และผู้ให้บริการรถร่วมอิสระจะไม่รับผิดชอบและไม่ต้องร่วมรับผิดในความผิดทางกฎหมายใดๆ ที่เกิดจากการดำเนินการดังกล่าว
                           </p>
-                        
+
                         </div>
                       </div>
                   </div>
@@ -253,7 +253,7 @@
       </div>
 	</div>
 </body>
-<script src="<?=base_url('assets/js/gt_servicepage.js?v='.filemtime('./assets/js/gt_servicepage.js'))?>"></script>
+<script src="<?php echo base_url('assets/js/gt_servicepage.js?v=' . filemtime('./assets/js/gt_servicepage.js')) ?>"></script>
 <script>
     const getapikey = "<?php echo get_googlemap_apikey(); ?>";
     let map;
@@ -263,6 +263,10 @@
     let destinationMarker;
     let distance = 0;
     let distanceRate = 0;
+
+    //forSelectCar
+    let carTypeValue , carTypes;
+    let totalCost = 0;
 
     //อัพเดตให้สามารถดึงตำแหน่งที่ตั้งปัจจุบันได้
     function initMap() {
@@ -288,7 +292,7 @@
 
           // กำหนดค่าให้กับ input ของ origin
           document.getElementById('originInput').value = currentLocation.lat + ', ' + currentLocation.lng;
-          
+
           // สร้าง marker สำหรับจุดต้นทางจากตำแหน่งปัจจุบัน
           if (originMarker) {
             originMarker.setMap(null);
@@ -300,7 +304,7 @@
             icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
             draggable: true
           });
-          
+
           // ปรับการแสดงผลของแผนที่ให้อยู่ที่ตำแหน่งปัจจุบัน
           map.setCenter(currentLocation);
 
@@ -310,7 +314,6 @@
           });
         }, function() {
           console.error('ไม่สามารถดึงตำแหน่งปัจจุบันได้');
-          location.href = url+'login/logout';
           return;
         });
       } else {
@@ -407,7 +410,7 @@
     //อัพเดตให้สามารถดึงตำแหน่งที่ตั้งปัจจุบันได้
 
 
-    function calculateRoute() {
+    async function calculateRoute() {
       let originInput = document.getElementById('originInput').value;
       let destinationInput = document.getElementById('destinationInput').value;
 
@@ -422,12 +425,16 @@
         suppressMarkers: true
       });
 
-      directionsService.route(request, function(result, status) {
+      directionsService.route(request, async function(result, status) {
         if (status === 'OK') {
           directionsRenderer.setDirections(result);
           distance = result.routes[0].legs[0].distance.text;
-          document.getElementById('distance').innerText = 'ระยะทาง: ' + distance;
-          document.getElementById('input-sum-distance').value = distance;
+          document.getElementById('distance').innerText = 'ระยะทาง: ' + distance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+          document.getElementById('input-sum-distance').value = distance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+          console.log(carTypeValue+' '+carTypes[carTypeValue]);
+
+          await getPricerate(carTypeValue , distance);
+          
         } else {
           console.error('เกิดข้อผิดพลาดในการคำนวณเส้นทาง: ' + status);
         }
@@ -452,10 +459,52 @@
 
       map.setCenter({ lat: 13.7563, lng: 100.5018 });
       map.setZoom(10);
+      location.reload();
     }
+
+    async function getPricerate(cartype , distance) {
+      try {
+          const formdata = new FormData();
+          formdata.append('action' , 'getPricerate');
+          formdata.append('cartype' , cartype);
+          let res = await axios.post(url + 'main/getPricerate', formdata);
+
+          console.log(res);
+          if (res.data.status == "success") {
+              let result = res.data.result;
+              //เข้าสูตรคำนวณ 
+              // ดึงค่าที่ต้องใช้มาคำนวณ
+              const distanceX = parseFloat(result.distance_x) || 0;
+              const fuelConsumption = parseFloat(result.fuel_consumption) || 1; // ป้องกันหาร 0
+              const fuelPriceRate = parseFloat(result.fuel_pricerate) || 0;
+              const ratioX = parseFloat(result.ratio_x) || 1;
+              const moneyPlus = parseFloat(result.money_plus) || 0;
+              const distanceKm = parseFloat(distance) || 0;
+
+              // สูตรการคำนวณแบบแยกขั้นตอน
+              let fuelUsed = (distanceKm * distanceX) / fuelConsumption; // ปริมาณน้ำมันที่ใช้
+              let fuelCost = fuelUsed * fuelPriceRate; // ค่าน้ำมัน
+              totalCost = (fuelCost * ratioX) + moneyPlus; // ราคาสุดท้าย
+
+              console.log('ราคาค่าบริการทั้งหมด: ', totalCost);
+              $('#input-sum-sumpriceCarDistance').val(totalCost.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+              );
+          } else {
+              console.warn('ไม่พบ pricerate:', res.data.msg);
+              console.log(cartype+''+distance);
+          }
+      } catch (error) {
+          console.error('เกิดข้อผิดพลาดในการดึง pricerate:', error);
+      }
+    }
+
+
 
     // window.onload = initMap;
 
 </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3A9Mc08SyCJjtWFLFijSITvvx0UmdmFU&libraries=places&callback=initMap"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo get_googlemap_apikey(); ?>&libraries=places&callback=initMap"></script>
 </html>

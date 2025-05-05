@@ -114,6 +114,11 @@ class Main extends MX_Controller {
         $this->main->getDriverStopJobData();
     }
 
+    public function getPricerate()
+    {
+        $this->main->getPricerate();
+    }
+
 
 
 }/* End of file Main.php */

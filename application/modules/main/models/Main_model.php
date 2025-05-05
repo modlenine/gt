@@ -545,6 +545,26 @@ class Main_model extends CI_Model {
         echo json_encode($output);
     }
 
+    public function getPricerate()
+    {
+        if($this->input->post("action") == "getPricerate"){
+            $cartype = $this->input->post("cartype");
+            $this->db->where("cartype" , $cartype);
+            $query = $this->db->get("setting_pricerate");
+
+            echo json_encode([
+                "status" => "success",
+                "msg" => "ดึงข้อมูล Price rate สำเร็จ",
+                "result" => $query->row()
+            ]);
+        }else{
+            echo json_encode([
+                "status" => "error",
+                "msg" => "ดึงข้อมูล Price rate ไม่สำเร็จ",
+            ]);
+        }
+    }
+
 
     
 }

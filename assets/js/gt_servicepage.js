@@ -25,8 +25,8 @@ $(document).ready(function () {
         // Clear calculated values
         $('#input-sum-sumpriceBeforeVat, #input-sum-personPrice, #input-sum-sumpriceCarDistance').val('');
 
-        const carTypeValue = $("input:radio[name='input-choosecar']:checked").val();
-        const carTypes = {
+        carTypeValue = $("input:radio[name='input-choosecar']:checked").val();
+        carTypes = {
             type1: 'รถกระบะคอก',
             type2: 'รถกระบะตู้ทึบ',
             type3: 'รถกระบะเปลือย'
@@ -72,8 +72,12 @@ $(document).ready(function () {
         const summary = htmlsumPerson.type1 + htmlsumPerson.type2 + htmlsumPerson.type3;
         if (summary) {
             $('#input-sum-person').html(summary);
+            // รวมราคาของทุกประเภท
+            const totalPersonPrice = (personPrice.type1 || 0) + (personPrice.type2 || 0) + (personPrice.type3 || 0);
+            $('#input-sum-personPrice').val(totalPersonPrice.toFixed(2)); // ใส่เป็นเลขทศนิยม 2 ตำแหน่ง
         } else {
             $('#input-sum-person').html('<b>-</b>');
+            $('#input-sum-personPrice').val('');
         }
     }
 

@@ -168,7 +168,7 @@ function get_googlemap_apikey()
 {
     $sql = get()->db->query("SELECT
     apikey
-    FROM apikey
+    FROM apikey WHERE id = 1
     ");
 
     return $sql->row()->apikey;
