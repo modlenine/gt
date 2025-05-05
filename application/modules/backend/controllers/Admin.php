@@ -152,8 +152,25 @@ class Admin extends MX_Controller {
     public function setting_pricerate_page()
     {
         $this->load->view("templates/admin/head");
+        $this->load->view("pricerate_list");
+        $this->load->view("templates/admin/footer");
+    }
+
+    public function addSettingPriceRate()
+    {
+        $this->load->view("templates/admin/head");
         $this->load->view("setting_pricerate");
         $this->load->view("templates/admin/footer");
+    }
+
+    public function saveSettingPrice()
+    {
+        $this->admin->saveSettingPrice();
+    }
+
+    public function loadPricerateList()
+    {
+        $this->admin->loadPricerateList();
     }
 
 

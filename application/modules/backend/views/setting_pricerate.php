@@ -13,26 +13,36 @@
                     <div class="card-box height-100-p pd-20">
                         <h3 class="text-center">ตั้งค่า เรทค่าบริการ</h3>
                         <hr>
+                        <a href="<?=base_url('backend/admin/setting_pricerate_page')?>" type="button" class="btn btn-secondary">ย้อนกลับ</a>
                         <div class="row mt-3">
                             <div class="col-md-6 form-group">
+                                <label for=""><b>เลือกประเภทรถที่ต้องการตั้งค่า</b></label>
+                                <select name="ip-st-cartype" id="ip-st-cartype" class="form-control">
+                                    <option value="">กรุณาเลือกประเภทรถ</option>
+                                    <option value="type1">รถกระบะคอก</option>
+                                    <option value="type2">รถกระบะตู้ทึบ</option>
+                                    <option value="type3">รถกระบะเปลือย</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
                                 <label for=""><b>ตัวคูณของระยะทาง</b></label>
-                                <input type="text" name="ip-st-distant_x" id="ip-st-distant_x" class="form-control">
+                                <input type="number" name="ip-st-distant_x" id="ip-st-distant_x" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for=""><b>อัตราการบริโภคน้ำมัน</b></label>
-                                <input type="text" name="ip-st-fuel_consumption" id="ip-st-fuel_consumption" class="form-control">
+                                <input type="number" name="ip-st-fuel_consumption" id="ip-st-fuel_consumption" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for=""><b>เรทราคาน้ำมัน</b></label>
-                                <input type="text" name="ip-st-fuel_pricerate" id="ip-st-fuel_pricerate" class="form-control">
+                                <input type="number" name="ip-st-fuel_pricerate" id="ip-st-fuel_pricerate" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for=""><b>อัตราส่วน</b></label>
-                                <input type="text" name="ip-st-ratio_x" id="ip-st-ratio_x" class="form-control">
+                                <input type="number" name="ip-st-ratio_x" id="ip-st-ratio_x" class="form-control">
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for=""><b>เงินบวก</b></label>
-                                <input type="text" name="ip-st-money_plus" id="ip-st-money_plus" class="form-control">
+                                <input type="number" name="ip-st-money_plus" id="ip-st-money_plus" class="form-control">
                             </div>
                         </div>
                         <hr>

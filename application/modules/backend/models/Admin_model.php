@@ -1024,6 +1024,72 @@ class Admin_model extends CI_Model {
 
         echo json_encode($output);
     }
+
+    public function saveSettingPrice()
+    {
+        if($this->input->post("action") == "saveSettingPrice"){
+            $cartype = $this->input->post("cartype");
+            $distant_x = $this->input->post("distant_x");
+            $fuel_consumption = $this->input->post("fuel_consumption");
+            $fuel_pricerate = $this->input->post("fuel_pricerate");
+            $ratio_x = $this->input->post("ratio_x");
+            $money_plus = $this->input->post("money_plus");
+
+            $sql = $this->db->query();
+        }
+    }
+
+    public function loadPricerateList()
+    {
+        // DB table to use
+        $table = 'pricerate_list';
+
+        // Table's primary key
+        $primaryKey = 'id';
+
+        $columns = array(
+            array('db' => 'cartype_name', 'dt' => 0,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+            array('db' => 'id', 'dt' => 1 ,
+                'formatter' => function($d , $row){
+                    $distance_x = $row['distance_x'];
+                    $fuel_consumption = $row['fuel_consumption'];
+                    $fuel_pricerate = $row['fuel_pricerate'];
+                    $ratio_x = $row['ratio_x'];
+                    $money_plus = $row['money_plus'];
+                    $html = "";
+                    $html .="<p><span><b>ตัวคูณของระยะทาง : </b>$distance_x</span> <span><b>อัตราการบริโภคน้ำมัน : </b></span>$fuel_consumption</p>";
+                    return $html;
+                }
+            ),
+            array('db' => 'id', 'dt' => 2 ,
+                'formatter' => function($d , $row){
+                    return $d;
+                }
+            ),
+        );
+
+        // SQL server connection information
+        $sql_details = array(
+            'user' => getDb()->db_username,
+            'pass' => getDb()->db_password,
+            'db'   => getDb()->db_name,
+            'host' => getDb()->db_host
+        );
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        * If you just want to use the basic configuration for DataTables with PHP
+        * server-side, there is no need to edit below this line.
+        */
+        require('server-side/scripts/ssp.class.php');
+
+        echo json_encode(
+            SSP::complex($_POST, $sql_details, $table, $primaryKey, $columns, null, null)
+        );
+    }
     
     
 

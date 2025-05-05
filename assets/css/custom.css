@@ -305,6 +305,10 @@
 	cursor: pointer;
   }
 
+#tbl_pricerateList{
+	min-width:100% !important;
+}
+
 @media (min-width:1024px) and (max-width:1439px){
 	
 }
