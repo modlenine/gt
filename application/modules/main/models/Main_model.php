@@ -39,54 +39,66 @@ class Main_model extends CI_Model {
     public function saveSendtoApprove()
     {
         if($this->input->post("action") == "sendtoapprove"){
+            $this->db->trans_start();
             $formno = getFormNo();
             $userId = $this->session->userId;
-            $origin = $this->input->post("origininput");
-            $destination = $this->input->post("destinationinput");
+
+            $origininput = $this->input->post("origininput");
+            $destinationinput = $this->input->post("destinationinput");
+            $cartype = $this->input->post("cartype");
+            $cartypeValue = $this->input->post("cartypeValue");
+            $distance = $this->input->post("distance");
+            $sumpricecardistance = $this->input->post("sumpricecardistance");
+            $m_person_type1 = $this->input->post("m_person_type1");
+            $m_person_type2 = $this->input->post("m_person_type2");
+            $m_person_type3 = $this->input->post("m_person_type3");
+            $personsumprice = $this->input->post("personsumprice");
             $totalprice = $this->input->post("totalprice");
-            $arSaveData = array(
+            $distanceX = $this->input->post("distanceX");
+            $fuelConsumption = $this->input->post("fuelConsumption");
+            $fuelPriceRate = $this->input->post("fuelPriceRate");
+            $ratioX = $this->input->post("ratioX");
+            $moneyPlus = $this->input->post("moneyPlus");
+
+            $data = array(
                 "m_formno" => $formno,
                 "m_cusid" => $userId,
-                "m_origininput" => $origin,
-                "m_destinationinput" => $destination,
-                "m_cartype" => $this->input->post("cartype"),
-                "m_distance" => $this->input->post("distance"),
-                "m_sumpricecardistance" => $this->input->post("sumpricecardistance"),
-                "m_personsumprice" => $this->input->post("personsumprice"),
+                "m_origininput" => $origininput,
+                "m_destinationinput" => $destinationinput,
+                "m_cartype" => $cartype,
+                "m_cartypevalue" => $cartypeValue,
+                "m_distance" => $distance,
+                "m_sumpricecardistance" => $sumpricecardistance,
+                "m_personsumprice" => $personsumprice,
                 "m_totalprice" => $totalprice,
-                "m_persontyped1" => $this->input->post("persontyped1"),
-                "m_persontyped2" => $this->input->post("persontyped2"),
-                "m_persontypee1" => $this->input->post("persontypee1"),
-                "m_persontypee2" => $this->input->post("persontypee2"),
+                "m_person_type1" => $m_person_type1,
+                "m_person_type2" => $m_person_type2,
+                "m_person_type3" => $m_person_type3,
                 "m_datetimecreate" => date("Y-m-d H:i:s"),
-                "m_status" => "Open"
+                "m_status" => "Open",
+                "m_distance_x" => $distanceX,
+                "m_fuel_consumption" => $fuelConsumption,
+                "m_fuel_pricerate" => $fuelPriceRate,
+                "m_ratio_x" => $ratioX,
+                "m_money_plus" => $moneyPlus
             );
 
-            $this->db->insert("main" , $arSaveData);
+            $this->db->insert("main" , $data);
 
-            $message = "\n🚩 บริษัทได้รับรายการของท่านเรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \n✅ รายการเลขที่ $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination \n💸 ค่าใช้จ่ายทั้งสิ้น : $totalprice";
-            $token = $this->session->accesstoken;
-            $response = sendLineNotify($message, $token);
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            $messageText = "บริษัทได้รับรายการของท่านเรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \n✅ รายการเลขที่ $formno \n🚗 ต้นทางจาก : $origininput \n🚗 ปลายทาง : $destinationinput \n💸 ค่าใช้จ่ายทั้งสิ้น : $totalprice \n คลิก : $userpage";
+            $userresponse = send_user_message($userId , $messageText);
 
-            // $messageAdmin = "\n✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination";
-            // $tokenAdmin = getAdmintoken()->t_token;
-            // $responseAdmin = sendLineNotify($messageAdmin, $tokenAdmin);
+            $groupId = getGroupID("admin");
+             $messageAdmin = "✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n🚗 ต้นทางจาก : $origininput \n🚗 ปลายทาง : $destinationinput";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
 
-
-            $url = "https://gttransport.co.th/gt/backend/admin/request_list_page/data/".$formno;
-
-            $token = "7761809698:AAHDQFnXNSoh6lSDlusDLOYVBpTneeA_s5M";
-            $chat_id = "-4656603888"; //GT Admin Grokup
-            $message = "<b>✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล</b>\n"
-            ."<b>เอกสารเลขที่ : </b><a href='$url'>$formno </a>\n"
-            ."<b>ต้นทางจาก : </b> $origin \n"
-            ."<b>ปลายทาง : </b> $destination";
-            $response = send_notify($token , $chat_id , $message);
-
+            $this->db->trans_complete();
             $output = array(
                 "msg" => "บันทึกข้อมูลสำเร็จ",
                 "status" => "Insert Data Success",
-                "notify_response" => $response
+                "notify_response_admin" => $adminresponse,
+                "notify_response_user" =>$userresponse
             );
         }else{
             $output = array(
@@ -151,16 +163,16 @@ class Main_model extends CI_Model {
             main.m_origininput,
             main.m_destinationinput,
             main.m_cartype,
+            main.m_cartypevalue,
             main.m_distance,
             main.m_sumpricecardistance,
             main.m_personsumprice,
             main.m_totalprice,
             main.m_deposit,
             main.m_am1_memo,
-            main.m_persontyped1,
-            main.m_persontyped2,
-            main.m_persontypee1,
-            main.m_persontypee2,
+            main.m_person_type1,
+            main.m_person_type2,
+            main.m_person_type3,
             main.m_datetimecreate,
             main.m_status,
             member.mem_fname,

@@ -1,36 +1,49 @@
 <?php
-class notify {
+class notify_system {
     public $ci;
     function __construct(){
         $this->ci =&get_instance();
         date_default_timezone_set("Asia/Bangkok");
     }
 
-    public function telenotify(){
+    public function line_message_api(){
         return $this->ci;
     }
 }
 
 function notify(){
-    $obj = new telegram_notify();
-    return $obj->telenotify();
+    $obj = new notify_system();
+    return $obj->line_message_api();
 }
 
-function send_notify($token , $chat_id , $message){
-    $url = "https://api.telegram.org/bot$token/sendMessage";
-    $data = [
-        'chat_id' => $chat_id, 
-        'text' => $message,
-        'parse_mode' => 'HTML' // หรือใช้ 'MarkdownV2' ได้เช่นกัน
-    ];
+function getGroupID($typeGroup){
+    if($typeGroup != ""){
+        $sql = notify()->db->query("SELECT
+        group_id
+        FROM line_groupid WHERE memo = ?
+        " , array($typeGroup));
 
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    $response = curl_exec($ch);
-    curl_close($ch);
+        return $sql->row()->group_id;
+    }
+}
 
-    return $response;
+function get_access_token()
+{
+    $sql = notify()->db->query("SELECT
+    apikey
+    FROM apikey WHERE id = 2
+    ");
+
+    return $sql->row()->apikey;
+}
+
+function get_link()
+{
+    if($_SERVER['HTTP_HOST'] == "localhost"){
+        return "http://localhost/gt/";
+    }else{
+        return "https://gttransport.co.th/gt/";
+    }
 }
 
 
@@ -47,17 +60,26 @@ function send_push($access_token, $data) {
     $result = curl_exec($ch);
     curl_close($ch);
 
-    echo 'Result: ' . $result;
+    return $result;
 }
 
-function send_groupDriver_message() {
-    $access_token = 'dDiguBtWimRCvUb05YlBeViLUeO55TEOTuXS1DRoCRi/I3hB7N9cW4RcpAIuOtrt9TV/cAvMgllhusDfRjYjFE8fuzvM97Bu7UaEnXF4V2HWcmBzewELGu8I/eDsdM/jZYa/iR/cm7i/isRMkzpAwQdB04t89/1O/w1cDnyilFU=';
-    $groupId = 'C777a61c12e85b02ac05e7f5efa48f636';
-
-    $messageText = "📣 มีงานใหม่รอรับงาน!\nกดดูรายละเอียดที่นี่:\nhttps://yourdomain.com/announcement/123";
-
+function send_groupAdmin_message($groupId , $messageText) {
+    $access_token = get_access_token();
     $data = [
         'to' => $groupId,
+        'messages' => [[
+            'type' => 'text',
+            'text' => $messageText
+        ]]
+    ];
+
+    send_push($access_token, $data);
+}
+
+function send_user_message($useridLogin , $messageText) {
+    $access_token = get_access_token();
+    $data = [
+        'to' => $useridLogin,
         'messages' => [[
             'type' => 'text',
             'text' => $messageText

@@ -9,20 +9,16 @@
 <?php
 $personTypes = [];
 
-if ($dataviewfull->m_persontyped1 != 0) {
-    $personTypes[] = "คนขับยกของ(Type1) " . $dataviewfull->m_persontyped1 . " คน";
+if ($dataviewfull->m_person_type1 != 0) {
+    $personTypes[] = "คนยกของประเภทที่ 1 คนขับรถยกของ " . $dataviewfull->m_person_type1 . " คน";
 }
 
-if ($dataviewfull->m_persontyped2 != 0) {
-    $personTypes[] = "คนขับยกของ(Type2) " . $dataviewfull->m_persontyped2 . " คน";
+if ($dataviewfull->m_person_type2 != 0) {
+    $personTypes[] = "คนยกของประเภทที่ 2 คนขับรถยกของ " . $dataviewfull->m_person_type2 . " คน";
 }
 
-if ($dataviewfull->m_persontypee1 != 0) {
-    $personTypes[] = "พนักงานยกของ(Type1) " . $dataviewfull->m_persontypee1 . " คน";
-}
-
-if ($dataviewfull->m_persontypee2 != 0) {
-    $personTypes[] = "พนักงานยกของ(Type2) " . $dataviewfull->m_persontypee2 . " คน";
+if ($dataviewfull->m_person_type3 != 0) {
+    $personTypes[] = "คนยกของประเภทที่ 3 เด็กรถยกของ " . $dataviewfull->m_person_type3 . " คน";
 }
 
 if (!empty($personTypes)) {

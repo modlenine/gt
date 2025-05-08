@@ -11,6 +11,11 @@ class Main extends MX_Controller {
         $this->load->model("main_model" , "main");
         
     }
+
+    public function testcode()
+    {
+        getGroupID("Driver Group");
+    }
     
 
     public function index()

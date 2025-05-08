@@ -1,24 +1,5 @@
 $(document).ready(function () {
 
-    // กำหนดตัวแปรทั้งหมด
-    let htmlsumPerson = {
-        type1: '',
-        type2: '',
-        type3: ''
-    };
-
-    let personPrice = {
-        type1: 0,
-        type2: 0,
-        type3: 0
-    };
-
-    const pricePerPerson = {
-        type1: 203,
-        type2: 309,
-        type3: 309
-    };
-
     $('#btn-saverequest').prop('disabled', true);
 
     $("input:radio[name='input-choosecar']").change(function () {
@@ -68,41 +49,9 @@ $(document).ready(function () {
         });
     });
 
-    function updatePersonSummary() {
-        const summary = htmlsumPerson.type1 + htmlsumPerson.type2 + htmlsumPerson.type3;
-        if (summary) {
-            $('#input-sum-person').html(summary);
-            // รวมราคาของทุกประเภท
-            const totalPersonPrice = (personPrice.type1 || 0) + (personPrice.type2 || 0) + (personPrice.type3 || 0);
-            $('#input-sum-personPrice').val(totalPersonPrice.toFixed(2)); // ใส่เป็นเลขทศนิยม 2 ตำแหน่ง
-        } else {
-            $('#input-sum-person').html('<b>-</b>');
-            $('#input-sum-personPrice').val('');
-        }
-    }
-
 
     $('#btn-reset').click(function () {
         location.reload();
-    });
-
-    $('#btn-calculate').click(function () {
-        // check ว่าลูกค้าเลือกต้นทางหรือ ปลายทางแล้วหรือไม่
-        if ($('#input-sum-cartype').val() == "") {
-            swal({
-                title: 'กรุณาเลือกประเภทของรถ',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#input-sum-distance').val() == "") {
-            swal({
-                title: 'กรุณาเลือกต้นทางและปลายทางจากนั้นกดคำนวณเส้นทาง',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else {
-            //code
-        }
     });
 
     function formatPrice(value) {
@@ -113,7 +62,7 @@ $(document).ready(function () {
         if ($('input[name="input-accept"]:checked').length > 0) {
             if ($('#input-sum-sumpriceBeforeVat').val() == "") {
                 swal({
-                    title: 'กรุณากดปุ่มคำนวณค่าใช้จ่าย',
+                    title: 'กรุณากดปุ่มคำนวณเส้นทาง',
                     type: 'warning',
                     showConfirmButton: true,
                 });
@@ -127,89 +76,54 @@ $(document).ready(function () {
     });
 
     $('#btn-saverequest').click(function () {
-        if ($('input[name="input-choosecar"]:checked').length == 0) {
-            swal({
-                title: 'กรุณาเลือกประเภทของรถ',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#originInput').val() == "") {
-            swal({
-                title: 'กรุณาเลือกสถานที่ต้นทาง',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#destinationInput').val() == "") {
-            swal({
-                title: 'กรุณาเลือกสถานที่ปลายทาง',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#input-distance').val() == "") {
-            swal({
-                title: 'กรุณากดคำนวณระยะทาง',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#input-sum-sumpriceCarDistance').val() == "") {
-            swal({
-                title: 'กรุณากดคำนวณค่าใช้จ่าย',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#input-sum-personPrice').val() == "") {
-            swal({
-                title: 'กรุณากดคำนวณค่าใช้จ่าย',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#input-sum-sumpriceBeforeVat').val() == "") {
-            swal({
-                title: 'กรุณากดคำนวณค่าใช้จ่าย',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else if ($('#input-sum-sumprice').val() == "") {
-            swal({
-                title: 'กรุณากดคำนวณค่าใช้จ่าย',
-                type: 'warning',
-                showConfirmButton: true,
-            });
-        } else {
-            $('#btn-saverequest').prop('disabled', true);
-            const formdata = new FormData();
-            formdata.append('origininput', $('#originInput').val());
-            formdata.append('destinationinput', $('#destinationInput').val());
-            formdata.append('cartype', $('#input-sum-cartype').val());
-            formdata.append('distance', $('#input-sum-distance').val());
-            formdata.append('sumpricecardistance', $('#input-sum-sumpriceCarDistance').val());
-            formdata.append('persontyped1', $('#input-person-typeD1').val());
-            formdata.append('persontyped2', $('#input-person-typeD2').val());
-            formdata.append('persontypee1', $('#input-person-typeE1').val());
-            formdata.append('persontypee2', $('#input-person-typeE2').val());
-            formdata.append('personsumprice', $('#input-sum-personPrice').val());
-            formdata.append('totalprice', $('#input-sum-sumpriceBeforeVat').val());
-            formdata.append('action', 'sendtoapprove');
-
-            axios.post(url + 'main/saveSendtoApprove', formdata, {
-                headers: {
-                    'Content-Type': 'multipart/formdata'
-                }
-            }).then(res => {
-                console.log(res.data);
-                $('#btn-saverequest').prop('disabled', false);
-                if (res.data.status == "Insert Data Success") {
-                    swal({
-                        title: 'บันทึกข้อมูลสำเร็จ',
-                        type: 'success',
-                        showConfirmButton: true,
-                    }).then(function () {
-                        location.href = url + 'main/requestList';
-                    });
-                }
-            });
-        }
+        saveRequestCar();
     });
+
+    async function saveRequestCar()
+    {
+        $('#btn-saverequest').prop('disabled', true);
+        const formdata = new FormData();
+        formdata.append('origininput', $('#originInput').val());
+        formdata.append('destinationinput', $('#destinationInput').val());
+        formdata.append('cartype', $('#input-sum-cartype').val());
+        formdata.append('cartypeValue' , carTypeValue);
+        formdata.append('distance', parseFloat(distance));
+        formdata.append('sumpricecardistance', priceCarDistance);
+        formdata.append('m_person_type1', $('#input-person-type1').val());
+        formdata.append('m_person_type2', $('#input-person-type2').val());
+        formdata.append('m_person_type3', $('#input-person-type3').val());
+        formdata.append('personsumprice', pricePersonSum);
+        formdata.append('totalprice', totalSum);
+        formdata.append('distanceX' , distanceX);
+        formdata.append('fuelConsumption' , fuelConsumption);
+        formdata.append('fuelPriceRate' , fuelPriceRate);
+        formdata.append('ratioX' , ratioX);
+        formdata.append('moneyPlus' , moneyPlus);
+        formdata.append('action', 'sendtoapprove');
+
+        const res  = await axios.post(url + 'main/saveSendtoApprove', formdata, {
+            headers: {
+                'Content-Type': 'multipart/formdata'
+            }
+        });
+        console.log(res.data);
+        $('#btn-saverequest').prop('disabled', false);
+        if (res.data.status == "Insert Data Success") {
+            swal({
+                title: 'บันทึกข้อมูลสำเร็จ',
+                type: 'success',
+                showConfirmButton: true,
+            }).then(function () {
+                location.href = url + 'main/requestList';
+            });
+        }else{
+            swal({
+                title: 'บันทึกข้อมูลไม่สำเร็จ',
+                type: 'error',
+                showConfirmButton: true,
+            })
+        }
+    }
 
 
 });

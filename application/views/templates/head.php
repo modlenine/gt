@@ -201,7 +201,7 @@
 						<a class="dropdown-item" href="profile.html"><i class="dw dw-settings2"></i> Setting</a>
 						<a class="dropdown-item" href="faq.html"><i class="dw dw-help"></i> Help</a> -->
 						<!-- <a class="dropdown-item" href="#"><i class="dw dw-help"></i><?=$_SESSION['accesstoken']?></a> -->
-						<a class="dropdown-item" id="logoutBtn" href="#"><i class="dw dw-logout"></i> Log Out <?=$checkpage = $this->uri->segment(1);?></a>
+						<a class="dropdown-item" id="logoutBtn" href="#"><i class="dw dw-logout"></i> Log Out</a>
 					</div>
 				</div>
 			</div>
@@ -225,7 +225,7 @@
 			<div class="sidebar-menu">
 				<ul id="accordion-menu">
 					<li class="dropdown">
-						<a href="<?=base_url('main/gt_service')?>" class="dropdown-toggle no-arrow">
+						<a href="<?=base_url('main')?>" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-city-hall hicon"></span><span class="mtext">หน้าหลัก</span>
 						</a>
 					</li>
