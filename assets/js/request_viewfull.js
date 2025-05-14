@@ -26,6 +26,7 @@ $(document).ready(function(){
             formdata.append('deposit' , $('#ip-viewfull-deposit').val());
             formdata.append('memo' , $('#ip-viewfull-memo').val());
             formdata.append('m_am1_approve' , $("input:radio[name='ip-viewfull-appro']:checked").val());
+            formdata.append('userId' , userId);
 
             axios.post(url+'backend/admin/saveApproveDoc' , formdata).then(res=>{
                 console.log(res.data);
@@ -274,6 +275,9 @@ function saveConfirmPayChecked(formno)
         formdata.append('formno' , formno);
         formdata.append('m_am2_approve' , $("input[name='ip-viewfull-approPay']").val());
         formdata.append('m_am2_memo' , $('#ip-viewfull-memoPay').val());
+        formdata.append('userId' , userId);
+        formdata.append('origin' , origin);
+        formdata.append('destination' , destination);
         axios.post(url+'backend/admin/saveConfirmPayChecked' , formdata).then(res=>{
             console.log(res.data);
             $('#btn-approvePay-backend').prop('disabled' , false);

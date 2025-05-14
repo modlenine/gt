@@ -273,6 +273,9 @@ if (!empty($personTypes)) {
     let formno = "<?php echo $dataviewfull->m_formno ?>";
     let formstatus = "<?php echo $dataviewfull->m_status ?>";
     let totalprice = "<?php echo $dataviewfull->m_totalprice?>";
+    let userId = "<?php echo $dataviewfull->m_cusid?>";
+    let origin = "<?php echo $dataviewfull->m_origininput?>";
+    let destination = "<?php echo $dataviewfull->m_destinationinput?>";
     let driverMarker;
     let currentLocation;
     let map;

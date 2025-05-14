@@ -423,6 +423,7 @@ class Admin_model extends CI_Model
             $deposit       = $this->input->post("deposit");
             $memo          = $this->input->post("memo");
             $m_am1_approve = $this->input->post("m_am1_approve");
+            $userId = $this->input->post("userId");
 
             if ($m_am1_approve == "อนุมัติ") {
                 $m_status = "Approved";
@@ -442,13 +443,16 @@ class Admin_model extends CI_Model
             $this->db->where("m_formno", $formno);
             $this->db->update("main", $arraySave);
 
-            $message  = "🚩 รายการของท่านได้รับการอนุมัติแล้ว \n กรุณาโอนเงินค่ามัดจำและยืนยันการชำระเงิน เพื่อเริ่มงาน \n✅ ตรวจสอบรายการ <a>$formno</a> \n";
-            $token    = $this->session->accesstoken;
-            $response = sendLineNotify($message, $token);
+            if ($m_am1_approve == "อนุมัติ"){
+                $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+                $messageText = "รายการของท่านได้รับการอนุมัติแล้ว \n กรุณาโอนเงินค่ามัดจำและยืนยันการชำระเงิน เพื่อเริ่มงาน \n✅ ตรวจสอบรายการ คลิก : $userpage";
+                $userresponse = send_user_message($userId , $messageText);
+            }
 
             $output = [
                 "msg"    => "บันทึกการอนุมัติรายการสำเร็จ",
                 "status" => "Update Data Success",
+                "notify_response_user" =>$userresponse
             ];
         } else {
             $output = [
@@ -526,6 +530,9 @@ class Admin_model extends CI_Model
             $formno        = $this->input->post("formno");
             $m_am2_approve = $this->input->post("m_am2_approve");
             $m_am2_memo    = $this->input->post("m_am2_memo");
+            $userId = $this->input->post("userId");
+            $origin = $this->input->post("origin");
+            $destination = $this->input->post("destination");
 
             $arsave_ConfirmPayChecked = [
                 "m_am2_approve"  => $m_am2_approve,
@@ -537,6 +544,19 @@ class Admin_model extends CI_Model
 
             $this->db->where("m_formno", $formno);
             $this->db->update("main", $arsave_ConfirmPayChecked);
+
+
+            if($m_am2_approve == "อนุมัติ"){
+                $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+                $messageText = "รายการของท่าน ตรวจสอบยอดการโอนเงินเสร็จเรียบร้อยแล้ว \n กรุณารอคนขับรับงาน \n✅ ตรวจสอบรายการ คลิก : $userpage";
+                $userresponse = send_user_message($userId , $messageText);
+
+                $groupId = getGroupID("driver");
+                $driverpage = get_link()."backend/drivers/job_list_page/job_avaliable";
+                $messageAdmin = "✅ มีรายการ รอรับงานมาใหม่ \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination \n คลิก : $driverpage";
+                $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
+            }
+
 
             $output = [
                 "msg"    => "อัพเดตข้อมูลการอนุมัติรายการสำเร็จ",

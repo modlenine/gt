@@ -90,7 +90,8 @@ class Main_model extends CI_Model {
             $userresponse = send_user_message($userId , $messageText);
 
             $groupId = getGroupID("admin");
-             $messageAdmin = "✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n🚗 ต้นทางจาก : $origininput \n🚗 ปลายทาง : $destinationinput";
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+             $messageAdmin = "✅ มีรายการ เรียกรถเข้ามาใหม่ รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n🚗 ต้นทางจาก : $origininput \n🚗 ปลายทาง : $destinationinput \n คลิก : $adminpage";
             $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
 
             $this->db->trans_complete();
@@ -310,6 +311,15 @@ class Main_model extends CI_Model {
 
             $this->db->where("m_formno" , $formno);
             $this->db->update("main" , $arUpdateMainData);
+
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userid";
+            $messageText = "บริษัทได้รับ ข้อมูลยืนยันการโอนเงินจากท่าน เรียบร้อยแล้ว เจ้าหน้าที่กำลังตรวจสอบสอบข้อมูล \nคลิก : $userpage";
+            $userresponse = send_user_message($userid , $messageText);
+
+            $groupId = getGroupID("admin");
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+             $messageAdmin = "✅ มีรายการ ยืนยันการโอนเงิน รอตรวจสอบข้อมูล\n✅ เอกสารเลขที่ : $formno \n คลิก : $adminpage";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
 
             $this->db->trans_complete();
 
