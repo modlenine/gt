@@ -86,6 +86,20 @@ $(document).ready(function(){
     
             //ดึงข้อมูลตรวจสอบการโอน
             await getDataConfirmPayChecked(formno);
+        }else if(formstatus == "Driver Get Job"){
+            //approve section 
+            $('#btn-approveDoc').css('display' , 'none');
+            await getDataApproved(formno);
+    
+            //ดึงข้อมูลยืนยันการโอน
+            $('#sec_confirmPay_backend').css('display' , '');
+            $('#btn-approvePay-backend').css('display' , '');
+            await getDataConfirmPay(formno);
+    
+            //ดึงข้อมูลตรวจสอบการโอน
+            await getDataConfirmPayChecked(formno);
+            $('#sec_dv-getjob-admin').css('display' , '');
+            await getJobData(formno);
         }else if(formstatus == "Driver Check In"){
             //approve section 
             $('#btn-approveDoc').css('display' , 'none');
@@ -98,8 +112,12 @@ $(document).ready(function(){
     
             //ดึงข้อมูลตรวจสอบการโอน
             await getDataConfirmPayChecked(formno);
+
+            $('#sec_dv-getjob-admin').css('display' , '');
+            await getJobData(formno);
+            
             $('#sec_dv-checkInAlready-admin').css('display' , '');
-            await getCheckInData();
+            await getCheckInData(formno);
         }else if(formstatus == "Driver Start Job"){
             //approve section 
             $('#btn-approveDoc').css('display' , 'none');
@@ -320,6 +338,25 @@ function getDataConfirmPayChecked(formno)
     }
 }
 
+function getJobData()
+{
+    const formdata = new FormData();
+    formdata.append('formno' , formno);
+    axios.post(url+'backend/admin/getJobData' , formdata).then(res=>{
+        console.log(res.data);
+        if(res.data.status == "Select Data Success"){
+            let result = res.data.result;
+            
+            updateMap(result.m_dv_getjob_lat , result.m_dv_getjob_lng);
+
+            $('#getjob-datashow-admin-datetime').html('<b>วันเวลารับงาน : </b>'+result.m_dv_datetime_getjob);
+            $('#getjob-datashow-admin-drivername').html('<b>ชื่อผู้ขับ : </b>'+res.data.drivername);
+
+            console.log(currentLocation);
+        }
+    });
+}
+
 function getCheckInData()
 {
     const formdata = new FormData();
@@ -459,7 +496,7 @@ function updateMap(lat , lng)
             driverMarker = new google.maps.Marker({
                 position: currentLocation,
                 map: map,
-                title: "ตำแหน่งเช็กอิน",
+                title: "ตำแหน่งรับงาน",
                 icon: carIcon
                 
             });

@@ -134,6 +134,9 @@ if (!empty($personTypes)) {
                                         <span id="cus-drivertel"></span>
                                     </p>
                                     <p>
+                                        <span id="cus-drivernumberplate"></span>
+                                    </p>
+                                    <p>
                                         <span id="cus-drivergetjob-datetime"></span>
                                     </p>
                                     <p>

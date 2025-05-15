@@ -597,6 +597,37 @@ class Admin_model extends CI_Model
         echo json_encode($output);
     }
 
+    public function getJobData()
+    {
+        if (! empty($this->input->post("formno"))) {
+            $formno = $this->input->post("formno");
+
+            $sql = $this->db->query("SELECT
+            m_dv_user_getjob,
+            DATE_FORMAT(m_dv_datetime_getjob , '%d-%m-%Y %H:%i:%s')AS m_dv_datetime_getjob,
+            m_dv_getjob_lat,
+            m_dv_getjob_lng
+            FROM main WHERE m_formno = ?
+            ", [$formno]);
+
+            $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fnameth . " " . getDriverData($sql->row()->m_dv_user_getjob)->dv_lnameth;
+
+            $output = [
+                "msg"        => "ดึงข้อมูล Getjob สำเร็จ",
+                "status"     => "Select Data Success",
+                "result"     => $sql->row(),
+                "drivername" => $drivername,
+            ];
+        } else {
+            $output = [
+                "msg"    => "ดึงข้อมูล CheckIn ไม่สำเร็จ",
+                "status" => "Select Data Not Success",
+            ];
+        }
+
+        echo json_encode($output);
+    }
+
     public function getCheckInData()
     {
         if (! empty($this->input->post("formno"))) {
@@ -610,7 +641,7 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $drivername = getDriverData($sql->row()->m_dv_user_checkin)->dv_fname . " " . getDriverData($sql->row()->m_dv_user_checkin)->dv_lname;
+            $drivername = getDriverData($sql->row()->m_dv_user_checkin)->dv_fnameth . " " . getDriverData($sql->row()->m_dv_user_checkin)->dv_lnameth;
 
             $output = [
                 "msg"        => "ดึงข้อมูล CheckIn สำเร็จ",
@@ -650,7 +681,7 @@ class Admin_model extends CI_Model
             FROM files_dv WHERE f_formno = ? AND f_type = ?
             ", [$formno, $type]);
 
-            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fname . " " . getDriverData($sqlMain->row()->m_dv_user_start)->dv_lname;
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fnameth . " " . getDriverData($sqlMain->row()->m_dv_user_start)->dv_lnameth;
 
             $output = [
                 "msg"          => "ดึงข้อมูล Start Job สำเร็จ",
@@ -681,7 +712,7 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $drivername = getDriverData($sql->row()->m_dv_user_checkindes)->dv_fname . " " . getDriverData($sql->row()->m_dv_user_checkindes)->dv_lname;
+            $drivername = getDriverData($sql->row()->m_dv_user_checkindes)->dv_fnameth . " " . getDriverData($sql->row()->m_dv_user_checkindes)->dv_lnameth;
 
             $output = [
                 "msg"        => "ดึงข้อมูล CheckIn Destination สำเร็จ",
@@ -721,7 +752,7 @@ class Admin_model extends CI_Model
             FROM files_dv WHERE f_formno = ? AND f_type = ?
             ", [$formno, $type]);
 
-            $drivername = getDriverData($sqlMain->row()->m_dv_user_stop)->dv_fname . " " . getDriverData($sqlMain->row()->m_dv_user_stop)->dv_lname;
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_stop)->dv_fnameth . " " . getDriverData($sqlMain->row()->m_dv_user_stop)->dv_lnameth;
 
             $output = [
                 "msg"          => "ดึงข้อมูล Start Job สำเร็จ",

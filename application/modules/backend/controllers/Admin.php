@@ -84,6 +84,11 @@ class Admin extends MX_Controller {
         $this->admin->getDataConfirmPayChecked();
     }
 
+    public function getJobData()
+    {
+        $this->admin->getJobData();
+    }
+
     public function getCheckInData()
     {
         $this->admin->getCheckInData();

@@ -347,14 +347,13 @@ class Drivers_model extends CI_Model {
             main.m_sumpricecardistance,
             main.m_personsumprice,
             main.m_totalprice,
-            main.m_persontyped1,
-            main.m_persontyped2,
-            main.m_persontypee1,
-            main.m_persontypee2,
             main.m_datetimecreate,
             main.m_status,
             main.m_deposit_percen,
             main.m_deposit,
+            main.m_person_type1,
+            main.m_person_type2,
+            main.m_person_type3,
             main.m_userconfirm_money,
             main.m_am2_memo,
             main.m_am1_memo,
@@ -428,6 +427,7 @@ class Drivers_model extends CI_Model {
             $formno = $this->input->post("formno");
             $getJobLat = $this->input->post("lat");
             $getJobLng = $this->input->post("lng");
+            $userId = $this->input->post("userId");
             $this->db->trans_start();
             // บันทึกเวลาปัจจุบัน + 40 นาที
             $checkin_time = time(); // เวลาปัจจุบัน (timestamp)
@@ -444,6 +444,21 @@ class Drivers_model extends CI_Model {
 
             $this->db->where("m_formno" , $formno);
             $this->db->update("main" , $arUpdateData);
+
+
+            $driverName = $this->session->dv_fnameth;
+            $driverTel = $this->session->dv_tel;
+            $driverPlate = $this->session->dv_number_plate;
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            $messageText = "รายการของท่าน คนขับรับงานเรียบร้อยแล้ว \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n ✅ ตรวจสอบรายการ คลิก : $userpage";
+            $userresponse = send_user_message($userId , $messageText);
+
+
+            $groupId = getGroupID("admin");
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+            $messageAdmin = "✅งานเลขที่ $formno สถานะ รับงานแล้ว \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n คลิก : $adminpage";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
+
 
             $this->db->trans_complete();
 
@@ -474,7 +489,7 @@ class Drivers_model extends CI_Model {
             FROM main WHERE m_formno = ?
             " , array($formno));
 
-            $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fname." ".getDriverData($sql->row()->m_dv_user_getjob)->dv_lname;
+            $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fnameth." ".getDriverData($sql->row()->m_dv_user_getjob)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล Time Expire สำเร็จ",
@@ -575,6 +590,7 @@ class Drivers_model extends CI_Model {
             $driverUsername = $this->input->post("driverUsername");
             $checkinLat = $this->input->post("lat");
             $checkinLng = $this->input->post("lng");
+            $userId = $this->input->post("userId");
 
             $arupdate = array(
                 "m_status" => "Driver Check In",
@@ -587,6 +603,19 @@ class Drivers_model extends CI_Model {
 
             $this->db->where("m_formno" , $formno);
             $this->db->update("main" , $arupdate);
+
+            $driverName = $this->session->dv_fnameth;
+            $driverTel = $this->session->dv_tel;
+            $driverPlate = $this->session->dv_number_plate;
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            $messageText = "คนขับถึงต้นทางเรียบร้อยแล้ว \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n ✅ ตรวจสอบรายการ คลิก : $userpage";
+            $userresponse = send_user_message($userId , $messageText);
+
+
+            $groupId = getGroupID("admin");
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+            $messageAdmin = "✅งานเลขที่ $formno สถานะ คนขับถึงต้นทางเรียบร้อยแล้ว \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n คลิก : $adminpage";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
 
             $this->db->trans_complete();
 
@@ -613,6 +642,7 @@ class Drivers_model extends CI_Model {
             $driverUsername = $this->input->post("driverUsername");
             $checkinLat = $this->input->post("lat");
             $checkinLng = $this->input->post("lng");
+            $userId = $this->input->post("userId");
 
             $arupdate = array(
                 "m_status" => "Driver Check In Destination",
@@ -624,6 +654,21 @@ class Drivers_model extends CI_Model {
 
             $this->db->where("m_formno" , $formno);
             $this->db->update("main" , $arupdate);
+
+
+            $driverName = $this->session->dv_fnameth;
+            $driverTel = $this->session->dv_tel;
+            $driverPlate = $this->session->dv_number_plate;
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            $messageText = "คนขับถึงปลายทางเรียบร้อยแล้ว \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n ✅ ตรวจสอบรายการ คลิก : $userpage";
+            $userresponse = send_user_message($userId , $messageText);
+
+
+            $groupId = getGroupID("admin");
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+            $messageAdmin = "✅งานเลขที่ $formno สถานะ คนขับถึงปลายทางเรียบร้อยแล้ว \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n คลิก : $adminpage";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
+
 
             $this->db->trans_complete();
 
@@ -726,6 +771,7 @@ class Drivers_model extends CI_Model {
             $memo = $this->input->post("memo");
             $lat = $this->input->post("lat");
             $lng = $this->input->post("lng");
+            $userId = $this->input->post("userId");
 
             $sqlTemp = $this->db->query("SELECT
             f_formno,
@@ -777,6 +823,21 @@ class Drivers_model extends CI_Model {
             $this->db->where("m_formno" , $formno);
             $this->db->where("m_dv_user_checkin" , $driverusername);
             $this->db->update("main" , $arupdate_main);
+
+
+            $driverName = $this->session->dv_fnameth;
+            $driverTel = $this->session->dv_tel;
+            $driverPlate = $this->session->dv_number_plate;
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            $messageText = "คนขับขนของเรียบร้อยแล้วกำลังออกเดินทาง \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n ✅ ตรวจสอบรายการ คลิก : $userpage";
+            $userresponse = send_user_message($userId , $messageText);
+
+
+            $groupId = getGroupID("admin");
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+            $messageAdmin = "✅งานเลขที่ $formno สถานะ คนขับกำลังออกเดินทางไปยังปลายทาง \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n คลิก : $adminpage";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
+
             $this->db->trans_complete();
 
             $output = array(
@@ -853,6 +914,7 @@ class Drivers_model extends CI_Model {
             $memo = $this->input->post("memo");
             $lat = $this->input->post("lat");
             $lng = $this->input->post("lng");
+            $userId = $this->input->post("userId");
 
             $sqlTemp = $this->db->query("SELECT
             f_formno,
@@ -904,6 +966,22 @@ class Drivers_model extends CI_Model {
             $this->db->where("m_formno" , $formno);
             $this->db->where("m_dv_user_checkindes" , $driverusername);
             $this->db->update("main" , $arupdate_main);
+
+
+            $driverName = $this->session->dv_fnameth;
+            $driverTel = $this->session->dv_tel;
+            $driverPlate = $this->session->dv_number_plate;
+            $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            $messageText = "คนขับดำเนินการเสร็จสิ้น สถานะปิดงาน \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n ✅ ตรวจสอบรายการ คลิก : $userpage";
+            $userresponse = send_user_message($userId , $messageText);
+
+
+            $groupId = getGroupID("admin");
+            $adminpage = get_link()."backend/admin/request_viewfull_page/$formno";
+            $messageAdmin = "✅งานเลขที่ $formno สถานะ ปิดงาน \n คนขับชื่อ : $driverName \n เบอร์โทร : $driverTel\n ทะเบียนรถ :  $driverPlate \n คลิก : $adminpage";
+            $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
+
+
             $this->db->trans_complete();
 
             $output = array(

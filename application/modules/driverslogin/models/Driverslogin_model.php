@@ -22,6 +22,8 @@ class Driverslogin_model extends CI_Model {
                 $_SESSION['dv_username'] = $sql->row()->dv_username;
                 $_SESSION['dv_fnameth'] = $sql->row()->dv_fnameth;
                 $_SESSION['dv_lnameth'] = $sql->row()->dv_lnameth;
+                $_SESSION['dv_tel'] = $sql->row()->dv_tel;
+                $_SESSION['dv_number_plate'] = $sql->row()->dv_number_plate;
                 $_SESSION['dv_permission'] = $sql->row()->dv_permission;
 
                 // insert login log

@@ -392,14 +392,16 @@ class Main_model extends CI_Model {
             ",array($formno));
 
             if($sql->num_rows() > 0){
-                $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fname." ".getDriverData($sql->row()->m_dv_user_getjob)->dv_lname;
+                $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fnameth." ".getDriverData($sql->row()->m_dv_user_getjob)->dv_lnameth;
                 $drivertel = getDriverData($sql->row()->m_dv_user_getjob)->dv_tel;
+                $drivernumberplate = getDriverData($sql->row()->m_dv_user_getjob)->dv_number_plate;
 
                 $output = array(
                     "msg" => "ดึงข้อมูลคนขับที่รับงานสำเร็จ",
                     "status" => "Select Data Success",
                     "drivername" => $drivername,
                     "drivertel" => $drivertel,
+                    "drivernumberplate" => $drivernumberplate,
                     "result" => $sql->row()
                 );
             }else{
@@ -474,7 +476,7 @@ class Main_model extends CI_Model {
             FROM files_dv WHERE f_formno = ? AND f_type = ?
             " , array($formno , $type));
 
-            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fname." ".getDriverData($sqlMain->row()->m_dv_user_start)->dv_lname;
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fnameth." ".getDriverData($sqlMain->row()->m_dv_user_start)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล Start Job สำเร็จ",
@@ -549,7 +551,7 @@ class Main_model extends CI_Model {
             FROM files_dv WHERE f_formno = ? AND f_type = ?
             " , array($formno , $type));
 
-            $drivername = getDriverData($sqlMain->row()->m_dv_user_stop)->dv_fname." ".getDriverData($sqlMain->row()->m_dv_user_stop)->dv_lname;
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_stop)->dv_fnameth." ".getDriverData($sqlMain->row()->m_dv_user_stop)->dv_lnameth;
 
             $output = array(
                 "msg" => "ดึงข้อมูล Stop Job สำเร็จ",

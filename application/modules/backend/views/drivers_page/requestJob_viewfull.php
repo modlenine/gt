@@ -8,20 +8,16 @@
 <?php
 $personTypes = [];
 
-if ($dataviewfull->m_persontyped1 != 0) {
-    $personTypes[] = "คนขับยกของ(Type1) " . $dataviewfull->m_persontyped1 . " คน";
+if ($dataviewfull->m_person_type1 != 0) {
+    $personTypes[] = "คนยกของประเภทที่ 1 คนขับรถยกของ " . $dataviewfull->m_person_type1 . " คน";
 }
 
-if ($dataviewfull->m_persontyped2 != 0) {
-    $personTypes[] = "คนขับยกของ(Type2) " . $dataviewfull->m_persontyped2 . " คน";
+if ($dataviewfull->m_person_type2 != 0) {
+    $personTypes[] = "คนยกของประเภทที่ 2 คนขับรถยกของ " . $dataviewfull->m_person_type2 . " คน";
 }
 
-if ($dataviewfull->m_persontypee1 != 0) {
-    $personTypes[] = "พนักงานยกของ(Type1) " . $dataviewfull->m_persontypee1 . " คน";
-}
-
-if ($dataviewfull->m_persontypee2 != 0) {
-    $personTypes[] = "พนักงานยกของ(Type2) " . $dataviewfull->m_persontypee2 . " คน";
+if ($dataviewfull->m_person_type3 != 0) {
+    $personTypes[] = "คนยกของประเภทที่ 3 เด็กรถยกของ " . $dataviewfull->m_person_type3 . " คน";
 }
 
 if (!empty($personTypes)) {
@@ -483,6 +479,7 @@ if (!empty($personTypes)) {
     let totalprice = "<?php echo $dataviewfull->m_totalprice?>";
     let driverUsername = "<?php echo $this->session->dv_username ?>";
     const getapikey = "<?php echo get_googlemap_apikey(); ?>";
+    let userId = "<?php echo $dataviewfull->m_cusid ?>";
 
     let map;
     let driverMarker;
@@ -587,6 +584,7 @@ if (!empty($personTypes)) {
                     formdata.append('formno' , formno);
                     formdata.append('lat', currentLocation.lat);
                     formdata.append('lng', currentLocation.lng);
+                    formdata.append('userId' , userId);
                     axios.post(url+'backend/drivers/getJob' , formdata).then(res=>{
                         console.log(res.data);
                         if(res.data.status == "Update Data Success"){
@@ -699,6 +697,7 @@ if (!empty($personTypes)) {
                     formdata.append('driverUsername', driverUsername);
                     formdata.append('lat', currentLocation.lat);
                     formdata.append('lng', currentLocation.lng);
+                    formdata.append('userId' , userId);
                     axios.post(url + 'backend/drivers/checkin', formdata)
                     .then(res => {
                     console.log(res.data);
@@ -817,6 +816,7 @@ if (!empty($personTypes)) {
                     formdata.append('memo' , $('#dv-ip-memostart').val());
                     formdata.append('lat', currentLocation.lat);
                     formdata.append('lng', currentLocation.lng);
+                    formdata.append('userId' , userId);
                     axios.post(url+'backend/drivers/saveStart' , formdata).then(res=>{
                         console.log(res.data);
                         document.getElementById("btn-dv-saveStart").disabled = false;
@@ -928,6 +928,7 @@ if (!empty($personTypes)) {
                     formdata.append('driverUsername', driverUsername);
                     formdata.append('lat', currentLocation.lat);
                     formdata.append('lng', currentLocation.lng);
+                    formdata.append('userId' , userId);
                     axios.post(url + 'backend/drivers/checkinDes', formdata)
                     .then(res => {
                     console.log(res.data);
@@ -1046,6 +1047,7 @@ if (!empty($personTypes)) {
                     formdata.append('memo' , $('#dv-ip-memostop').val());
                     formdata.append('lat', currentLocation.lat);
                     formdata.append('lng', currentLocation.lng);
+                    formdata.append('userId' , userId);
                     axios.post(url+'backend/drivers/saveStop' , formdata).then(res=>{
                         console.log(res.data);
                         document.getElementById("btn-dv-saveStop").disabled = false;

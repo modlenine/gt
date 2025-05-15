@@ -139,6 +139,7 @@ function getDriverGetjobData(formno)
                 $('#cus-drivername').html(`<b>ชื่อ : </b>`+res.data.drivername);
                 $('#cus-drivertel').html(`<b>เบอร์โทรศัพท์ : </b><a href="tel:${res.data.drivertel}">`+res.data.drivertel+`</a>`);
                 $('#cus-drivergetjob-datetime').html(`<b>วันที่รับงาน : </b>`+result.m_dv_datetime_getjob);
+                $('#cus-drivernumberplate').html(`<b>ทะเบียนรถ : </b>`+res.data.drivernumberplate);
                 //update map
                 updateMap(result.m_dv_getjob_lat , result.m_dv_getjob_lng);
             }

@@ -167,6 +167,20 @@ if (!empty($personTypes)) {
                         <hr>
                         </section>
 
+                        <section id="sec_dv-getjob-admin" style="display:none;">
+                            <h5 class="text-center">คนขับ รับงานแล้วกำลังเดินทางไปหาลูกค้า</h5>
+                            <hr>
+                            <div class="row form-group text-center">
+                                <div class="col-md-6">
+                                    <label for="" id="getjob-datashow-admin-drivername"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="" id="getjob-datashow-admin-datetime"></label>
+                                </div>
+                            </div>
+                            <hr>
+                        </section>
+
 
                         <!-- Driver Section view -->
                         <section id="sec_dv-checkInAlready-admin" style="display:none;">
