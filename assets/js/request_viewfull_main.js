@@ -20,26 +20,32 @@ $(document).ready(function(){
         }
     });
 
-    // Modal Event
-    // เมื่อคลิกที่รูปใน grid ให้แสดง modal พร้อมแสดงภาพขนาดใหญ่
-    $(document).on('click', '.grid-item img', function() {
-        let src = $(this).attr('src');
-        $('#modal-img').attr('src', src);
-        $('#image-modal').css('display', 'block');
-    });
-  
-    // ปิด modal เมื่อคลิกที่ปุ่มปิด (×)
-    $('.modal-close').click(function() {
-        $('#image-modal').css('display', 'none');
-    });
-  
-    // Optionally ปิด modal เมื่อคลิกที่พื้นหลังนอกภาพ
-    $(window).click(function(event) {
-        if ($(event.target).is('#image-modal')) {
-        $('#image-modal').css('display', 'none');
-        }
-    });
-    // Modal Event
+  // เปิด Modal เมื่อคลิกภาพ
+  $(document).on('click', '.grid-item img', function () {
+    const src = $(this).attr('src');
+    $('#modal-img').attr('src', src);
+    $('#image-modal').fadeIn(200); // ใช้ fadeIn ให้ดู smooth
+  });
+
+  // ปิด Modal เมื่อคลิกปุ่มปิด
+  $(document).on('click', '.modal-close', function () {
+    $('#image-modal').fadeOut(200); // ใช้ fadeOut ให้ดู smooth
+  });
+
+  // ปิด Modal เมื่อคลิกนอกภาพ (พื้นหลัง)
+  $(document).on('click', '#image-modal', function (event) {
+    if (event.target.id === 'image-modal') {
+      $('#image-modal').fadeOut(200);
+    }
+  });
+
+  $(document).on('keyup', function (e) {
+    if (e.key === "Escape") {
+      $('#image-modal').fadeOut(200);
+    }
+  });
+
+    
 });
 
 function deleteTempfileFrist(userid)

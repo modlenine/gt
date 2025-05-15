@@ -191,10 +191,10 @@ if (!empty($personTypes)) {
                                 </div>
 
                                 <!-- Modal สำหรับแสดงภาพขนาดใหญ่ -->
-                                <div id="image-modal" class="modal">
+                                <!-- <div id="image-modal" class="modal">
                                     <span class="modal-close">&times;</span>
                                     <img class="modal-content" id="modal-img">
-                                </div>
+                                </div> -->
 
 
                                 <div class="col-md-12 form-group">
