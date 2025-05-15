@@ -183,6 +183,12 @@ class Admin extends MX_Controller {
         $this->admin->saveEditPricerate();
     }
 
+    public function create_adminuser(){
+        $this->load->view("templates/admin/head");
+        $this->load->view("create_adminuser");
+        $this->load->view("templates/admin/footer");
+    }
+
 
 }
 

@@ -4,11 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Admin_model extends CI_Model
 {
-
     public function __construct()
     {
         parent::__construct();
-        date_default_timezone_set("Asia/Bangkok");
+        date_default_timezone_set('Asia/Bangkok');
     }
 
     public function request_list_checkdata()
@@ -20,7 +19,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'm_autoid';
 
         $columns = [
-            ['db'       => 'm_formno', 'dt' => 0,
+            [
+                'db' => 'm_formno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/request_viewfull_page/') . $d . '" class="select_formno"
@@ -29,52 +30,73 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'm_datetimecreate', 'dt' => 1,
+            [
+                'db' => 'm_datetimecreate',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_fullname', 'dt' => 2,
+            [
+                'db' => 'mem_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_tel', 'dt' => 3,
+            [
+                'db' => 'mem_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_origininput', 'dt' => 4,
+            [
+                'db' => 'm_origininput',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_destinationinput', 'dt' => 5,
+            [
+                'db' => 'm_destinationinput',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_cartype', 'dt' => 6,
+            [
+                'db' => 'm_cartype',
+                'dt' => 6,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_totalprice', 'dt' => 7,
+            [
+                'db' => 'm_totalprice',
+                'dt' => 7,
                 'formatter' => function ($d, $row) {
                     return number_format($d, 2);
                 },
             ],
-            ['db'       => 'm_status', 'dt' => 8,
+            [
+                'db' => 'm_status',
+                'dt' => 8,
                 'formatter' => function ($d, $row) {
-                    $class = "";
-                    if ($d == "Open") {
+                    $class = '';
+                    if ($d == 'Open') {
                         $class = "class='cardstatus_Open'";
-                    } else if ($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
-                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination") {
+                    } else if ($d == 'Approved' ||
+                            $d == 'Payment Confirmed' ||
+                            $d == 'Payment Checked' ||
+                            $d == 'Driver Get Job' ||
+                            $d == 'Driver Check In' ||
+                            $d == 'Driver Start Job' ||
+                            $d == 'Driver Check In Destination') {
                         $class = "class='cardstatus_Approve'";
-                    } else if ($d == "Driver Close Job") {
+                    } else if ($d == 'Driver Close Job') {
                         $class = "class='cardstatus_Done'";
-                    } else if ($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel") {
+                    } else if ($d == 'Not Approved' || $d == 'User Cancel' || $d == 'Driver Cancel') {
                         $class = "class='cardstatus_Done'";
                     }
                     $htlml = '<span ' . $class . '>' . $d . '</span>';
@@ -87,14 +109,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -104,8 +127,8 @@ class Admin_model extends CI_Model
 
     public function get_viewfulldata_topage($formno)
     {
-        if (! empty($formno)) {
-            $sql = $this->db->query("SELECT
+        if (!empty($formno)) {
+            $sql = $this->db->query('SELECT
             main.m_autoid,
             main.m_formno,
             main.m_cusid,
@@ -130,7 +153,7 @@ class Admin_model extends CI_Model
             main
             INNER JOIN member ON member.mem_line_userId = main.m_cusid
             WHERE main.m_formno = ?
-            ", [$formno]);
+            ', [$formno]);
 
             if ($sql->num_rows() > 0) {
                 return $sql;
@@ -151,7 +174,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'm_autoid';
 
         $columns = [
-            ['db'       => 'm_formno', 'dt' => 0,
+            [
+                'db' => 'm_formno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/request_viewfull_page/') . $d . '" class="select_formno"
@@ -160,52 +185,73 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'm_datetimecreate', 'dt' => 1,
+            [
+                'db' => 'm_datetimecreate',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_fullname', 'dt' => 2,
+            [
+                'db' => 'mem_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_tel', 'dt' => 3,
+            [
+                'db' => 'mem_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_origininput', 'dt' => 4,
+            [
+                'db' => 'm_origininput',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_destinationinput', 'dt' => 5,
+            [
+                'db' => 'm_destinationinput',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_cartype', 'dt' => 6,
+            [
+                'db' => 'm_cartype',
+                'dt' => 6,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_totalprice', 'dt' => 7,
+            [
+                'db' => 'm_totalprice',
+                'dt' => 7,
                 'formatter' => function ($d, $row) {
                     return number_format($d, 2);
                 },
             ],
-            ['db'       => 'm_status', 'dt' => 8,
+            [
+                'db' => 'm_status',
+                'dt' => 8,
                 'formatter' => function ($d, $row) {
-                    $class = "";
-                    if ($d == "Open") {
+                    $class = '';
+                    if ($d == 'Open') {
                         $class = "class='cardstatus_Open'";
-                    } else if ($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
-                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination") {
+                    } else if ($d == 'Approved' ||
+                            $d == 'Payment Confirmed' ||
+                            $d == 'Payment Checked' ||
+                            $d == 'Driver Get Job' ||
+                            $d == 'Driver Check In' ||
+                            $d == 'Driver Start Job' ||
+                            $d == 'Driver Check In Destination') {
                         $class = "class='cardstatus_Approve'";
-                    } else if ($d == "Driver Close Job") {
+                    } else if ($d == 'Driver Close Job') {
                         $class = "class='cardstatus_Done'";
-                    } else if ($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel") {
+                    } else if ($d == 'Not Approved' || $d == 'User Cancel' || $d == 'Driver Cancel') {
                         $class = "class='cardstatus_Done'";
                     }
                     $htlml = '<span ' . $class . '>' . $d . '</span>';
@@ -218,14 +264,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -242,7 +289,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'm_autoid';
 
         $columns = [
-            ['db'       => 'm_formno', 'dt' => 0,
+            [
+                'db' => 'm_formno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/request_viewfull_page/') . $d . '" class="select_formno"
@@ -251,52 +300,73 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'm_datetimecreate', 'dt' => 1,
+            [
+                'db' => 'm_datetimecreate',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_fullname', 'dt' => 2,
+            [
+                'db' => 'mem_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_tel', 'dt' => 3,
+            [
+                'db' => 'mem_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_origininput', 'dt' => 4,
+            [
+                'db' => 'm_origininput',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_destinationinput', 'dt' => 5,
+            [
+                'db' => 'm_destinationinput',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_cartype', 'dt' => 6,
+            [
+                'db' => 'm_cartype',
+                'dt' => 6,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_totalprice', 'dt' => 7,
+            [
+                'db' => 'm_totalprice',
+                'dt' => 7,
                 'formatter' => function ($d, $row) {
                     return number_format($d, 2);
                 },
             ],
-            ['db'       => 'm_status', 'dt' => 8,
+            [
+                'db' => 'm_status',
+                'dt' => 8,
                 'formatter' => function ($d, $row) {
-                    $class = "";
-                    if ($d == "Open") {
+                    $class = '';
+                    if ($d == 'Open') {
                         $class = "class='cardstatus_Open'";
-                    } else if ($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
-                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination") {
+                    } else if ($d == 'Approved' ||
+                            $d == 'Payment Confirmed' ||
+                            $d == 'Payment Checked' ||
+                            $d == 'Driver Get Job' ||
+                            $d == 'Driver Check In' ||
+                            $d == 'Driver Start Job' ||
+                            $d == 'Driver Check In Destination') {
                         $class = "class='cardstatus_Approve'";
-                    } else if ($d == "Driver Close Job") {
+                    } else if ($d == 'Driver Close Job') {
                         $class = "class='cardstatus_Done'";
-                    } else if ($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel") {
+                    } else if ($d == 'Not Approved' || $d == 'User Cancel' || $d == 'Driver Cancel') {
                         $class = "class='cardstatus_Done'";
                     }
                     $htlml = '<span ' . $class . '>' . $d . '</span>';
@@ -309,14 +379,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -333,7 +404,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'm_autoid';
 
         $columns = [
-            ['db'       => 'm_formno', 'dt' => 0,
+            [
+                'db' => 'm_formno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/request_viewfull_page/') . $d . '" class="select_formno"
@@ -342,52 +415,73 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'm_datetimecreate', 'dt' => 1,
+            [
+                'db' => 'm_datetimecreate',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_fullname', 'dt' => 2,
+            [
+                'db' => 'mem_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'mem_tel', 'dt' => 3,
+            [
+                'db' => 'mem_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_origininput', 'dt' => 4,
+            [
+                'db' => 'm_origininput',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_destinationinput', 'dt' => 5,
+            [
+                'db' => 'm_destinationinput',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_cartype', 'dt' => 6,
+            [
+                'db' => 'm_cartype',
+                'dt' => 6,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'm_totalprice', 'dt' => 7,
+            [
+                'db' => 'm_totalprice',
+                'dt' => 7,
                 'formatter' => function ($d, $row) {
                     return number_format($d, 2);
                 },
             ],
-            ['db'       => 'm_status', 'dt' => 8,
+            [
+                'db' => 'm_status',
+                'dt' => 8,
                 'formatter' => function ($d, $row) {
-                    $class = "";
-                    if ($d == "Open") {
+                    $class = '';
+                    if ($d == 'Open') {
                         $class = "class='cardstatus_Open'";
-                    } else if ($d == "Approved" || $d == "Payment Confirmed" || $d == "Payment Checked" || $d == "Driver Get Job" ||
-                        $d == "Driver Check In" || $d == "Driver Start Job" || $d == "Driver Check In Destination") {
+                    } else if ($d == 'Approved' ||
+                            $d == 'Payment Confirmed' ||
+                            $d == 'Payment Checked' ||
+                            $d == 'Driver Get Job' ||
+                            $d == 'Driver Check In' ||
+                            $d == 'Driver Start Job' ||
+                            $d == 'Driver Check In Destination') {
                         $class = "class='cardstatus_Approve'";
-                    } else if ($d == "Driver Close Job") {
+                    } else if ($d == 'Driver Close Job') {
                         $class = "class='cardstatus_Done'";
-                    } else if ($d == "Not Approved" || $d == "User Cancel" || $d == "Driver Cancel") {
+                    } else if ($d == 'Not Approved' || $d == 'User Cancel' || $d == 'Driver Cancel') {
                         $class = "class='cardstatus_Done'";
                     }
                     $htlml = '<span ' . $class . '>' . $d . '</span>';
@@ -400,14 +494,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -417,47 +512,47 @@ class Admin_model extends CI_Model
 
     public function saveApproveDoc()
     {
-        if (! empty($this->input->post("formno")) && ! empty($this->input->post("depositpercen")) && ! empty($this->input->post("deposit"))) {
-            $formno        = $this->input->post("formno");
-            $depositpercen = $this->input->post("depositpercen");
-            $deposit       = $this->input->post("deposit");
-            $memo          = $this->input->post("memo");
-            $m_am1_approve = $this->input->post("m_am1_approve");
-            $userId = $this->input->post("userId");
+        if (!empty($this->input->post('formno')) && !empty($this->input->post('depositpercen')) && !empty($this->input->post('deposit'))) {
+            $formno = $this->input->post('formno');
+            $depositpercen = $this->input->post('depositpercen');
+            $deposit = $this->input->post('deposit');
+            $memo = $this->input->post('memo');
+            $m_am1_approve = $this->input->post('m_am1_approve');
+            $userId = $this->input->post('userId');
 
-            if ($m_am1_approve == "อนุมัติ") {
-                $m_status = "Approved";
+            if ($m_am1_approve == 'อนุมัติ') {
+                $m_status = 'Approved';
             } else {
-                $m_status = "Not Approved";
+                $m_status = 'Not Approved';
             }
 
             $arraySave = [
-                "m_deposit_percen" => $depositpercen,
-                "m_deposit"        => $deposit,
-                "m_am1_memo"       => $memo,
-                "m_status"         => $m_status,
-                "m_am1_approve"    => $m_am1_approve,
-                "m_am1_user"       => $this->session->am_fname . " " . $this->session->am_lname,
-                "m_am1_datetime"   => date("Y-m-d H:i:s"),
+                'm_deposit_percen' => $depositpercen,
+                'm_deposit' => $deposit,
+                'm_am1_memo' => $memo,
+                'm_status' => $m_status,
+                'm_am1_approve' => $m_am1_approve,
+                'm_am1_user' => $this->session->am_fname . ' ' . $this->session->am_lname,
+                'm_am1_datetime' => date('Y-m-d H:i:s'),
             ];
-            $this->db->where("m_formno", $formno);
-            $this->db->update("main", $arraySave);
+            $this->db->where('m_formno', $formno);
+            $this->db->update('main', $arraySave);
 
-            if ($m_am1_approve == "อนุมัติ"){
-                $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            if ($m_am1_approve == 'อนุมัติ') {
+                $userpage = get_link() . "main/request_viewfull_page/$formno/$userId";
                 $messageText = "รายการของท่านได้รับการอนุมัติแล้ว \n กรุณาโอนเงินค่ามัดจำและยืนยันการชำระเงิน เพื่อเริ่มงาน \n✅ ตรวจสอบรายการ คลิก : $userpage";
-                $userresponse = send_user_message($userId , $messageText);
+                $userresponse = send_user_message($userId, $messageText);
             }
 
             $output = [
-                "msg"    => "บันทึกการอนุมัติรายการสำเร็จ",
-                "status" => "Update Data Success",
-                "notify_response_user" =>$userresponse
+                'msg' => 'บันทึกการอนุมัติรายการสำเร็จ',
+                'status' => 'Update Data Success',
+                'notify_response_user' => $userresponse
             ];
         } else {
             $output = [
-                "msg"    => "บันทึกรายการไม่สำเร็จ",
-                "status" => "Update Data Not Success",
+                'msg' => 'บันทึกรายการไม่สำเร็จ',
+                'status' => 'Update Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -465,9 +560,9 @@ class Admin_model extends CI_Model
 
     public function getDataApproved()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
-            $sql    = $this->db->query("SELECT
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
+            $sql = $this->db->query("SELECT
             m_deposit_percen,
             m_deposit,
             m_am1_approve,
@@ -478,14 +573,14 @@ class Admin_model extends CI_Model
             ");
 
             $output = [
-                "msg"    => "ดึงข้อมูลการ Approve สำเร็จ",
-                "status" => "Select Data Success",
-                "result" => $sql->row(),
+                'msg' => 'ดึงข้อมูลการ Approve สำเร็จ',
+                'status' => 'Select Data Success',
+                'result' => $sql->row(),
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูลการ Approve ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูลการ Approve ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -493,32 +588,32 @@ class Admin_model extends CI_Model
 
     public function getDataConfirmPay()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
 
-            $sql = $this->db->query("SELECT
+            $sql = $this->db->query('SELECT
             main.m_userconfirm_money
             FROM
             main
             WHERE main.m_formno = ?
-            ", [$formno]);
+            ', [$formno]);
 
-            $sqlFile = $this->db->query("SELECT
+            $sqlFile = $this->db->query('SELECT
             f_path,
             f_name
             FROM files WHERE f_formno = ?
-            ", [$formno]);
+            ', [$formno]);
 
             $output = [
-                "msg"        => "ดึงข้อมูล User confirm pay สำเร็จ",
-                "status"     => "Select Data Success",
-                "result"     => $sql->row(),
-                "resultFile" => $sqlFile->result(),
+                'msg' => 'ดึงข้อมูล User confirm pay สำเร็จ',
+                'status' => 'Select Data Success',
+                'result' => $sql->row(),
+                'resultFile' => $sqlFile->result(),
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูล User confirm pay ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูล User confirm pay ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -526,46 +621,44 @@ class Admin_model extends CI_Model
 
     public function saveConfirmPayChecked()
     {
-        if (! empty($this->input->post("formno")) && ! empty($this->input->post("m_am2_approve"))) {
-            $formno        = $this->input->post("formno");
-            $m_am2_approve = $this->input->post("m_am2_approve");
-            $m_am2_memo    = $this->input->post("m_am2_memo");
-            $userId = $this->input->post("userId");
-            $origin = $this->input->post("origin");
-            $destination = $this->input->post("destination");
+        if (!empty($this->input->post('formno')) && !empty($this->input->post('m_am2_approve'))) {
+            $formno = $this->input->post('formno');
+            $m_am2_approve = $this->input->post('m_am2_approve');
+            $m_am2_memo = $this->input->post('m_am2_memo');
+            $userId = $this->input->post('userId');
+            $origin = $this->input->post('origin');
+            $destination = $this->input->post('destination');
 
             $arsave_ConfirmPayChecked = [
-                "m_am2_approve"  => $m_am2_approve,
-                "m_am2_memo"     => $m_am2_memo,
-                "m_am2_user"     => $this->session->am_fname . " " . $this->session->am_lname,
-                "m_am2_datetime" => date("Y-m-d H:i:s"),
-                "m_status"       => "Payment Checked",
+                'm_am2_approve' => $m_am2_approve,
+                'm_am2_memo' => $m_am2_memo,
+                'm_am2_user' => $this->session->am_fname . ' ' . $this->session->am_lname,
+                'm_am2_datetime' => date('Y-m-d H:i:s'),
+                'm_status' => 'Payment Checked',
             ];
 
-            $this->db->where("m_formno", $formno);
-            $this->db->update("main", $arsave_ConfirmPayChecked);
+            $this->db->where('m_formno', $formno);
+            $this->db->update('main', $arsave_ConfirmPayChecked);
 
-
-            if($m_am2_approve == "อนุมัติ"){
-                $userpage = get_link()."main/request_viewfull_page/$formno/$userId";
+            if ($m_am2_approve == 'อนุมัติ') {
+                $userpage = get_link() . "main/request_viewfull_page/$formno/$userId";
                 $messageText = "รายการของท่าน ตรวจสอบยอดการโอนเงินเสร็จเรียบร้อยแล้ว \n กรุณารอคนขับรับงาน \n✅ ตรวจสอบรายการ คลิก : $userpage";
-                $userresponse = send_user_message($userId , $messageText);
+                $userresponse = send_user_message($userId, $messageText);
 
-                $groupId = getGroupID("driver");
-                $driverpage = get_link()."backend/drivers/job_list_page/job_avaliable";
+                $groupId = getGroupID('driver');
+                $driverpage = get_link() . 'backend/drivers/job_list_page/job_avaliable';
                 $messageAdmin = "✅ มีรายการ รอรับงานมาใหม่ \n🚗 ต้นทางจาก : $origin \n🚗 ปลายทาง : $destination \n คลิก : $driverpage";
-                $adminresponse = send_groupAdmin_message($groupId , $messageAdmin);
+                $adminresponse = send_groupAdmin_message($groupId, $messageAdmin);
             }
 
-
             $output = [
-                "msg"    => "อัพเดตข้อมูลการอนุมัติรายการสำเร็จ",
-                "status" => "Update Data Success",
+                'msg' => 'อัพเดตข้อมูลการอนุมัติรายการสำเร็จ',
+                'status' => 'Update Data Success',
             ];
         } else {
             $output = [
-                "msg"    => "อัพเดตข้อมูลการอนุมัติรายการไม่สำเร็จ",
-                "status" => "Update Data Not Success",
+                'msg' => 'อัพเดตข้อมูลการอนุมัติรายการไม่สำเร็จ',
+                'status' => 'Update Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -573,9 +666,9 @@ class Admin_model extends CI_Model
 
     public function getDataConfirmPayChecked()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
-            $sql    = $this->db->query("SELECT
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
+            $sql = $this->db->query("SELECT
             m_am2_approve,
             m_am2_memo,
             m_am2_user,
@@ -584,14 +677,14 @@ class Admin_model extends CI_Model
             ", [$formno]);
 
             $output = [
-                "msg"    => "ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงินสำเร็จ",
-                "status" => "Select Data Success",
-                "result" => $sql->row(),
+                'msg' => 'ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงินสำเร็จ',
+                'status' => 'Select Data Success',
+                'result' => $sql->row(),
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงิน ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูลรายการ ผ่านการตรวจสอบการโอนเงิน ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -599,8 +692,8 @@ class Admin_model extends CI_Model
 
     public function getJobData()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
 
             $sql = $this->db->query("SELECT
             m_dv_user_getjob,
@@ -610,18 +703,18 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fnameth . " " . getDriverData($sql->row()->m_dv_user_getjob)->dv_lnameth;
+            $drivername = getDriverData($sql->row()->m_dv_user_getjob)->dv_fnameth . ' ' . getDriverData($sql->row()->m_dv_user_getjob)->dv_lnameth;
 
             $output = [
-                "msg"        => "ดึงข้อมูล Getjob สำเร็จ",
-                "status"     => "Select Data Success",
-                "result"     => $sql->row(),
-                "drivername" => $drivername,
+                'msg' => 'ดึงข้อมูล Getjob สำเร็จ',
+                'status' => 'Select Data Success',
+                'result' => $sql->row(),
+                'drivername' => $drivername,
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูล CheckIn ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูล CheckIn ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
 
@@ -630,8 +723,8 @@ class Admin_model extends CI_Model
 
     public function getCheckInData()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
 
             $sql = $this->db->query("SELECT
             m_dv_user_checkin,
@@ -641,18 +734,18 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $drivername = getDriverData($sql->row()->m_dv_user_checkin)->dv_fnameth . " " . getDriverData($sql->row()->m_dv_user_checkin)->dv_lnameth;
+            $drivername = getDriverData($sql->row()->m_dv_user_checkin)->dv_fnameth . ' ' . getDriverData($sql->row()->m_dv_user_checkin)->dv_lnameth;
 
             $output = [
-                "msg"        => "ดึงข้อมูล CheckIn สำเร็จ",
-                "status"     => "Select Data Success",
-                "result"     => $sql->row(),
-                "drivername" => $drivername,
+                'msg' => 'ดึงข้อมูล CheckIn สำเร็จ',
+                'status' => 'Select Data Success',
+                'result' => $sql->row(),
+                'drivername' => $drivername,
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูล CheckIn ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูล CheckIn ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
 
@@ -661,9 +754,9 @@ class Admin_model extends CI_Model
 
     public function getStartJobData()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
-            $type   = $this->input->post("type");
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
+            $type = $this->input->post('type');
 
             $sqlMain = $this->db->query("SELECT
             m_dv_user_start,
@@ -675,25 +768,25 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $sqlFile = $this->db->query("SELECT
+            $sqlFile = $this->db->query('SELECT
             f_path,
             f_name
             FROM files_dv WHERE f_formno = ? AND f_type = ?
-            ", [$formno, $type]);
+            ', [$formno, $type]);
 
-            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fnameth . " " . getDriverData($sqlMain->row()->m_dv_user_start)->dv_lnameth;
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_start)->dv_fnameth . ' ' . getDriverData($sqlMain->row()->m_dv_user_start)->dv_lnameth;
 
             $output = [
-                "msg"          => "ดึงข้อมูล Start Job สำเร็จ",
-                "status"       => "Select Data Success",
-                "result_main"  => $sqlMain->row(),
-                "result_files" => $sqlFile->result(),
-                "drivername"   => $drivername,
+                'msg' => 'ดึงข้อมูล Start Job สำเร็จ',
+                'status' => 'Select Data Success',
+                'result_main' => $sqlMain->row(),
+                'result_files' => $sqlFile->result(),
+                'drivername' => $drivername,
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูล Start Job ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูล Start Job ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -701,8 +794,8 @@ class Admin_model extends CI_Model
 
     public function getCheckInDataDes()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
 
             $sql = $this->db->query("SELECT
             m_dv_user_checkindes,
@@ -712,18 +805,18 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $drivername = getDriverData($sql->row()->m_dv_user_checkindes)->dv_fnameth . " " . getDriverData($sql->row()->m_dv_user_checkindes)->dv_lnameth;
+            $drivername = getDriverData($sql->row()->m_dv_user_checkindes)->dv_fnameth . ' ' . getDriverData($sql->row()->m_dv_user_checkindes)->dv_lnameth;
 
             $output = [
-                "msg"        => "ดึงข้อมูล CheckIn Destination สำเร็จ",
-                "status"     => "Select Data Success",
-                "result"     => $sql->row(),
-                "drivername" => $drivername,
+                'msg' => 'ดึงข้อมูล CheckIn Destination สำเร็จ',
+                'status' => 'Select Data Success',
+                'result' => $sql->row(),
+                'drivername' => $drivername,
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูล CheckIn Destination ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูล CheckIn Destination ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
 
@@ -732,9 +825,9 @@ class Admin_model extends CI_Model
 
     public function getStopJobData()
     {
-        if (! empty($this->input->post("formno"))) {
-            $formno = $this->input->post("formno");
-            $type   = $this->input->post("type");
+        if (!empty($this->input->post('formno'))) {
+            $formno = $this->input->post('formno');
+            $type = $this->input->post('type');
 
             $sqlMain = $this->db->query("SELECT
             m_dv_user_stop,
@@ -746,25 +839,25 @@ class Admin_model extends CI_Model
             FROM main WHERE m_formno = ?
             ", [$formno]);
 
-            $sqlFile = $this->db->query("SELECT
+            $sqlFile = $this->db->query('SELECT
             f_path,
             f_name
             FROM files_dv WHERE f_formno = ? AND f_type = ?
-            ", [$formno, $type]);
+            ', [$formno, $type]);
 
-            $drivername = getDriverData($sqlMain->row()->m_dv_user_stop)->dv_fnameth . " " . getDriverData($sqlMain->row()->m_dv_user_stop)->dv_lnameth;
+            $drivername = getDriverData($sqlMain->row()->m_dv_user_stop)->dv_fnameth . ' ' . getDriverData($sqlMain->row()->m_dv_user_stop)->dv_lnameth;
 
             $output = [
-                "msg"          => "ดึงข้อมูล Start Job สำเร็จ",
-                "status"       => "Select Data Success",
-                "result_main"  => $sqlMain->row(),
-                "result_files" => $sqlFile->result(),
-                "drivername"   => $drivername,
+                'msg' => 'ดึงข้อมูล Start Job สำเร็จ',
+                'status' => 'Select Data Success',
+                'result_main' => $sqlMain->row(),
+                'result_files' => $sqlFile->result(),
+                'drivername' => $drivername,
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูล Start Job ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูล Start Job ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
         echo json_encode($output);
@@ -779,7 +872,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'dv_autoid';
 
         $columns = [
-            ['db'       => 'dv_registerno', 'dt' => 0,
+            [
+                'db' => 'dv_registerno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/register_viewfull/') . $d . '" class="select_formno"
@@ -788,27 +883,37 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'dv_register_datetime', 'dt' => 1,
+            [
+                'db' => 'dv_register_datetime',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_fullname', 'dt' => 2,
+            [
+                'db' => 'dv_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_tel', 'dt' => 3,
+            [
+                'db' => 'dv_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_number_plate', 'dt' => 4,
+            [
+                'db' => 'dv_number_plate',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_status', 'dt' => 5,
+            [
+                'db' => 'dv_status',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
@@ -819,14 +924,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -843,7 +949,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'dv_autoid';
 
         $columns = [
-            ['db'       => 'dv_registerno', 'dt' => 0,
+            [
+                'db' => 'dv_registerno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/register_viewfull/') . $d . '" class="select_formno"
@@ -852,27 +960,37 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'dv_register_datetime', 'dt' => 1,
+            [
+                'db' => 'dv_register_datetime',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_fullname', 'dt' => 2,
+            [
+                'db' => 'dv_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_tel', 'dt' => 3,
+            [
+                'db' => 'dv_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_number_plate', 'dt' => 4,
+            [
+                'db' => 'dv_number_plate',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_status', 'dt' => 5,
+            [
+                'db' => 'dv_status',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
@@ -883,14 +1001,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -907,7 +1026,9 @@ class Admin_model extends CI_Model
         $primaryKey = 'dv_autoid';
 
         $columns = [
-            ['db'       => 'dv_registerno', 'dt' => 0,
+            [
+                'db' => 'dv_registerno',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     $output = '
                     <a href="' . base_url('backend/admin/register_viewfull/') . $d . '" class="select_formno"
@@ -916,27 +1037,37 @@ class Admin_model extends CI_Model
                     return $output;
                 },
             ],
-            ['db'       => 'dv_register_datetime', 'dt' => 1,
+            [
+                'db' => 'dv_register_datetime',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_fullname', 'dt' => 2,
+            [
+                'db' => 'dv_fullname',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_tel', 'dt' => 3,
+            [
+                'db' => 'dv_tel',
+                'dt' => 3,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_number_plate', 'dt' => 4,
+            [
+                'db' => 'dv_number_plate',
+                'dt' => 4,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'dv_status', 'dt' => 5,
+            [
+                'db' => 'dv_status',
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
@@ -947,14 +1078,15 @@ class Admin_model extends CI_Model
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -964,8 +1096,8 @@ class Admin_model extends CI_Model
 
     public function get_registerdata_viewfull($registerNo)
     {
-        if (! empty($registerNo)) {
-            $sql = $this->db->query("SELECT
+        if (!empty($registerNo)) {
+            $sql = $this->db->query('SELECT
             dv_registerno,
             dv_username,
             dv_password,
@@ -976,7 +1108,7 @@ class Admin_model extends CI_Model
             dv_number_plate,
             dv_status
             FROM member_drivers WHERE dv_registerno = ?
-            ", [$registerNo]);
+            ', [$registerNo]);
 
             if ($sql->num_rows() > 0) {
                 return $sql->row();
@@ -986,12 +1118,12 @@ class Admin_model extends CI_Model
 
     public function getRegisterData()
     {
-        if (! empty($this->input->post("registerNo"))) {
-            $registerNo = $this->input->post("registerNo");
-            $doc1       = $this->getRegisterFile($registerNo, "doc1");
-            $doc2       = $this->getRegisterFile($registerNo, "doc2");
-            $doc3       = $this->getRegisterFile($registerNo, "doc3");
-            $doc4       = $this->getRegisterFile($registerNo, "doc4");
+        if (!empty($this->input->post('registerNo'))) {
+            $registerNo = $this->input->post('registerNo');
+            $doc1 = $this->getRegisterFile($registerNo, 'doc1');
+            $doc2 = $this->getRegisterFile($registerNo, 'doc2');
+            $doc3 = $this->getRegisterFile($registerNo, 'doc3');
+            $doc4 = $this->getRegisterFile($registerNo, 'doc4');
 
             $sql = $this->db->query("SELECT
             dv_username,
@@ -1008,33 +1140,34 @@ class Admin_model extends CI_Model
             ", [$registerNo]);
 
             $output = [
-                "msg"          => "ดึงข้อมูลไฟล์สำเร็จ",
-                "status"       => "Select Data Success",
-                "doc1"         => $doc1->result(),
-                "doc2"         => $doc2->result(),
-                "doc3"         => $doc3->result(),
-                "doc4"         => $doc4->result(),
-                "registerdata" => $sql->row(),
+                'msg' => 'ดึงข้อมูลไฟล์สำเร็จ',
+                'status' => 'Select Data Success',
+                'doc1' => $doc1->result(),
+                'doc2' => $doc2->result(),
+                'doc3' => $doc3->result(),
+                'doc4' => $doc4->result(),
+                'registerdata' => $sql->row(),
             ];
         } else {
             $output = [
-                "msg"    => "ดึงข้อมูลไฟล์ไม่สำเร็จ",
-                "status" => "Select Data Not Success",
+                'msg' => 'ดึงข้อมูลไฟล์ไม่สำเร็จ',
+                'status' => 'Select Data Not Success',
             ];
         }
         echo json_encode($output);
     }
+
     private function getRegisterFile($registerNo, $type)
     {
-        if (! empty($registerNo) && ! empty($type)) {
-            $sql = $this->db->query("SELECT
+        if (!empty($registerNo) && !empty($type)) {
+            $sql = $this->db->query('SELECT
             f_registerno,
             f_driverusername,
             f_path,
             f_type,
             f_name
             FROM files_dv_member WHERE f_registerno = ? AND f_type = ?
-            ", [$registerNo, $type]);
+            ', [$registerNo, $type]);
 
             return $sql;
         }
@@ -1042,35 +1175,35 @@ class Admin_model extends CI_Model
 
     public function saveRegisterData()
     {
-        if (! empty($this->input->post("registerNo")) && ! empty($this->input->post("approveChoice"))) {
-            $registerNo    = $this->input->post("registerNo");
-            $approveChoice = $this->input->post("approveChoice");
-            $memo          = $this->input->post("memo");
+        if (!empty($this->input->post('registerNo')) && !empty($this->input->post('approveChoice'))) {
+            $registerNo = $this->input->post('registerNo');
+            $approveChoice = $this->input->post('approveChoice');
+            $memo = $this->input->post('memo');
 
-            $approveStatus = "";
-            if ($approveChoice == "อนุมัติ") {
-                $approveStatus = "active";
+            $approveStatus = '';
+            if ($approveChoice == 'อนุมัติ') {
+                $approveStatus = 'active';
             } else {
-                $approveStatus = "not approve";
+                $approveStatus = 'not approve';
             }
 
             $arsave = [
-                "dv_approve_memo"   => $memo,
-                "dv_approve_status" => $approveChoice,
-                "dv_status"         => $approveStatus,
+                'dv_approve_memo' => $memo,
+                'dv_approve_status' => $approveChoice,
+                'dv_status' => $approveStatus,
             ];
 
-            $this->db->where("dv_registerno", $registerNo);
-            $this->db->update("member_drivers", $arsave);
+            $this->db->where('dv_registerno', $registerNo);
+            $this->db->update('member_drivers', $arsave);
 
             $output = [
-                "msg"    => "อนุมัติรายการสำเร็จ",
-                "status" => "Update Data Success",
+                'msg' => 'อนุมัติรายการสำเร็จ',
+                'status' => 'Update Data Success',
             ];
         } else {
             $output = [
-                "msg"    => "อนุมัติรายการไม่สำเร็จ",
-                "status" => "Update Data Not Success",
+                'msg' => 'อนุมัติรายการไม่สำเร็จ',
+                'status' => 'Update Data Not Success',
             ];
         }
 
@@ -1079,15 +1212,14 @@ class Admin_model extends CI_Model
 
     public function saveSettingPrice()
     {
-        if ($this->input->post("action") == "saveSettingPrice") {
-
-            $cartype          = $this->input->post("cartype");
-            $distance_x       = $this->input->post("distance_x");
-            $fuel_consumption = $this->input->post("fuel_consumption");
-            $fuel_pricerate   = $this->input->post("fuel_pricerate");
-            $ratio_x          = $this->input->post("ratio_x");
-            $money_plus       = $this->input->post("money_plus");
-            $fnamedata        = $this->session->am_fname . " " . $this->session->am_lname;
+        if ($this->input->post('action') == 'saveSettingPrice') {
+            $cartype = $this->input->post('cartype');
+            $distance_x = $this->input->post('distance_x');
+            $fuel_consumption = $this->input->post('fuel_consumption');
+            $fuel_pricerate = $this->input->post('fuel_pricerate');
+            $ratio_x = $this->input->post('ratio_x');
+            $money_plus = $this->input->post('money_plus');
+            $fnamedata = $this->session->am_fname . ' ' . $this->session->am_lname;
 
             // เช็กว่ามี cartype นี้อยู่ในฐานข้อมูลแล้วหรือยัง
             $this->db->where('cartype', $cartype);
@@ -1096,40 +1228,40 @@ class Admin_model extends CI_Model
             if ($query->num_rows() > 0) {
                 // มีค่าซ้ำในระบบ
                 echo json_encode([
-                    'status'  => 'duplicate',
+                    'status' => 'duplicate',
                     'message' => 'มีข้อมูลประเภทรถนี้อยู่ในระบบแล้ว',
                 ]);
-                return; // ออกจาก function เลย
+                return;  // ออกจาก function เลย
             }
 
             // ถ้าไม่มีซ้ำ ➔ เตรียมข้อมูลบันทึก
             $data = [
-                'cartype'          => $cartype,
-                'distance_x'       => $distance_x,
+                'cartype' => $cartype,
+                'distance_x' => $distance_x,
                 'fuel_consumption' => $fuel_consumption,
-                'fuel_pricerate'   => $fuel_pricerate,
-                'ratio_x'          => $ratio_x,
-                'money_plus'       => $money_plus,
-                'user_create'      => $fnamedata,
-                'datetime_create'  => date('Y-m-d H:i:s'),
-                'last_update'      => date("Y-m-d H:i:s"),
+                'fuel_pricerate' => $fuel_pricerate,
+                'ratio_x' => $ratio_x,
+                'money_plus' => $money_plus,
+                'user_create' => $fnamedata,
+                'datetime_create' => date('Y-m-d H:i:s'),
+                'last_update' => date('Y-m-d H:i:s'),
             ];
 
             // บันทึกข้อมูล
             if ($this->db->insert('setting_pricerate', $data)) {
                 echo json_encode([
-                    'status'  => 'success',
+                    'status' => 'success',
                     'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว',
                 ]);
             } else {
                 echo json_encode([
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
                 ]);
             }
         } else {
             echo json_encode([
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
             ]);
         }
@@ -1144,19 +1276,23 @@ class Admin_model extends CI_Model
         $primaryKey = 'id';
 
         $columns = [
-            ['db'       => 'name_th', 'dt' => 0,
+            [
+                'db' => 'name_th',
+                'dt' => 0,
                 'formatter' => function ($d, $row) {
                     return $d;
                 },
             ],
-            ['db'       => 'id', 'dt' => 1,
+            [
+                'db' => 'id',
+                'dt' => 1,
                 'formatter' => function ($d, $row) {
-                    $distance_x       = $row['distance_x'];
+                    $distance_x = $row['distance_x'];
                     $fuel_consumption = $row['fuel_consumption'];
-                    $fuel_pricerate   = $row['fuel_pricerate'];
-                    $ratio_x          = $row['ratio_x'];
-                    $money_plus       = $row['money_plus'];
-                    $html             = "";
+                    $fuel_pricerate = $row['fuel_pricerate'];
+                    $ratio_x = $row['ratio_x'];
+                    $money_plus = $row['money_plus'];
+                    $html = '';
                     $html .= "<p><span><b>ตัวคูณของระยะทาง : </b>$distance_x</span></p>";
                     $html .= "<p><span><b>อัตราการบริโภคน้ำมัน : </b></span>$fuel_consumption</p>";
                     $html .= "<p><span><b>เรทราคาน้ำมัน : </b></span>$fuel_pricerate</p>";
@@ -1165,7 +1301,9 @@ class Admin_model extends CI_Model
                     return $html;
                 },
             ],
-            ['db'       => 'id', 'dt' => 2,
+            [
+                'db' => 'id',
+                'dt' => 2,
                 'formatter' => function ($d, $row) {
                     $html = '<button type="button" class="btn btn-sm btn-primary btn-edit"
                         data-id="' . $d . '"
@@ -1173,15 +1311,14 @@ class Admin_model extends CI_Model
                         data-fuel_consumption="' . $row['fuel_consumption'] . '"
                         data-fuel_pricerate="' . $row['fuel_pricerate'] . '"
                         data-ratio_x="' . $row['ratio_x'] . '"
-                        data-money_plus="'.$row['money_plus'].'"
-                        data-cartype="'.$row['cartype'].'"
+                        data-money_plus="' . $row['money_plus'] . '"
+                        data-cartype="' . $row['cartype'] . '"
                     >';
                     $html .= '<i class="fa fa-edit"></i> แก้ไข';
                     $html .= '</button>';
                     return $html;
                 },
             ],
-
             // เพิ่มฟิลด์ที่ต้องการใช้งานใน $row ด้วย (dt ไม่ต้องซ้ำกับที่แสดง)
             ['db' => 'distance_x', 'dt' => null],
             ['db' => 'fuel_consumption', 'dt' => null],
@@ -1189,21 +1326,21 @@ class Admin_model extends CI_Model
             ['db' => 'ratio_x', 'dt' => null],
             ['db' => 'money_plus', 'dt' => null],
             ['db' => 'cartype', 'dt' => null],
-
         ];
 
         // SQL server connection information
         $sql_details = [
             'user' => getDb()->db_username,
             'pass' => getDb()->db_password,
-            'db'   => getDb()->db_name,
+            'db' => getDb()->db_name,
             'host' => getDb()->db_host,
         ];
 
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        * If you just want to use the basic configuration for DataTables with PHP
-        * server-side, there is no need to edit below this line.
-        */
+        /*
+         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * If you just want to use the basic configuration for DataTables with PHP
+         * server-side, there is no need to edit below this line.
+         */
         require 'server-side/scripts/ssp.class.php';
 
         echo json_encode(
@@ -1213,48 +1350,46 @@ class Admin_model extends CI_Model
 
     public function saveEditPricerate()
     {
-        if($this->input->post("action") === "saveEditSettingPrice"){
-            $cartype = $this->input->post("cartype");
-            $distance_x = $this->input->post("distance_x");
-            $fuel_consumption = $this->input->post("fuel_consumption");
-            $fuel_pricerate = $this->input->post("fuel_pricerate");
-            $ratio_x = $this->input->post("ratio_x");
-            $money_plus = $this->input->post("money_plus");
-            $id = $this->input->post("id");
+        if ($this->input->post('action') === 'saveEditSettingPrice') {
+            $cartype = $this->input->post('cartype');
+            $distance_x = $this->input->post('distance_x');
+            $fuel_consumption = $this->input->post('fuel_consumption');
+            $fuel_pricerate = $this->input->post('fuel_pricerate');
+            $ratio_x = $this->input->post('ratio_x');
+            $money_plus = $this->input->post('money_plus');
+            $id = $this->input->post('id');
 
-            $fnamedata = $this->session->am_fname . " " . $this->session->am_lname;
+            $fnamedata = $this->session->am_fname . ' ' . $this->session->am_lname;
 
             $data = array(
-                "cartype" => $cartype,
-                "distance_x" => $distance_x,
-                "fuel_consumption" => $fuel_consumption,
-                "ratio_x" => $ratio_x,
-                "money_plus" => $money_plus,
-                "user_update" => $fnamedata,
-                "last_update" => date("Y-m-d H:i:s")
+                'cartype' => $cartype,
+                'distance_x' => $distance_x,
+                'fuel_consumption' => $fuel_consumption,
+                'ratio_x' => $ratio_x,
+                'money_plus' => $money_plus,
+                'user_update' => $fnamedata,
+                'last_update' => date('Y-m-d H:i:s')
             );
 
-            $this->db->where("id" , $id);
-            if($this->db->update("setting_pricerate" , $data)){
+            $this->db->where('id', $id);
+            if ($this->db->update('setting_pricerate', $data)) {
                 echo json_encode([
-                    'status'  => 'success',
+                    'status' => 'success',
                     'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว',
                 ]);
-            }else {
+            } else {
                 echo json_encode([
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
                 ]);
             }
-        }else {
+        } else {
             echo json_encode([
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
             ]);
         }
     }
-
-
 }
 
 /* End of file Admin_model.php */
