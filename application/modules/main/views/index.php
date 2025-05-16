@@ -7,6 +7,14 @@
     <title>หน้าหลักโปรแกรมใบเบิกเงิน</title>
 		<!-- Date picker -->
 		<link rel="stylesheet" href="<?=base_url()?>assets/dist/css/default/zebra_datepicker.min.css" type="text/css" />
+
+		<style>
+			.btnHomeUs{
+				height:100px;
+				font-size:22px;
+				font-family: 'Sarabun', sans-serif;
+			}
+		</style>
 </head>
 
 <body>
@@ -17,12 +25,12 @@
 				<div class="row form-group mt-3">
 					<div class="col-md-4"></div>
 					<div class="col-md-4 form-group">
-						<a href="<?=base_url('main/gt_service')?>"><button type="button" id="btn_requestCar" name="btn_requestCar" class="btn btn-primary btn-block">เรียกรถรับจ้างทั่วไป</button></a>
+						<a href="<?=base_url('main/gt_service')?>"><button type="button" id="btn_requestCar" name="btn_requestCar" class="btn btn-primary btn-block btnHomeUs">เรียกรถรับจ้างทั่วไป</button></a>
 					</div>
 					<div class="col-md-4"></div>
 					<div class="col-md-4"></div>
 					<div class="col-md-4 form-group">
-						<a href="<?=base_url('main/requestList')?>"><button type="button" id="btn_requestCarList" name="btn_requestCarList" class="btn btn-info btn-block">รายการเรียกรถ</button></a>
+						<a href="<?=base_url('main/requestList')?>"><button type="button" id="btn_requestCarList" name="btn_requestCarList" class="btn btn-info btn-block btnHomeUs">รายการเรียกรถ</button></a>
 					</div>
 					<div class="col-md-4"></div>
 				</div>

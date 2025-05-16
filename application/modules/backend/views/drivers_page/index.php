@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>หน้าแสดงรายการ เรียกใช้บริการรถ</title>
+
+    <style>
+        .btnHomeDr{
+            height:100px;
+            font-size:22px;
+            font-family: 'Sarabun', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <div class="main-container">
@@ -12,9 +20,19 @@
                 <div class="col-md-12 form-group">
                     <div class="card-box height-100-p pd-20">
                         <h3 class="text-center">ยินดีต้อนรับทุกท่าน</h3>
-                        <h1 class="text-center">GT Transport Program</h1><br>
-                        <h5 class="text-center">โปรแกรม เรียกใช้บริการรถรับจ้าง สะดวก รวดเร็ว ติดตามรถได้ตลอดเวลา</h5>
-                        
+                        <h1 class="text-center">GT Move Driver System</h1><br>
+                        <h5 class="text-center">โปรแกรม สำหรับรถร่วมของ GT Transport</h5>
+                        <div class="row form-group mt-3">
+                            <div class="col-md-4 form-group">
+                                <button class="btn btn-info btn-block btnHomeDr" onclick="gotoLink(1)">รายการงาน [รอรับงาน]</button>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <button class="btn btn-warning btn-block btnHomeDr" onclick="gotoLink(2)">งานของฉัน [กำลังทำ]</button>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <button class="btn btn-success btn-block btnHomeDr" onclick="gotoLink(3)">งานของฉัน [เสร็จสิ้นแล้ว]</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,4 +144,19 @@
             });
         };
     });
+
+    function gotoLink(type)
+    {
+        if(type == 1){
+            return location.href = "<?php echo base_url('backend/drivers/job_list_page/job_avaliable')?>";
+        }
+
+        if(type == 2){
+            return location.href = "<?=base_url('backend/drivers/job_list_page/job_pending')?>";
+        }
+
+        if(type == 3){
+            return location.href = "<?=base_url('backend/drivers/job_list_page/job_close')?>";
+        }
+    }
 </script>

@@ -538,7 +538,7 @@ if (!empty($personTypes)) {
                     // ถ้าไม่ได้อนุญาต
                     swal({
                         title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการรับงาน',
                         type: 'error'
                     });
                     document.getElementById("btn_dv-getjob").disabled = false;
@@ -650,7 +650,7 @@ if (!empty($personTypes)) {
                     // ถ้าไม่ได้อนุญาต
                     swal({
                         title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอินต้นทาง',
                         type: 'error'
                     });
                     document.getElementById("btn_dv-checkin").disabled = false;
@@ -767,7 +767,7 @@ if (!empty($personTypes)) {
                     // ถ้าไม่ได้อนุญาต
                     swal({
                         title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเริ่มงาน',
                         type: 'error'
                     });
                     document.getElementById("btn-dv-saveStart").disabled = false;
@@ -881,7 +881,7 @@ if (!empty($personTypes)) {
                     // ถ้าไม่ได้อนุญาต
                     swal({
                         title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอินปลายทาง',
                         type: 'error'
                     });
                     document.getElementById("btn_dv-checkinDes").disabled = false;
@@ -998,7 +998,7 @@ if (!empty($personTypes)) {
                     // ถ้าไม่ได้อนุญาต
                     swal({
                         title: 'การเข้าถึงตำแหน่งถูกปฏิเสธ',
-                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการเช็กอิน',
+                        text: 'โปรดอนุญาตการเข้าถึงตำแหน่งเพื่อทำการปิดงาน',
                         type: 'error'
                     });
                     document.getElementById("btn-dv-saveStop").disabled = false;
